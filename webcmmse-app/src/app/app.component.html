@@ -31,11 +31,6 @@
           <li class="nav-item">
             <a class="nav-link" href="#">{{ '_LOG_IN' | translate }}</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link">
-              <app-language-select></app-language-select>
-            </a>
-          </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#">Contact</a>
           </li> -->
@@ -55,21 +50,21 @@
       <br>
       <div class="row">
         <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
-          <i class="fas fa-address-card fa-4x"></i>
+          <i class="fas fa-address-card fa-4x margin-icon"></i>
           <h5>
             <strong>{{ '_FIRST_STEP' | translate}}</strong>
           </h5>
           <p class="text-faded mb-0">{{ '_FIRST_STEP_DESCRIPTION' | translate}}</p>
         </div>
         <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
-          <i class="far fa-file fa-4x"></i>
+          <i class="far fa-file fa-4x margin-icon"></i>
           <h5>
             <strong>{{ '_SECOND_STEP' | translate}}</strong>
           </h5>
           <p class="text-faded mb-0">{{ '_SECOND_STEP_DESCRIPTION' | translate}}</p>
         </div>
         <div class="col-lg-4 col-md-6 mb-5 mb-md-0">
-          <i class="fas fa-dollar-sign fa-4x"></i>
+          <i class="fas fa-dollar-sign fa-4x margin-icon"></i>
           <h5>
             <strong>{{ '_THIRD_STEP' | translate}}</strong>
           </h5>
@@ -93,8 +88,8 @@
       </div>
       <br>
       <div class="button-row">
-          <button mat-raised-button>{{ '_RETURN' | translate }}</button>
-        </div>
+        <button mat-raised-button>{{ '_RETURN' | translate }}</button>
+      </div>
     </div>
     <br>
   </section>
@@ -102,9 +97,14 @@
   <!-- Footer -->
   <footer class="footer text-center bg-dark">
     <br>
-    <div class="container">
-      <p class="text-muted small mb-0">Copyright &copy; {{ year }}</p>
-      <p class="text-muted small mb-0">{{ '_FOOTER' | translate }}</p>
+    <div class="row">
+      <div class="col-lg-5 col-md-6 mb-5 mb-md-0">
+        <app-language-select></app-language-select>
+      </div>
+      <div class="col-lg-7 col-md-6 mb-5 mb-md-0">
+          <br>
+          <p class="text-muted small mb-0 footer-text">Copyright &copy; {{ year }} - {{ '_FOOTER' | translate }}</p>
+        </div>
     </div>
     <br>
   </footer>
