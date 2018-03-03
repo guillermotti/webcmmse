@@ -1,0 +1,18 @@
+{
+    "_LANGUAGE": "Language",
+    "_HOME": "Home",
+    "_ABOUT": "About CMMSE",
+    "_LOG_IN": "Log In",
+    "_WELCOME": "Welcome to Online Registration System",
+    "_REGISTRATION_INFO": "You are about to begin the registration process. It involves three steps and you can do at different times. You will be asked to provide the following data:",
+    "_FIRST_STEP": "Step 1: Personal Information",
+    "_FIRST_STEP_DESCRIPTION": "Personal information (Full Name, Email, ...) of the person who would be attending the conference.",
+    "_SECOND_STEP": "Step 2: Conference Information",
+    "_SECOND_STEP_DESCRIPTION": "If registering as an Author, Name of the conference, Title(s) of the Paper(s) and other information.",
+    "_THIRD_STEP": "Step 3: Payment Information",
+    "_THIRD_STEP_DESCRIPTION": "To upload the copy of the Proof of payment and, if it is necessary, require the Invoice.",
+    "_REGISTRATION_INFO_2": "Please direct all questions or problems related to use of the Online Registration System to Jesús Vigo Aguiar by e-mail (cmmse@usal.es).",
+    "_FOOTER": "Administered by CMMSE. Developed by Guillermo Vigil.",
+    "_REGISTER": "Register now",
+    "_RETURN": "Return to Conferences"
+}

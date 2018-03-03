@@ -1,0 +1,9 @@
+<div class="form-group">
+  <label class="languageSelect">
+    {{ '_LANGUAGE' | translate }}
+  </label>
+  <select #langSelect (change)="translate.use(langSelect.value)" class="languageSelectSelect">
+    <option *ngFor="let lang of translate.getLangs(); index as i" [value]="lang" [selected]="lang === translate.currentLang"
+      class="oc-language-option-{i}">{{ lang }}</option>
+  </select>
+</div>
