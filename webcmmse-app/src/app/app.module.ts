@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkTableModule } from '@angular/cdk/table';
+import { RouterModule, Routes } from '@angular/router';
 
 import {
   MatAutocompleteModule,
@@ -49,12 +50,29 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { LanguageSelectComponent } from './language-select/language-select.component';
 
 import { AppComponent } from './app.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
+
+const appRoutes: Routes = [
+
+  // { path: 'hero/:id',      component: HeroDetailComponent },
+  /** {
+    path: 'heroes',
+    component: HeroListComponent,
+    data: { title: 'Heroes List' }
+  }, **/
+  // { path: '**', component: PageNotFoundComponent }
+  { path: 'index', component: DashboardComponent },
+  { path: 'register', component: RegistrationComponent },
+  { path: '', redirectTo: 'index', pathMatch: 'full' },
+  { path: '**', redirectTo: 'index', pathMatch: 'full' }
+];
 
 @NgModule({
   exports: [
@@ -98,7 +116,9 @@ export class MaterialModule { }
 @NgModule({
   declarations: [
     AppComponent,
-    LanguageSelectComponent
+    LanguageSelectComponent,
+    DashboardComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -116,7 +136,11 @@ export class MaterialModule { }
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } // <-- debugging purposes only
+    )
   ],
   entryComponents: [AppComponent],
   providers: [],
