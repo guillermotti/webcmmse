@@ -10,8 +10,6 @@ body {
 }
 }
 
-/* You can add global styles to this file, and also import other style files */
-
 .border-rounded {
     border: 1px solid gray;
     border-top-left-radius: 5% 30%;
@@ -25,22 +23,9 @@ body {
     color: white !important;
 }
 
-@media only screen and (min-width: 767px){
+@media (max-width: 1280px){
     footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        .footer-text {
-            text-align: left;
-            margin-left: -10%;
-        }
-    }
-}
-
-@media only screen and (max-width: 767px){
-    footer {
-        position: relative;
+        position: relative !important;
         left: 0;
         bottom: 0;
         width: 100%;
@@ -48,7 +33,24 @@ body {
     }
 }
 
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    .footer-text {
+        text-align: left;
+        margin-left: -10%;
+    }
+    color: black;
+    background-color: #6C6764 !important;
+}
+
 .margin-icon {
     margin-bottom: 4%;
     margin-top: 5%;
+}
+
+.mat-select-value, .mat-select-placeholder, .mat-select-arrow {
+    color: black !important;
 }

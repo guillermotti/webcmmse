@@ -6,7 +6,7 @@
     "_WELCOME": "Welcome to Online Registration System",
     "_REGISTRATION_INFO": "You are about to begin the registration process. It involves three steps and you can do at different times. You will be asked to provide the following data:",
     "_FIRST_STEP": "Step 1: Personal Information",
-    "_FIRST_STEP_DESCRIPTION": "Personal information (Full Name, Email, ...) of the person who would be attending the conference.",
+    "_FIRST_STEP_DESCRIPTION": "Personal information (Full Name, e-mail, ...) of the person who would be attending the conference.",
     "_SECOND_STEP": "Step 2: Conference Information",
     "_SECOND_STEP_DESCRIPTION": "If registering as an Author, Name of the conference, Title(s) of the Paper(s) and other information.",
     "_THIRD_STEP": "Step 3: Payment Information",
@@ -16,5 +16,5 @@
     "_REGISTER": "Register now",
     "_RETURN": "Return to Conferences",
     "en": "English",
-    "es": "Spanish"
+    "es": "Español"
 }

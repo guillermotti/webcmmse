@@ -7,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistrationComponent implements OnInit {
 
+  // Esto debe ser configurable en un app.conf
+  date = new Date();
+  year = this.date.getFullYear();
+  urlCMMSE = 'http://cmmse.usal.es/cmmse2018/';
+
   constructor() { }
 
   ngOnInit() {
