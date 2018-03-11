@@ -43,15 +43,24 @@ import {
   MatTooltipModule,
 } from '@angular/material';
 
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
-import { LanguageSelectComponent } from './language-select/language-select.component';
+import { LanguageSelectComponent } from './components/language-select/language-select.component';
 
-import { AppComponent } from './app.component';
-import { RegistrationComponent } from './registration/registration.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { AppComponent } from './components/app.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { LoginComponent } from './components/login/login.component';
+import { environment } from '../environments/environment';
+
+import { FirebaseCallerService } from './services/firebase-caller.service';
 
 
 // AoT requires an exported function for factories
@@ -70,6 +79,7 @@ const appRoutes: Routes = [
   // { path: '**', component: PageNotFoundComponent }
   { path: 'index', component: DashboardComponent },
   { path: 'register', component: RegistrationComponent },
+  { path: 'login', component: LoginComponent },
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   { path: '**', redirectTo: 'index', pathMatch: 'full' }
 ];
@@ -118,11 +128,16 @@ export class MaterialModule { }
     AppComponent,
     LanguageSelectComponent,
     DashboardComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    AngularFireModule.initializeApp(environment.firebase), // imports firebase/app needed for everything
+    AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
+    AngularFireStorageModule, // imports firebase/storage only needed for storage features
     FormsModule,
     HttpModule,
     HttpClientModule,
@@ -143,7 +158,9 @@ export class MaterialModule { }
     )
   ],
   entryComponents: [AppComponent],
-  providers: [],
+  providers: [
+    FirebaseCallerService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

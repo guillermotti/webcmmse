@@ -18,4 +18,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
   }
 
+  goTo(url) {
+    window.location.href = url;
+  }
+
 }

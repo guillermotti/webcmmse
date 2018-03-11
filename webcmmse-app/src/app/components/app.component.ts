@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-
+  // Esto debe ser configurable en un app.conf
+  date = new Date();
+  year = this.date.getFullYear();
+  urlCMMSE = 'http://cmmse.usal.es/cmmse2018/';
 }
