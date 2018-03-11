@@ -37,10 +37,14 @@ body {
     .example-container > * {
         width: 100% !important;
     }
+    footer .footer-text {
+        text-align: inherit !important;
+        margin-left: 5% !important;
+        margin-right: 5% !important;
+    }
 }
 
 footer {
-    position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;

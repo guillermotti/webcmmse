@@ -10,4 +10,11 @@ export class FirebaseCallerService {
   public getCollection(listPath): Observable<any[]> {
     return this.db.collection(listPath).valueChanges();
   }
+
+  public addItemToCollection(listPath, item): any {
+    return this.db.collection(listPath).add(item)
+    .catch(function(error) {
+      console.error('Error', error);
+    });
+  }
 }
