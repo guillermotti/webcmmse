@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FirebaseCallerService } from '../../services/firebase-caller.service';
-import { MailManagerService } from '../../services/mail-manager.service';
 
 @Component({
   selector: 'app-registration',
@@ -244,7 +243,7 @@ export class RegistrationComponent implements OnInit {
     { value: 'Zimbabwe' }
   ];
 
-  constructor(private firebaseCaller: FirebaseCallerService, private mailManager: MailManagerService) { }
+  constructor(private firebaseCaller: FirebaseCallerService) { }
 
   ngOnInit() {
 
