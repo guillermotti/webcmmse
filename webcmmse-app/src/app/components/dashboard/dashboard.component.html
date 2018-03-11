@@ -84,11 +84,11 @@
     <div class="container">
       <div class="button-row">
         <button mat-raised-button color="primary" routerLink="/register" routerLinkActive="active">{{ '_REGISTER' | translate }}</button>
-        <button mat-raised-button class="button-green">{{ '_LOG_IN' | translate }}</button>
+        <button mat-raised-button class="button-green" routerLink="/login" routerLinkActive="active">{{ '_LOG_IN' | translate }}</button>
       </div>
       <br>
       <div class="button-row">
-        <button mat-raised-button>{{ '_RETURN' | translate }}</button>
+        <button mat-raised-button (click)="goTo(urlCMMSE)">{{ '_RETURN' | translate }}</button>
       </div>
     </div>
     <br>

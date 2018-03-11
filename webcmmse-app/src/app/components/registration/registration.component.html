@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ urlCMMSE }}">CMMSE {{ year }}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">{{'_HOME' | translate}}
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ urlCMMSE }}">{{ '_ABOUT' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">{{ '_LOG_IN' | translate }}</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <section class="content-section text-center">
+    <div class="container">
+      <div class="content-section-heading">
+        <h1 class="mt-5">{{ '_REGISTRATION' | translate}}</h1>
+      </div>
+    </div>
+  </section>
+  <section class="content-section">
+    <div class="container">
+      <div class="content-section-heading">
+        <h5 class="mt-5">{{ '_PERSONAL_INFO' | translate}}</h5>
+        <br>
+      </div>
+    </div>
+    <div class="container">
+      <div class="example-container">
+        <mat-form-field class="column4">
+          <mat-select placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="form.title" required>
+            <mat-option *ngFor="let title of titles" [(value)]="title.value">
+              {{ title.value | translate }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="container">
+      <div class="example-container">
+        <mat-form-field class="column6">
+          <input matInput #input placeholder="{{ '_NAME' | translate}}" [(ngModel)]="form.name" required>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="column6">
+          <input matInput #input placeholder="{{ '_LAST_NAME' | translate}}" [(ngModel)]="form.lastName" required>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="container">
+      <div class="example-container">
+        <mat-form-field class="column4">
+          <mat-select placeholder="{{ '_COUNTRY' | translate}}" [(ngModel)]="form.country" required>
+            <mat-option *ngFor="let country of countries" [(value)]="country.value">
+              {{ country.value | translate }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="column4">
+          <input matInput #input placeholder="{{ '_STATE' | translate}}" [(ngModel)]="form.state">
+        </mat-form-field>
+        <mat-form-field class="column4">
+          <input matInput #input placeholder="{{ '_CITY' | translate}}" [(ngModel)]="form.city">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="container">
+      <div class="example-container">
+        <mat-form-field class="column8">
+          <input matInput #input placeholder="{{ '_ADDRESS' | translate}}" [(ngModel)]="form.address">
+        </mat-form-field>
+        <mat-form-field class="column4">
+          <input matInput #input placeholder="{{ '_POSTAL_CODE' | translate}}" [(ngModel)]="form.postalCode">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="container">
+      <div class="example-container">
+        <mat-form-field class="column8">
+          <input matInput #input placeholder="{{ '_UNIVERSITY' | translate}}" [(ngModel)]="form.universityCompany" required>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="column4">
+          <input matInput #input placeholder="{{ '_PHONE' | translate}}" [(ngModel)]="form.phone">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="container">
+      <div class="content-section-heading">
+        <h5 class="mt-5">{{ '_LOGIN_INFO' | translate}}</h5>
+        <br>
+      </div>
+    </div>
+    <div class="container">
+      <div class="example-container">
+        <mat-form-field class="column6">
+          <input matInput #input placeholder="{{ '_EMAIL' | translate}}" [(ngModel)]="form.email" [formControl]="emailControl" required>
+          <mat-error *ngIf="emailControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+          <mat-error *ngIf="emailControl.hasError('email') && !emailControl.hasError('required')">{{ '_WRONG_EMAIL' | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="column6">
+          <input matInput #input placeholder="{{ '_CONFIRM_EMAIL' | translate}}" [(ngModel)]="form.emailCheck" [formControl]="emailControl2"
+            required>
+          <mat-error *ngIf="emailControl2.hasError('email') && !emailControl2.hasError('required')">{{ '_WRONG_EMAIL' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="container">
+      <div class="example-container">
+        <mat-form-field class="column6">
+          <input matInput #input placeholder="{{ '_PASSWORD' | translate}}" [type]="hide ? 'password' : 'text'" [(ngModel)]="form.password"
+            required>
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="column6">
+          <input matInput #input placeholder="{{ '_CONFIRM_PASSWORD' | translate}}" [type]="hide2 ? 'password' : 'text'" [(ngModel)]="form.passwordCheck"
+            required>
+          <mat-icon matSuffix (click)="hide2 = !hide2">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="container">
+      <div class="example-container">
+        <br>
+        <mat-checkbox [(ngModel)]="form.check">{{ '_ACCORDANCE_TERMS' | translate }}</mat-checkbox>
+      </div>
+    </div>
+    <div class="container text-center">
+      <br>
+      <mat-error *ngIf="form.email !== form.emailCheck && !emailControl2.hasError('required')">{{ '_EMAIL_NO_MATCH' | translate }}</mat-error>
+      <mat-error *ngIf="form.password !== form.passwordCheck">{{ '_PASSWORD_NO_MATCH' | translate }}</mat-error>
+      <mat-error *ngIf="areFieldsEmpty()">{{ '_REQUIRED_FIELDS_EMPTY' | translate }}</mat-error>
+    </div>
+    <br>
+  </section>
+
+  <section class="content-section text-center">
+    <div class="container">
+      <div class="button-row">
+        <button mat-raised-button color="primary" routerLink="/login" routerLinkActive="active" (click)=submitRegister() [disabled]="isFormValid()">{{ '_SUBMIT' | translate }}</button>
+        <button mat-raised-button>{{ '_RETURN2' | translate }}</button>
+      </div>
+    </div>
+    <br>
+    <br>
+  </section>
+
+</body>
+
+</html>

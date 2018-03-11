@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-registration',
-  templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss']
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
-export class RegistrationComponent implements OnInit {
+export class DashboardComponent implements OnInit {
+
 
   // Esto debe ser configurable en un app.conf
   date = new Date();
@@ -15,6 +16,10 @@ export class RegistrationComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  goTo(url) {
+    window.location.href = url;
   }
 
 }
