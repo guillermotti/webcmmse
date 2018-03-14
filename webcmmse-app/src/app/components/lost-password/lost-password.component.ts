@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-lost-password',
+  templateUrl: './lost-password.component.html',
+  styleUrls: ['./lost-password.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LostPasswordComponent implements OnInit {
 
   // Esto debe ser configurable en un app.conf
   date = new Date();
   year = this.date.getFullYear();
   urlCMMSE = 'http://cmmse.usal.es/cmmse2018/';
-
 
   hide = true;
   user;
@@ -23,11 +22,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  submitLogin() {
-
-  }
-
-  isEnabled() {
+  recoverPassword() {
 
   }
 
