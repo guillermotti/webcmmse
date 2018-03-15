@@ -58,10 +58,12 @@ import { RegistrationComponent, AccordanceTermsDialogComponent } from './compone
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { LostPasswordComponent } from './components/lost-password/lost-password.component';
+import { UserHomeComponent } from './components/user-home/user-home.component';
 
 import { environment } from '../environments/environment';
 
 import { FirebaseCallerService } from './services/firebase-caller.service';
+import { CryptoService } from './services/crypto.service';
 
 
 // AoT requires an exported function for factories
@@ -82,6 +84,7 @@ const appRoutes: Routes = [
   { path: 'register', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
   { path: 'recover', component: LostPasswordComponent },
+  { path: 'user', component: UserHomeComponent },
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   { path: '**', redirectTo: 'index', pathMatch: 'full' }
 ];
@@ -133,7 +136,8 @@ export class MaterialModule { }
     RegistrationComponent,
     LoginComponent,
     LostPasswordComponent,
-    AccordanceTermsDialogComponent
+    AccordanceTermsDialogComponent,
+    UserHomeComponent
   ],
   imports: [
     BrowserModule,
@@ -168,10 +172,12 @@ export class MaterialModule { }
     RegistrationComponent,
     LoginComponent,
     LostPasswordComponent,
-    AccordanceTermsDialogComponent
+    AccordanceTermsDialogComponent,
+    UserHomeComponent
   ],
   providers: [
-    FirebaseCallerService
+    FirebaseCallerService,
+    CryptoService
   ],
   bootstrap: [AppComponent]
 })
