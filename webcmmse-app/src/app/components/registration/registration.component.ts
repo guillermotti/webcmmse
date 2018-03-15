@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { FirebaseCallerService } from '../../services/firebase-caller.service';
 
 @Component({
@@ -41,10 +42,10 @@ export class RegistrationComponent implements OnInit {
   disableSubmit = new FormControl(false);
 
   titles = [
-    { value: 'Dr.' },
-    { value: 'Ms.' },
-    { value: 'Mr.' },
-    { value: 'Prof.' }
+    { value: '_DR' },
+    { value: '_MS' },
+    { value: '_MR' },
+    { value: '_PROF' }
   ];
 
   countries = [
@@ -243,7 +244,7 @@ export class RegistrationComponent implements OnInit {
     { value: 'Zimbabwe' }
   ];
 
-  constructor(private firebaseCaller: FirebaseCallerService) { }
+  constructor(public dialog: MatDialog, private firebaseCaller: FirebaseCallerService) { }
 
   ngOnInit() {
 
@@ -270,10 +271,50 @@ export class RegistrationComponent implements OnInit {
   }
 
   submitRegister() {
-    this.firebaseCaller.getCollection('users').subscribe(response => {
-      console.log(response);
+    const user = {
+      address: this.form.address,
+      city: this.form.city,
+      country: this.form.country,
+      email: this.form.email,
+      first_name: this.form.name,
+      last_name: this.form.lastName,
+      password: this.form.password,
+      phone: this.form.phone,
+      postal_code: this.form.postalCode,
+      state: this.form.state,
+      title: this.form.title,
+      university_company: this.form.universityCompany
+    };
+    this.firebaseCaller.addItemToCollection('users', user);
+    window.sessionStorage.setItem('User', JSON.stringify(user));
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(AccordanceTermsDialogComponent, {
+      width: '350px',
+      data: { }
     });
-    console.log(this.form);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // this.animal = result;
+    });
+  }
+
+}
+
+@Component({
+  selector: 'app-accordance-terms-dialog',
+  templateUrl: 'accordance-terms-dialog.component.html',
+})
+export class AccordanceTermsDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<AccordanceTermsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  onOkClick(): void {
+    this.dialogRef.close();
   }
 
 }
