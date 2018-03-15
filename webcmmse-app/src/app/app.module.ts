@@ -53,14 +53,17 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 import { LanguageSelectComponent } from './components/language-select/language-select.component';
-
 import { AppComponent } from './components/app.component';
-import { RegistrationComponent } from './components/registration/registration.component';
+import { RegistrationComponent, AccordanceTermsDialogComponent } from './components/registration/registration.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
+import { LostPasswordComponent } from './components/lost-password/lost-password.component';
+import { UserHomeComponent } from './components/user-home/user-home.component';
+
 import { environment } from '../environments/environment';
 
 import { FirebaseCallerService } from './services/firebase-caller.service';
+import { CryptoService } from './services/crypto.service';
 
 
 // AoT requires an exported function for factories
@@ -80,6 +83,8 @@ const appRoutes: Routes = [
   { path: 'index', component: DashboardComponent },
   { path: 'register', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'recover', component: LostPasswordComponent },
+  { path: 'user', component: UserHomeComponent },
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   { path: '**', redirectTo: 'index', pathMatch: 'full' }
 ];
@@ -129,7 +134,10 @@ export class MaterialModule { }
     LanguageSelectComponent,
     DashboardComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    LostPasswordComponent,
+    AccordanceTermsDialogComponent,
+    UserHomeComponent
   ],
   imports: [
     BrowserModule,
@@ -157,9 +165,19 @@ export class MaterialModule { }
       { enableTracing: true } // <-- debugging purposes only
     )
   ],
-  entryComponents: [AppComponent],
+  entryComponents: [
+    AppComponent,
+    LanguageSelectComponent,
+    DashboardComponent,
+    RegistrationComponent,
+    LoginComponent,
+    LostPasswordComponent,
+    AccordanceTermsDialogComponent,
+    UserHomeComponent
+  ],
   providers: [
-    FirebaseCallerService
+    FirebaseCallerService,
+    CryptoService
   ],
   bootstrap: [AppComponent]
 })

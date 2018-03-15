@@ -1,5 +1,6 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { AppConfig } from '../../config/app.config';
 
 /**
  Represents a HTML select component.
@@ -48,8 +49,8 @@ export class LanguageSelectComponent {
   */
 
     constructor(public translate: TranslateService) {
-        translate.addLangs(['en', 'es']);
-        translate.setDefaultLang('en');
+        translate.addLangs(AppConfig.langs);
+        translate.setDefaultLang(AppConfig.defaultLang);
     }
 
 }

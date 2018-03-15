@@ -21,7 +21,7 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">{{'_HOME' | translate}}
+            <a class="nav-link" routerLink="/index" routerLinkActive="active">{{'_HOME' | translate}}
               <span class="sr-only">(current)</span>
             </a>
           </li>
@@ -29,7 +29,7 @@
             <a class="nav-link" href="{{ urlCMMSE }}">{{ '_ABOUT' | translate }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">{{ '_LOG_IN' | translate }}</a>
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">{{ '_LOG_IN' | translate }}</a>
           </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#">Contact</a>
@@ -80,7 +80,7 @@
     <br>
   </section>
 
-  <section class="content-section text-center">
+  <section class="content-section text-center dashBoardSection">
     <div class="container">
       <div class="button-row">
         <button mat-raised-button color="primary" routerLink="/register" routerLinkActive="active">{{ '_REGISTER' | translate }}</button>
