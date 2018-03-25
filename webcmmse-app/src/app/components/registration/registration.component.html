@@ -148,7 +148,7 @@
         <mat-form-field class="column6">
           <input matInput #input placeholder="{{ '_CONFIRM_PASSWORD' | translate}}" [type]="hide2 ? 'password' : 'text'" [(ngModel)]="form.passwordCheck"
             required>
-          <mat-icon matSuffix (click)="hide2 = !hide2">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility' : 'visibility_off'}}</mat-icon>
           <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
         </mat-form-field>
       </div>
