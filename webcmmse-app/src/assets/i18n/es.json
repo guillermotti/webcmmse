@@ -51,5 +51,19 @@
     "_OK": "Aceptar",
     "_LOST_PASSWORD": "¿Contraseña olvidada?",
     "_RECOVER_PASSWORD": "Recuperar contraseña",
-    "_SEND_PASSWORD": "Recuperar"
+    "_SEND_PASSWORD": "Recuperar",
+    "_USER": "Perfil",
+    "_INVOICE": "Pagos - Facturas",
+    "_PAPER": "Artículo",
+    "_LOG_OUT": "Cerrar sesión",
+    "_CHANGE_DATA": "Cambiar datos",
+    "_SAVE_CHANGES": "Guardar cambios",
+    "_CHANGE_PASSWORD": "Cambiar contraseña",
+    "_OLD_PASSWORD": "Contraseña antigua",
+    "_NEW_PASSWORD": "Nueva contraseña",
+    "_CONFIRM_NEW_PASSWORD": "Confirmar nueva contraseña",
+    "_CANCEL": "Cancelar",
+    "_REGISTER_SUCCESFUL": "Registro completado correctamente",
+    "_PASSWORD_CHANGED": "Contraseña cambiada correctamente",
+    "_DATA_UPDATED": "Datos actualizados correctamente"
 }

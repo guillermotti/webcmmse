@@ -12,14 +12,28 @@ export class FirebaseCallerService {
     return this.db.collection(collection).valueChanges();
   }
 
+  public getItemFromCollection(item, collection): Observable<any[]> {
+    return this.db.collection(collection, ref => ref.where('email', '==', item)).valueChanges();
+  }
+
   public addItemToCollection(collection, item): any {
     return this.db.collection(collection).add(item)
+    .then(docRef => {
+      this.db.collection(collection).doc(docRef.id).update({
+        id: docRef.id
+      });
+    })
     .catch(function(error) {
       console.error('Error', error);
     });
   }
 
-  public getItemFromCollection(item, collection): Observable<any[]> {
-    return this.db.collection(collection, ref => ref.where('email', '==', item)).valueChanges();
+  public updateItemFromCollection(collection, id, data): any {
+     return this.db.collection(collection).doc(id).update(data);
   }
+
+  public deleteItemFromCollection(collection, id) {
+    this.db.collection(collection).doc(id).delete();
+  }
+
 }

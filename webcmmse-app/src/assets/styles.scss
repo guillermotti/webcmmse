@@ -4,9 +4,13 @@ body {
     padding-top: 54px;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1281px) {
     body {
         padding-top: 56px;
+    }
+
+    footer {
+        position: fixed !important;
     }
 }
 
@@ -27,6 +31,7 @@ body {
     .example-container > * {
         width: 100% !important;
     }
+
     footer .footer-text {
         text-align: inherit !important;
         margin-left: 5% !important;
@@ -96,12 +101,37 @@ mat-form-field.column12 {
 
 .dialog {
     text-align: justify;
+
     .mat-dialog-title {
         text-align: center;
     }
+
     button {
         color: white;
         background-color: #3f51b5;
         margin-left: 35%;
     }
+}
+
+.mat-form-field-disabled input {
+    color: black !important;
+}
+
+.cdk-overlay-container {
+    z-index: 1031;
+}
+
+.crossIcon {
+    text-align: right;
+    width: 100%;
+    a {
+        cursor: pointer;
+    }
+    i {
+        position: absolute;
+    }
+}
+
+snack-bar-container {
+    background: green !important;
 }

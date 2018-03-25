@@ -1,0 +1,33 @@
+@media (min-width: 992px) {
+    ul {
+        width: 100%;
+
+        li:nth-child(1) {
+            width: 8%;
+        }
+
+        li:nth-child(2) {
+            width: 22%;
+        }
+
+        li:nth-child(3) {
+            width: 8%;
+        }
+
+        li:nth-child(4) {
+            width: 22%;
+        }
+
+        li:nth-child(5) {
+            width: 25%;
+            text-align: right;
+        }
+
+        li:nth-child(6) {
+            width: 15%;
+            text-align: left;
+        }
+
+        text-align: center;
+    }
+}

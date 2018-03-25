@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { FirebaseCallerService } from '../../services/firebase-caller.service';
 import { AppConfig } from '../../config/app.config';
 import { CryptoService } from '../../services/crypto.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-registration',
@@ -42,7 +43,9 @@ export class RegistrationComponent implements OnInit {
   titles = AppConfig.titles;
   countries = AppConfig.countries;
 
-  constructor(public dialog: MatDialog, private firebaseCaller: FirebaseCallerService, private crytoService: CryptoService) { }
+  constructor(public dialog: MatDialog, public snackBar: MatSnackBar,
+    private firebaseCaller: FirebaseCallerService, private crytoService: CryptoService,
+    private translationService: TranslateService) { }
 
   ngOnInit() {
 
@@ -83,13 +86,18 @@ export class RegistrationComponent implements OnInit {
       title: this.form.title,
       university_company: this.form.universityCompany
     };
-    this.firebaseCaller.addItemToCollection('users', user);
-    window.sessionStorage.setItem('User', JSON.stringify(user));
+    this.firebaseCaller.addItemToCollection('users', user).then(() => {
+      this.translationService.get('_REGISTER_SUCCESFUL').subscribe(response => {
+        this.snackBar.open(response, null, {
+          duration: 2000,
+        });
+      });
+    });
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(AccordanceTermsDialogComponent, {
-      width: '350px',
+      width: '400px',
       data: {}
     });
 
@@ -102,7 +110,7 @@ export class RegistrationComponent implements OnInit {
 
 @Component({
   selector: 'app-accordance-terms-dialog',
-  templateUrl: 'accordance-terms-dialog.component.html',
+  templateUrl: 'accordance-terms-dialog.html',
 })
 export class AccordanceTermsDialogComponent {
 

@@ -58,7 +58,7 @@ import { RegistrationComponent, AccordanceTermsDialogComponent } from './compone
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { LostPasswordComponent } from './components/lost-password/lost-password.component';
-import { UserHomeComponent } from './components/user-home/user-home.component';
+import { UserHomeComponent, ChangePasswordDialogComponent } from './components/user-home/user-home.component';
 
 import { environment } from '../environments/environment';
 
@@ -137,6 +137,7 @@ export class MaterialModule { }
     LoginComponent,
     LostPasswordComponent,
     AccordanceTermsDialogComponent,
+    ChangePasswordDialogComponent,
     UserHomeComponent
   ],
   imports: [
@@ -173,6 +174,7 @@ export class MaterialModule { }
     LoginComponent,
     LostPasswordComponent,
     AccordanceTermsDialogComponent,
+    ChangePasswordDialogComponent,
     UserHomeComponent
   ],
   providers: [

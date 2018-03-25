@@ -51,5 +51,19 @@
     "_OK": "Ok",
     "_LOST_PASSWORD": "Forgot your password?",
     "_RECOVER_PASSWORD": "Recover password",
-    "_SEND_PASSWORD": "Recover"
+    "_SEND_PASSWORD": "Recover",
+    "_USER": "Profile",
+    "_INVOICE": "Payments - Invoices",
+    "_PAPER": "Paper",
+    "_LOG_OUT": "Log Out",
+    "_CHANGE_DATA": "Change data",
+    "_SAVE_CHANGES": "Save changes",
+    "_CHANGE_PASSWORD": "Change password",
+    "_OLD_PASSWORD": "Old password",
+    "_NEW_PASSWORD": "New password",
+    "_CONFIRM_NEW_PASSWORD": "Confirm new password",
+    "_CANCEL": "Cancel",
+    "_REGISTER_SUCCESFUL": "Registration succesfully",
+    "_PASSWORD_CHANGED": "Password changed succesfully",
+    "_DATA_UPDATED": "Data updated succesfully"
 }
