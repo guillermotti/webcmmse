@@ -59,12 +59,13 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { LostPasswordComponent } from './components/lost-password/lost-password.component';
 import { UserHomeComponent, ChangePasswordDialogComponent } from './components/user-home/user-home.component';
+import { PaymentsInvoicesComponent } from './components/payments-invoices/payments-invoices.component';
+import { PaperComponent, EditPaperDialogComponent, ConfirmDeleteDialogComponent } from './components/paper/paper.component';
 
 import { environment } from '../environments/environment';
 
 import { FirebaseCallerService } from './services/firebase-caller.service';
 import { CryptoService } from './services/crypto.service';
-
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -85,6 +86,8 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'recover', component: LostPasswordComponent },
   { path: 'user', component: UserHomeComponent },
+  { path: 'payments-invoices', component: PaymentsInvoicesComponent },
+  { path: 'paper', component: PaperComponent },
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   { path: '**', redirectTo: 'index', pathMatch: 'full' }
 ];
@@ -138,7 +141,11 @@ export class MaterialModule { }
     LostPasswordComponent,
     AccordanceTermsDialogComponent,
     ChangePasswordDialogComponent,
-    UserHomeComponent
+    EditPaperDialogComponent,
+    ConfirmDeleteDialogComponent,
+    UserHomeComponent,
+    PaymentsInvoicesComponent,
+    PaperComponent
   ],
   imports: [
     BrowserModule,
@@ -175,7 +182,11 @@ export class MaterialModule { }
     LostPasswordComponent,
     AccordanceTermsDialogComponent,
     ChangePasswordDialogComponent,
-    UserHomeComponent
+    EditPaperDialogComponent,
+    ConfirmDeleteDialogComponent,
+    UserHomeComponent,
+    PaymentsInvoicesComponent,
+    PaperComponent
   ],
   providers: [
     FirebaseCallerService,

@@ -38,7 +38,6 @@ export class RegistrationComponent implements OnInit {
   formControl = new FormControl('', [Validators.required]);
   emailControl = new FormControl('', [Validators.required, Validators.email]);
   emailControl2 = new FormControl('', [Validators.required, Validators.email]);
-  disableSubmit = new FormControl(false);
 
   titles = AppConfig.titles;
   countries = AppConfig.countries;

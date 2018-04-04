@@ -59,7 +59,7 @@
     <div class="container">
       <div class="example-container">
         <mat-form-field class="column6">
-          <input matInput #input placeholder="{{ '_PASSWORD' | translate}}" [type]="hide ? 'password' : 'text'" [(ngModel)]="password">
+          <input matInput #input placeholder="{{ '_PASSWORD' | translate}}" [type]="hide ? 'password' : 'text'" [(ngModel)]="password" (keyup.enter)="submitLogin()">
           <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
           <mat-hint>
             <a class="nav-link" routerLink="/recover" routerLinkActive="active">{{ '_LOST_PASSWORD' | translate}}</a>
@@ -77,7 +77,7 @@
   <section class="content-section text-center loginSection">
     <div class="container">
       <div class="button-row">
-        <button mat-raised-button color="primary" (click)=submitLogin() [disabled]="isEnabled()">{{ '_LOG_IN' | translate }}</button>
+        <button mat-raised-button color="primary" (click)=submitLogin() [disabled]="isDisabled()">{{ '_LOG_IN' | translate }}</button>
         <button mat-raised-button routerLink="/dashboard" routerLinkActive="active">{{ '_RETURN2' | translate }}</button>
       </div>
     </div>

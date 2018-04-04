@@ -20,10 +20,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" routerLink="/user" routerLinkActive="active">{{ '_USER' | translate }}</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" routerLink="/payments-invoices" routerLinkActive="active">{{ '_INVOICE' | translate }}</a>
           </li>
           <li class="nav-item">
@@ -47,14 +47,59 @@
   <section class="content-section">
     <div class="container">
       <div class="content-section-heading">
-        <h5 class="mt-5">{{ '_PERSONAL_INFO' | translate}}</h5>
+        <h5 class="mt-5">{{ '_PAYMENTS' | translate}}</h5>
+        <br>
+      </div>
+    </div>
+
+    <div class="container">
+      <p>{{ '_UPLOAD_MESSAGE' | translate }}</p>
+      <div class="row">
+        <div class="col-xs-6 col-sm-2 buttonSelectFile">
+          <button mat-raised-button color="primary" (click)="fileInput.click()">{{ '_SELECT_FILE' | translate }}</button>
+        </div>
+        <div class="col-xs-6 col-sm-4">
+          <mat-chip-list>
+            <mat-chip (remove)="removePayment()">
+              <div *ngIf="fileURL">
+                <a (click)="openTabTo(fileURL)" [href]="fileURL">{{ fileName | translate }} </a>
+              </div>
+              <div *ngIf="!fileURL">
+                {{ fileName | translate }}
+              </div>
+              <mat-icon *ngIf="fileURL" matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+        <div class="col-xs-6 col-sm-4">
+          <!-- <input accept=".png,.jpg" /> -->
+          <input #fileInput type="file" (change)="upload($event)" class="uploadInput" />
+        </div>
+      </div>
+      <br>
+      <div *ngIf="uploadState | async" class="progress">
+        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadProgress | async) + '%'"
+          [attr.aria-valuenow]="(uploadProgress | async)" aria-valuemin="0" aria-valuemax="100">
+          {{ progressBarValue }}</div>
+      </div>
+      <br>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="container">
+      <div class="content-section-heading">
+        <h5 class="mt-5">{{ '_INVOICES' | translate}}</h5>
         <br>
       </div>
     </div>
     <div class="container">
+      <p><strong>{{ '_IMPORTANT' | translate }}</strong>{{ '_INVOICE_MESSAGE' | translate }}</p>
+    </div>
+    <div class="container">
       <div class="example-container">
         <mat-form-field class="column4">
-          <mat-select placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="form.title" [disabled]="disabled" required>
+          <mat-select placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="billForm.title" required>
             <mat-option *ngFor="let title of titles" [(value)]="title.value">
               {{ title.value | translate }}
             </mat-option>
@@ -66,63 +111,38 @@
     <div class="container">
       <div class="example-container">
         <mat-form-field class="column6">
-          <input matInput #input placeholder="{{ '_NAME' | translate }}" [(ngModel)]="form.first_name" [disabled]="disabled" required>
+          <input matInput #input placeholder="{{ '_NAME' | translate}}" [(ngModel)]="billForm.first_name" required>
           <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
         </mat-form-field>
         <mat-form-field class="column6">
-          <input matInput #input placeholder="{{ '_LAST_NAME' | translate }}" [(ngModel)]="form.last_name" [disabled]="disabled" required>
+          <input matInput #input placeholder="{{ '_LAST_NAME' | translate}}" [(ngModel)]="billForm.last_name" required>
           <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="container">
-      <div class="example-container">
-        <mat-form-field class="column4">
-          <mat-select placeholder="{{ '_COUNTRY' | translate}}" [(ngModel)]="form.country" [disabled]="disabled" required>
-            <mat-option *ngFor="let country of countries" [(value)]="country.value">
-              {{ country.value | translate }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
-        </mat-form-field>
-        <mat-form-field class="column4">
-          <input matInput #input placeholder="{{ '_STATE' | translate }}" [(ngModel)]="form.state" [disabled]="disabled">
-        </mat-form-field>
-        <mat-form-field class="column4">
-          <input matInput #input placeholder="{{ '_CITY' | translate }}" [(ngModel)]="form.city" [disabled]="disabled">
         </mat-form-field>
       </div>
     </div>
     <div class="container">
       <div class="example-container">
         <mat-form-field class="column8">
-          <input matInput #input placeholder="{{ '_ADDRESS' | translate }}" [(ngModel)]="form.address" [disabled]="disabled">
+          <input matInput #input placeholder="{{ '_UNIVERSITY' | translate}}" [(ngModel)]="billForm.university_company" required>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
         </mat-form-field>
         <mat-form-field class="column4">
-          <input matInput #input placeholder="{{ '_POSTAL_CODE' | translate }}" [(ngModel)]="form.postal_code" [disabled]="disabled">
+          <input matInput #input placeholder="{{ '_CIF' | translate}}" [(ngModel)]="billForm.CIF" required>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
         </mat-form-field>
       </div>
     </div>
     <div class="container">
       <div class="example-container">
-        <mat-form-field class="column8">
-          <input matInput #input placeholder="{{ '_UNIVERSITY' | translate }}" [(ngModel)]="form.university_company" [disabled]="disabled"
-            required>
+        <mat-form-field class="column12">
+          <input matInput #input placeholder="{{ '_ADDRESS' | translate}}" [(ngModel)]="billForm.address" required>
           <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
-        </mat-form-field>
-        <mat-form-field class="column4">
-          <input matInput #input placeholder="{{ '_PHONE' | translate }}" [(ngModel)]="form.phone" [disabled]="disabled">
         </mat-form-field>
       </div>
     </div>
-    <br>
-  </section>
-
-  <section class="content-section text-center marginBottomUser">
-    <div class="container">
+    <div class="container text-center">
       <div class="button-row">
-        <button mat-raised-button color="{{colorChange}}" (click)=changeData() [disabled]="areFieldsEmpty()">{{ change | translate }}</button>
-        <button mat-raised-button color="primary" (click)="openDialog()">{{ '_CHANGE_PASSWORD' | translate }}</button>
+        <button mat-raised-button color="primary" (click)=submitInvoiceData() [disabled]="submitDisabled()">{{ '_SUBMIT' | translate }}</button>
       </div>
     </div>
     <br>
