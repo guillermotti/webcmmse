@@ -32,6 +32,29 @@
     }
 }
 
-.marginBottomUser {
-    margin-bottom: 10%;
+.buttonSelectFile button {
+    width: 100%;
+}
+
+.chipAuthor {
+    margin-top: 8%;
+    background-color: gray;
+}
+
+.chipPaper {
+    margin-top: 1%;
+    background-color: gray;
+}
+
+mat-header-row mat-header-cell:nth-child(3), mat-header-row mat-header-cell:nth-child(5),
+mat-row mat-cell:nth-child(3), mat-row mat-cell:nth-child(5) {
+    max-width: 8%;
+}
+
+mat-header-row mat-header-cell:nth-child(4), mat-row mat-cell:nth-child(4) {
+    max-width: 10%;
+}
+
+.marginBottomPaper {
+    margin-bottom: 7.2%;
 }

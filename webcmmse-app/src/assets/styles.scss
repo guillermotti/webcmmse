@@ -40,7 +40,7 @@ body {
 }
 
 footer {
-    position: relative;
+    position: relative !important;
     left: 0;
     bottom: 0;
     width: 100%;
@@ -67,22 +67,27 @@ footer {
     width: 100%;
 }
 
-mat-form-field.column4 {
+.column3 {
+    width: 24%;
+    padding-right: 3%;
+}
+
+.column4 {
     width: 32%;
     padding-right: 3%;
 }
 
-mat-form-field.column6 {
+.column6 {
     width: 48.25%;
     padding-right: 3%;
 }
 
-mat-form-field.column8 {
+.column8 {
     width: 64.5%;
     padding-right: 3%;
 }
 
-mat-form-field.column12 {
+.column12 {
     width: 100%;
     padding-right: 3%;
 }
@@ -135,3 +140,23 @@ mat-form-field.column12 {
 snack-bar-container {
     background: green !important;
 }
+
+.uploadInput {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+ }
+
+ mat-cell a {
+    color: #007bff !important;
+    cursor: pointer;
+ }
+
+ .dialog .example-container button.mat-raised-button {
+     margin-left: 20%;
+     margin-bottom: 2%;
+ }
+
+ .dialog mat-chip {
+    margin-top: 5%;
+ }
