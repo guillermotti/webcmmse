@@ -128,5 +128,7 @@
     "_CERTIFICATE_SIGNATURE": "Certificate signature date",
     "_BILL_SPAIN": "Spain invoice number",
     "_BILL_OTHER": "Invoice number for other places",
-    "_CONFIG_UPDATED_SUCCESFULLY": "Configuration updated succesfully"
+    "_CONFIG_UPDATED_SUCCESFULLY": "Configuration updated succesfully",
+    "_DELETE_USER_INFO": "Are you sure to delete this user?",
+    "_USER_DELETED_SUCCESFULLY": "User deleted succesfully"
 }

@@ -128,5 +128,7 @@
     "_CERTIFICATE_SIGNATURE": "Fecha de firma de los certificados",
     "_BILL_SPAIN": "Número facturas España",
     "_BILL_OTHER": "Número facturas resto de países",
-    "_CONFIG_UPDATED_SUCCESFULLY": "Configuración actualizada satisfactoriamente"
+    "_CONFIG_UPDATED_SUCCESFULLY": "Configuración actualizada satisfactoriamente",
+    "_DELETE_USER_INFO": "¿Está seguro de eliminar este usuario?",
+    "_USER_DELETED_SUCCESFULLY": "Usuario eliminado correctamente"
 }
