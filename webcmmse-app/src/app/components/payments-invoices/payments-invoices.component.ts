@@ -63,7 +63,7 @@ export class PaymentsInvoicesComponent implements OnInit {
   ngOnInit() {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     if (_.isNil(user)) {
-      window.location.href = window.location.href.split('user')[0] + 'login';
+      window.location.href = window.location.href.split('payments-invoices')[0] + 'login';
     } else {
       this.form.title = user.title;
       this.form.address = user.address;
@@ -107,7 +107,7 @@ export class PaymentsInvoicesComponent implements OnInit {
       this.fileURL = url;
       const data = { 'payment_file': { 'id_file': id, 'name_file': this.fileName, 'url_file': url } };
       this.firebaseService.updateItemFromCollection('users', user.id, data).then(() => {
-        this.firebaseService.getItemFromCollection(user.email, 'users').subscribe(response => {
+        this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
           window.sessionStorage.setItem('user', JSON.stringify(response[0]));
         });
         this.translationService.get('_FILE_UPLOADED_SUCCESFULLY').subscribe(resp => {
@@ -144,7 +144,7 @@ export class PaymentsInvoicesComponent implements OnInit {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     const billData = { 'bill': this.billForm };
     this.firebaseService.updateItemFromCollection('users', user.id, billData).then(() => {
-      this.firebaseService.getItemFromCollection(user.email, 'users').subscribe(response => {
+      this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
       });
       this.translationService.get('_INVOICE_DATA').subscribe(translate => {

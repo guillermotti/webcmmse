@@ -61,11 +61,17 @@ import { LostPasswordComponent } from './components/lost-password/lost-password.
 import { UserHomeComponent, ChangePasswordDialogComponent } from './components/user-home/user-home.component';
 import { PaymentsInvoicesComponent } from './components/payments-invoices/payments-invoices.component';
 import { PaperComponent, EditPaperDialogComponent, ConfirmDeleteDialogComponent } from './components/paper/paper.component';
+import {
+  UsersAdminComponent,
+  EditUserDialogComponent,
+  ConfirmDeleteUserDialogComponent
+} from './components/users-admin/users-admin.component';
 
 import { environment } from '../environments/environment';
 
 import { FirebaseCallerService } from './services/firebase-caller.service';
 import { CryptoService } from './services/crypto.service';
+import { ConfigurationComponent } from './components/configuration/configuration.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -88,6 +94,8 @@ const appRoutes: Routes = [
   { path: 'user', component: UserHomeComponent },
   { path: 'payments-invoices', component: PaymentsInvoicesComponent },
   { path: 'paper', component: PaperComponent },
+  { path: 'users-admin', component: UsersAdminComponent },
+  { path: 'configuration-admin', component: ConfigurationComponent },
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   { path: '**', redirectTo: 'index', pathMatch: 'full' }
 ];
@@ -145,7 +153,11 @@ export class MaterialModule { }
     ConfirmDeleteDialogComponent,
     UserHomeComponent,
     PaymentsInvoicesComponent,
-    PaperComponent
+    PaperComponent,
+    UsersAdminComponent,
+    EditUserDialogComponent,
+    ConfirmDeleteUserDialogComponent,
+    ConfigurationComponent
   ],
   imports: [
     BrowserModule,
@@ -186,7 +198,11 @@ export class MaterialModule { }
     ConfirmDeleteDialogComponent,
     UserHomeComponent,
     PaymentsInvoicesComponent,
-    PaperComponent
+    PaperComponent,
+    UsersAdminComponent,
+    EditUserDialogComponent,
+    ConfirmDeleteUserDialogComponent,
+    ConfigurationComponent
   ],
   providers: [
     FirebaseCallerService,

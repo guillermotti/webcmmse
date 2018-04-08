@@ -83,7 +83,8 @@ export class RegistrationComponent implements OnInit {
       postal_code: this.form.postalCode,
       state: this.form.state,
       title: this.form.title,
-      university_company: this.form.universityCompany
+      university_company: this.form.universityCompany,
+      check_payment: false
     };
     this.firebaseCaller.addItemToCollection('users', user).then(() => {
       this.translationService.get('_REGISTER_SUCCESFUL').subscribe(response => {

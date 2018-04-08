@@ -69,7 +69,7 @@ export class PaperComponent implements OnInit, AfterViewInit {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     const storage = this.storage;
     if (_.isNil(user)) {
-      window.location.href = window.location.href.split('user')[0] + 'login';
+      window.location.href = window.location.href.split('paper')[0] + 'login';
     } else {
       // Update table of papers
       const papers = _.remove(user.papers, function (n) {
@@ -82,7 +82,7 @@ export class PaperComponent implements OnInit, AfterViewInit {
       });
       user.papers = papers;
       this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-        this.firebaseService.getItemFromCollection(user.email, 'users').subscribe(response => {
+        this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
           window.sessionStorage.setItem('user', JSON.stringify(response[0]));
         });
       });
@@ -140,7 +140,7 @@ export class PaperComponent implements OnInit, AfterViewInit {
         papers = { 'papers': [{ 'id_file': id, 'name_file': this.fileName, 'url_file': url }] };
       }
       this.firebaseService.updateItemFromCollection('users', user.id, papers).then(() => {
-        this.firebaseService.getItemFromCollection(user.email, 'users').subscribe(response => {
+        this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
           window.sessionStorage.setItem('user', JSON.stringify(response[0]));
         });
         this.translationService.get('_FILE_UPLOADED_SUCCESFULLY').subscribe(resp => {
@@ -181,7 +181,7 @@ export class PaperComponent implements OnInit, AfterViewInit {
     this.paper.authors = this.authors;
     user.papers[user.papers.length - 1] = _.merge(user.papers[user.papers.length - 1], this.paper);
     this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-      this.firebaseService.getItemFromCollection(user.email, 'users').subscribe(response => {
+      this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
       });
       this.translationService.get('_PAPER_DATA').subscribe(translate => {
@@ -333,7 +333,7 @@ export class EditPaperDialogComponent {
       }
     });
     this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-      this.firebaseService.getItemFromCollection(user.email, 'users').subscribe(response => {
+      this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
       });
       this.translationService.get('_PAPER_UPDATED_SUCCESFULLY').subscribe(resp => {
@@ -424,7 +424,7 @@ export class ConfirmDeleteDialogComponent {
     });
     user.papers = papers;
     this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-      this.firebaseService.getItemFromCollection(user.email, 'users').subscribe(response => {
+      this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
       });
       this.translationService.get('_PAPER_DELETED_SUCCESFULLY').subscribe(resp => {

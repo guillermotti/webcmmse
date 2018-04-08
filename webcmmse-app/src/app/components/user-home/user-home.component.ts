@@ -47,7 +47,7 @@ export class UserHomeComponent implements OnInit {
     if (_.isNil(user)) {
       window.location.href = window.location.href.split('user')[0] + 'login';
     } else {
-      this.firebaseService.getItemFromCollection(user.email, 'users').subscribe(response => {
+      this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
         this.form.title = response[0].title;
         this.form.address = response[0].address;
@@ -144,7 +144,7 @@ export class ChangePasswordDialogComponent implements OnDestroy {
       const passwordChanged = this.cryptoService.encrypt(this.newPassword);
       user.password = passwordChanged;
       this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-        this.subscription = this.firebaseService.getItemFromCollection(user.email, 'users').subscribe(response => {
+        this.subscription = this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
           window.sessionStorage.setItem('user', JSON.stringify(response[0]));
           this.translateService.get('_PASSWORD_CHANGED').subscribe(translate => {
             this.snackBar.open(translate, null, {
