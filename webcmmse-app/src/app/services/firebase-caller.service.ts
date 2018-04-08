@@ -12,8 +12,12 @@ export class FirebaseCallerService {
     return this.db.collection(collection).valueChanges();
   }
 
-  public getItemFromCollection(item, collection): Observable<any[]> {
-    return this.db.collection(collection, ref => ref.where('email', '==', item)).valueChanges();
+  public getUserFromCollection(userEmail, collection): Observable<any[]> {
+    return this.db.collection(collection, ref => ref.where('email', '==', userEmail)).valueChanges();
+  }
+
+  public getItemFromCollection(id, collection): Observable<any[]> {
+    return this.db.collection(collection, ref => ref.where('id', '==', id)).valueChanges();
   }
 
   public addItemToCollection(collection, item): any {
@@ -32,8 +36,8 @@ export class FirebaseCallerService {
      return this.db.collection(collection).doc(id).update(data);
   }
 
-  public deleteItemFromCollection(collection, id) {
-    this.db.collection(collection).doc(id).delete();
+  public deleteItemFromCollection(collection, id): any {
+    return this.db.collection(collection).doc(id).delete();
   }
 
 }

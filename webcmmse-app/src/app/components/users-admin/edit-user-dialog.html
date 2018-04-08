@@ -1,0 +1,161 @@
+<div class="dialog">
+    <div class="crossIcon">
+        <a (click)="onCloseClick()">
+            <i class="fas fa-times"></i>
+        </a>
+    </div>
+    <h1 mat-dialog-title>{{ '_EDIT_USER' | translate }}</h1>
+    <div mat-dialog-content>
+        <div class="row">
+            <p class="col-sm-12 col-xs-12">
+                <strong>{{'_USER_INFO' | translate}}</strong>
+            </p>
+            <mat-form-field class="col-sm-6 col-xs-12">
+                <mat-select placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="data.user.title" [disabled]="fieldsDisabled" required>
+                    <mat-option *ngFor="let title of titles" [(value)]="title.value">
+                        {{ title.value | translate }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field class="col-sm-6 col-xs-12">
+                <input matInput #input placeholder="{{ '_NAME' | translate}}" [(ngModel)]="data.user.first_name" [disabled]="fieldsDisabled"
+                    required>
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-sm-6 col-xs-12">
+                <input matInput #input placeholder="{{ '_LAST_NAME' | translate}}" [(ngModel)]="data.user.last_name" [disabled]="fieldsDisabled"
+                    required>
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field class="col-sm-8 col-xs-12">
+                <input matInput #input placeholder="{{ '_ADDRESS' | translate}}" [(ngModel)]="data.user.address" [disabled]="fieldsDisabled">
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-sm-4 col-xs-12">
+                <input matInput #input placeholder="{{ '_CITY' | translate}}" [(ngModel)]="data.user.city" [disabled]="fieldsDisabled">
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field class="col-sm-6 col-xs-12">
+                <input matInput #input placeholder="{{ '_STATE' | translate}}" [(ngModel)]="data.user.state" [disabled]="fieldsDisabled">
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-sm-6 col-xs-12">
+                <input matInput #input placeholder="{{ '_POSTAL_CODE' | translate}}" [(ngModel)]="data.user.postal_code" [disabled]="fieldsDisabled">
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field class="col-sm-6 col-xs-12">
+                <mat-select placeholder="{{ '_COUNTRY' | translate}}" [(ngModel)]="data.user.country" [disabled]="fieldsDisabled" required>
+                    <mat-option *ngFor="let country of countries" [(value)]="country.value">
+                        {{ country.value | translate }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-sm-6 col-xs-12">
+                <input matInput #input placeholder="{{ '_PHONE' | translate}}" [(ngModel)]="data.user.phone" [disabled]="fieldsDisabled">
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field class="col-sm-6 col-xs-12">
+                <input matInput #input placeholder="{{ '_UNIVERSITY' | translate}}" [(ngModel)]="data.user.university_company" [disabled]="fieldsDisabled"
+                    required>
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-sm-6 col-xs-12">
+                <input matInput #input placeholder="{{ '_EMAIL' | translate}}" [(ngModel)]="data.user.email" [disabled]="fieldsDisabled"
+                    type="email" email required>
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_WRONG_EMAIL' | translate }}</mat-error>
+            </mat-form-field>
+        </div>
+        <hr>
+        <ng-container *ngIf="data.user.payment_file">
+            <div class="row paymentUserAdmin">
+                <p class="col-sm-3 col-xs-5">
+                    <strong>{{'_PAYMENT_FILE' | translate}}</strong>
+                </p>
+                <a class="col-sm-3 col-xs-2" href="{{ data.user.payment_file.url_file }}" target="_blank">
+                    <i class="far fa-file"></i>
+                </a>
+                <mat-checkbox class="col-sm-6 col-xs-5" [(ngModel)]="data.user.check_payment" [disabled]="fieldsDisabled">
+                    &nbsp;{{ '_VALID_PAYMENT' | translate }}
+                </mat-checkbox>
+            </div>
+            <hr>
+        </ng-container>
+        <ng-container *ngIf="data.user.bill">
+            <div class="row">
+                <p class="col-sm-12 col-xs-12">
+                    <strong>{{'_BILL_INFO' | translate}}</strong>
+                </p>
+                <mat-form-field class="col-sm-6 col-xs-12">
+                    <mat-select placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="data.user.bill.title" [disabled]="fieldsDisabled">
+                        <mat-option *ngFor="let title of titles" [(value)]="title.value">
+                            {{ title.value | translate }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-sm-6 col-xs-12">
+                    <input matInput #input placeholder="{{ '_NAME' | translate}}" [(ngModel)]="data.user.bill.first_name" [disabled]="fieldsDisabled">
+                    <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-sm-6 col-xs-12">
+                    <input matInput #input placeholder="{{ '_LAST_NAME' | translate}}" [(ngModel)]="data.user.bill.last_name" [disabled]="fieldsDisabled">
+                    <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-sm-6 col-xs-12">
+                    <input matInput #input placeholder="{{ '_ADDRESS' | translate}}" [(ngModel)]="data.user.bill.address" [disabled]="fieldsDisabled">
+                    <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-sm-6 col-xs-12">
+                    <input matInput #input placeholder="{{ '_UNIVERSITY' | translate}}" [(ngModel)]="data.user.bill.university_company" [disabled]="fieldsDisabled">
+                    <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-sm-6 col-xs-12">
+                    <input matInput #input placeholder="{{ '_CIF' | translate}}" [(ngModel)]="data.user.bill.CIF" [disabled]="fieldsDisabled">
+                    <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+                </mat-form-field>
+            </div>
+            <hr>
+        </ng-container>
+        <ng-container *ngIf="data.user.papers && data.user.papers.length > 0">
+            <div class="row">
+                <p class="col-sm-12 col-xs-12">
+                    <strong>{{'_PAPERS' | translate}}</strong>
+                </p>
+            </div>
+            <ng-container *ngFor="let paper of data.user.papers">
+                <div class="row">
+                    <mat-form-field class="col-sm-5 col-xs-12">
+                        <mat-select placeholder="{{ '_MINISYMPOSIUM' | translate}}" [(ngModel)]="paper.minisymposium" [disabled]="fieldsDisabled">
+                            <mat-option *ngFor="let minisymposium of minisymposiums" [(value)]="minisymposium.value">
+                                {{ minisymposium.value | translate }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-5 col-xs-6">
+                        <input matInput #input placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="paper.title" [disabled]="fieldsDisabled">
+                        <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+                    </mat-form-field>
+                    <a class="col-sm-2 col-xs-6" href="{{ paper.url_file }}" target="_blank">
+                        <i class="far fa-file"></i>
+                    </a>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="{{colorChange}}" (click)="onSaveClick(data.user)" [disabled]="submitDialogDisabled(data.user)">{{edit | translate}}</button>
+    </div>
+</div>

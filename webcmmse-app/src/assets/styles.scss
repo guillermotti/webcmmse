@@ -40,7 +40,7 @@ body {
 }
 
 footer {
-    position: relative !important;
+    position: relative;
     left: 0;
     bottom: 0;
     width: 100%;
@@ -97,7 +97,7 @@ footer {
 }
 
 .loginSection {
-    padding-bottom: 19%;
+    padding-bottom: 10%;
 }
 
 .recoverSection {
@@ -129,9 +129,11 @@ footer {
 .crossIcon {
     text-align: right;
     width: 100%;
+
     a {
         cursor: pointer;
     }
+
     i {
         position: absolute;
     }
@@ -145,18 +147,26 @@ snack-bar-container {
     opacity: 0;
     position: absolute;
     z-index: -1;
- }
+}
 
- mat-cell a {
+mat-cell a {
     color: #007bff !important;
     cursor: pointer;
- }
+}
 
- .dialog .example-container button.mat-raised-button {
-     margin-left: 20%;
-     margin-bottom: 2%;
- }
+.dialog .example-container button.mat-raised-button {
+    margin-left: 20%;
+    margin-bottom: 2%;
+}
 
- .dialog mat-chip {
+.dialog mat-chip {
     margin-top: 5%;
- }
+}
+
+.paymentUserAdmin {
+    padding-top: 2%;
+}
+
+a:focus {
+    outline: none;
+}

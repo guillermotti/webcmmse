@@ -1,0 +1,16 @@
+@media (min-width: 992px) {
+    ul {
+        width: 100%;
+
+        li:nth-child(8) {
+            width: 25%;
+            text-align: right;
+        }
+
+        text-align: center;
+    }
+}
+
+.marginBottomConfig {
+    margin-bottom: 10%;
+}
