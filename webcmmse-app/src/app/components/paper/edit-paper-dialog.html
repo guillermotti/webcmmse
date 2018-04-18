@@ -21,12 +21,52 @@
         <mat-checkbox [(ngModel)]="data.paper.poster">
             &nbsp;{{ '_POSTER' | translate }}
         </mat-checkbox>
+        <hr>
+        <div class="container">
+            <div class="example-container row">
+                <div class="column3 text-center">
+                    <mat-chip class="chipPaper">{{ '_PAPER' | translate }}</mat-chip>
+                </div>
+                <div class="column3 buttonSelectFile">
+                    <button mat-raised-button color="primary" (click)="fileInput.click()">{{ '_SELECT_FILE' | translate }}</button>
+                </div>
+                <div class="column3 col-sm-4">
+                    <mat-chip-list>
+                        <mat-chip (remove)="removePaper()">
+                            <div *ngIf="fileURL">
+                                <a (click)="openTabTo(fileURL)" [href]="fileURL">{{ fileName | translate }} </a>
+                            </div>
+                            <div *ngIf="!fileURL">
+                                {{ fileName | translate }}
+                            </div>
+                            <mat-icon *ngIf="fileURL" matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+                </div>
+                <div class="col-xs-6 col-sm-4">
+                    <!-- <input accept=".png,.jpg" /> -->
+                    <input #fileInput type="file" (change)="upload($event)" class="uploadInput" />
+                </div>
+            </div>
+            <br>
+            <div *ngIf="uploadState | async" class="progress">
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadProgress | async) + '%'"
+                    [attr.aria-valuenow]="(uploadProgress | async)" aria-valuemin="0" aria-valuemax="100">
+                    {{ progressBarValue }}</div>
+            </div>
+            <br>
+        </div>
         <ng-container *ngFor="let author of data.paper.authors; index as i">
             <hr>
             <div class="container">
                 <div class="example-container row">
                     <div class="column6 text-center">
-                        <mat-chip class="chipAuthor">{{ '_AUTHOR' | translate }} {{ i+1 }}</mat-chip>
+                        <ng-container *ngIf="i === 0">
+                            <mat-chip class="chipAuthor">{{ '_CORRESPONDING_AUTHOR' | translate }}</mat-chip>
+                        </ng-container>
+                        <ng-container *ngIf="i !== 0">
+                            <mat-chip class="chipAuthor">{{ '_AUTHOR' | translate }}</mat-chip>
+                        </ng-container>
                     </div>
                     <mat-form-field class="column6">
                         <input matInput #input placeholder="{{ '_NAME' | translate}}" [(ngModel)]="author.first_name" required>

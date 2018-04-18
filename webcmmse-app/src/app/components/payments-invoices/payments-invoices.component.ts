@@ -18,8 +18,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class PaymentsInvoicesComponent implements OnInit {
 
-  year = AppConfig.year;
-  urlCMMSE = AppConfig.urlCMMSE;
+  year;
+  urlCMMSE;
   titles = AppConfig.titles;
   form = {
     'first_name': '',
@@ -84,6 +84,10 @@ export class PaymentsInvoicesComponent implements OnInit {
       this.billForm.address = user.bill ? user.bill.address : '';
       this.billForm.university_company = user.bill ? user.bill.university_company : '';
       this.billForm.CIF = user.bill ? user.bill.CIF : '';
+      this.firebaseService.getCollection('config').subscribe(response => {
+        this.year = response[0].conference_year;
+        this.urlCMMSE = response[0].conference_url;
+      });
     }
   }
 
@@ -107,7 +111,7 @@ export class PaymentsInvoicesComponent implements OnInit {
       this.fileURL = url;
       const data = { 'payment_file': { 'id_file': id, 'name_file': this.fileName, 'url_file': url } };
       this.firebaseService.updateItemFromCollection('users', user.id, data).then(() => {
-        this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
+        this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
           window.sessionStorage.setItem('user', JSON.stringify(response[0]));
         });
         this.translationService.get('_FILE_UPLOADED_SUCCESFULLY').subscribe(resp => {
@@ -144,7 +148,7 @@ export class PaymentsInvoicesComponent implements OnInit {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     const billData = { 'bill': this.billForm };
     this.firebaseService.updateItemFromCollection('users', user.id, billData).then(() => {
-      this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
+      this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
       });
       this.translationService.get('_INVOICE_DATA').subscribe(translate => {

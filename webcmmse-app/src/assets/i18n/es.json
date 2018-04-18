@@ -130,5 +130,7 @@
     "_BILL_OTHER": "Número facturas resto de países",
     "_CONFIG_UPDATED_SUCCESFULLY": "Configuración actualizada satisfactoriamente",
     "_DELETE_USER_INFO": "¿Está seguro de eliminar este usuario?",
-    "_USER_DELETED_SUCCESFULLY": "Usuario eliminado correctamente"
+    "_USER_DELETED_SUCCESFULLY": "Usuario eliminado correctamente",
+    "_CORRESPONDING_AUTHOR": "Autor principal",
+    "_UPLOADED": "Subido"
 }

@@ -17,8 +17,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private subscription: ISubscription;
 
-  year = AppConfig.year;
-  urlCMMSE = AppConfig.urlCMMSE;
+  year;
+  urlCMMSE;
   hide = true;
   user = '';
   password = '';
@@ -34,6 +34,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.rootPass = response[0].root_password;
       this.rootUser = response[0].root_user;
       this.cmmseOpened = response[0].cmmse_opened;
+      this.year = response[0].conference_year;
+      this.urlCMMSE = response[0].conference_url;
     });
   }
 
@@ -50,7 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.router.navigate(['users-admin']);
     } else {
       if (this.cmmseOpened) {
-        this.subscription = this.firebaseCaller.getUserFromCollection(this.user, 'users').subscribe(response => {
+        this.subscription = this.firebaseCaller.getUserFromCollection(this.user).subscribe(response => {
           if (!_.isEmpty(response) && this.crytoService.decrypt(response[0].password) === this.password) {
             window.sessionStorage.setItem('user', JSON.stringify(response[0]));
             this.router.navigate(['user']);

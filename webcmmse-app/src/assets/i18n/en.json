@@ -130,5 +130,7 @@
     "_BILL_OTHER": "Invoice number for other places",
     "_CONFIG_UPDATED_SUCCESFULLY": "Configuration updated succesfully",
     "_DELETE_USER_INFO": "Are you sure to delete this user?",
-    "_USER_DELETED_SUCCESFULLY": "User deleted succesfully"
+    "_USER_DELETED_SUCCESFULLY": "User deleted succesfully",
+    "_CORRESPONDING_AUTHOR": "Corresponding author",
+    "_UPLOADED": "Uploaded"
 }

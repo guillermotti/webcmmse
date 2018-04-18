@@ -12,8 +12,8 @@ export class FirebaseCallerService {
     return this.db.collection(collection).valueChanges();
   }
 
-  public getUserFromCollection(userEmail, collection): Observable<any[]> {
-    return this.db.collection(collection, ref => ref.where('email', '==', userEmail)).valueChanges();
+  public getUserFromCollection(userEmail): Observable<any[]> {
+    return this.db.collection('users', ref => ref.where('email', '==', userEmail)).valueChanges();
   }
 
   public getItemFromCollection(id, collection): Observable<any[]> {

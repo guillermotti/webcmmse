@@ -15,8 +15,8 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class UsersAdminComponent implements OnInit, AfterViewInit {
 
-  year = AppConfig.year;
-  urlCMMSE = AppConfig.urlCMMSE;
+  year;
+  urlCMMSE;
   email;
 
   // Table purposes
@@ -45,6 +45,10 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
         this.users.sort = this.sort;
       });
       this.email = user.user;
+      this.firebaseService.getCollection('config').subscribe(response => {
+        this.year = response[0].conference_year;
+        this.urlCMMSE = response[0].conference_url;
+      });
     }
   }
 
@@ -107,7 +111,7 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
   selector: 'app-edit-user-dialog',
   templateUrl: 'edit-user-dialog.html',
 })
-export class EditUserDialogComponent {
+export class EditUserDialogComponent implements OnInit {
 
   formControl = new FormControl('', [Validators.required]);
   edit = '_EDIT';
@@ -115,11 +119,25 @@ export class EditUserDialogComponent {
   fieldsDisabled = true;
   titles = AppConfig.titles;
   countries = AppConfig.countries;
-  minisymposiums = AppConfig.minisymposiums;
+  minisymposiums = [];
 
   constructor(
     public dialogRef: MatDialogRef<EditUserDialogComponent>, private translationService: TranslateService, public snackBar: MatSnackBar,
     private firebaseService: FirebaseCallerService, @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  ngOnInit() {
+    this.firebaseService.getCollection('conferences').subscribe(response => {
+      const values = [];
+      const sortedValues = [];
+      response.forEach(item => { // Taking values from response to sort them
+        values.push(item.value);
+      });
+      values.sort().forEach(item => { // Sorting values and retorning to array
+        sortedValues.push({ value: item });
+      });
+      this.minisymposiums = sortedValues;
+    });
+  }
 
   onCloseClick(): void {
     this.dialogRef.close();

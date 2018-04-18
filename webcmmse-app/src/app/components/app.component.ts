@@ -7,11 +7,7 @@ import { Router, NavigationEnd } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  // Esto debe ser configurable en un app.conf
-  date = new Date();
-  year = this.date.getFullYear();
-  urlCMMSE = 'http://cmmse.usal.es/cmmse2018/';
-
+  year = new Date().getFullYear();
   constructor(private router: Router) { }
 
     ngOnInit() {

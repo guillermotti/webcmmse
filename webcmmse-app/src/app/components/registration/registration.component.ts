@@ -13,8 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class RegistrationComponent implements OnInit {
 
-  year = AppConfig.year;
-  urlCMMSE = AppConfig.urlCMMSE;
+  year;
+  urlCMMSE;
   hide = true;
   hide2 = true;
   form = {
@@ -43,11 +43,14 @@ export class RegistrationComponent implements OnInit {
   countries = AppConfig.countries;
 
   constructor(public dialog: MatDialog, public snackBar: MatSnackBar,
-    private firebaseCaller: FirebaseCallerService, private crytoService: CryptoService,
+    private firebaseService: FirebaseCallerService, private crytoService: CryptoService,
     private translationService: TranslateService) { }
 
   ngOnInit() {
-
+    this.firebaseService.getCollection('config').subscribe(response => {
+      this.year = response[0].conference_year;
+      this.urlCMMSE = response[0].conference_url;
+    });
   }
 
   isFormValid() {
@@ -86,7 +89,7 @@ export class RegistrationComponent implements OnInit {
       university_company: this.form.universityCompany,
       check_payment: false
     };
-    this.firebaseCaller.addItemToCollection('users', user).then(() => {
+    this.firebaseService.addItemToCollection('users', user).then(() => {
       this.translationService.get('_REGISTER_SUCCESFUL').subscribe(response => {
         this.snackBar.open(response, null, {
           duration: 2000,

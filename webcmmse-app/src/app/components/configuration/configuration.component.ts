@@ -16,8 +16,8 @@ import { CryptoService } from '../../services/crypto.service';
 })
 export class ConfigurationComponent implements OnInit {
 
-  year = AppConfig.year;
-  urlCMMSE = AppConfig.urlCMMSE;
+  year;
+  urlCMMSE;
   user;
   config = {
     cmmse_opened: '',
@@ -60,6 +60,8 @@ export class ConfigurationComponent implements OnInit {
         this.config = response[0];
         window.sessionStorage.setItem('config', JSON.stringify(this.config));
         this.rootPassword = this.crytoService.decrypt(response[0].root_password);
+        this.year = response[0].conference_year;
+        this.urlCMMSE = response[0].conference_url;
         const open = response[0].cmmse_opened ? '_OPENED' : '_CLOSED';
         const termOpen = response[0].send_term_opened ? '_OPENED' : '_CLOSED';
         this.translationService.get(open).subscribe(resp => {

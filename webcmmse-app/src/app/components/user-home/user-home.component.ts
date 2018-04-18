@@ -15,8 +15,8 @@ import { ISubscription } from 'rxjs/Subscription';
 })
 export class UserHomeComponent implements OnInit {
 
-  year = AppConfig.year;
-  urlCMMSE = AppConfig.urlCMMSE;
+  year;
+  urlCMMSE;
   form = {
     'first_name': '',
     'last_name': '',
@@ -47,7 +47,7 @@ export class UserHomeComponent implements OnInit {
     if (_.isNil(user)) {
       window.location.href = window.location.href.split('user')[0] + 'login';
     } else {
-      this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
+      this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
         this.form.title = response[0].title;
         this.form.address = response[0].address;
@@ -60,6 +60,10 @@ export class UserHomeComponent implements OnInit {
         this.form.state = response[0].state;
         this.form.university_company = response[0].university_company;
         this.email = response[0].email;
+      });
+      this.firebaseService.getCollection('config').subscribe(response => {
+        this.year = response[0].conference_year;
+        this.urlCMMSE = response[0].conference_url;
       });
     }
   }
@@ -144,7 +148,7 @@ export class ChangePasswordDialogComponent implements OnDestroy {
       const passwordChanged = this.cryptoService.encrypt(this.newPassword);
       user.password = passwordChanged;
       this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-        this.subscription = this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
+        this.subscription = this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
           window.sessionStorage.setItem('user', JSON.stringify(response[0]));
           this.translateService.get('_PASSWORD_CHANGED').subscribe(translate => {
             this.snackBar.open(translate, null, {
