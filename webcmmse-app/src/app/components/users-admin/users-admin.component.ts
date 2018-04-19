@@ -15,17 +15,13 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class UsersAdminComponent implements OnInit, AfterViewInit {
 
-  year;
-  urlCMMSE;
-  email;
+  year; urlCMMSE; email;
 
   // Table purposes
   displayedColumns = ['first_name', 'last_name', 'email', 'university_company', 'country', 'actions'];
   users: MatTableDataSource<any>;
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
 
   constructor(private storage: AngularFireStorage, private firebaseService: FirebaseCallerService, public dialog: MatDialog,
     private translationService: TranslateService, public snackBar: MatSnackBar, private router: Router) {

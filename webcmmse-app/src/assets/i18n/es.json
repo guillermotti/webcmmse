@@ -128,9 +128,18 @@
     "_CERTIFICATE_SIGNATURE": "Fecha de firma de los certificados",
     "_BILL_SPAIN": "Número facturas España",
     "_BILL_OTHER": "Número facturas resto de países",
-    "_CONFIG_UPDATED_SUCCESFULLY": "Configuración actualizada satisfactoriamente",
+    "_CONFIG_UPDATED_SUCCESFULLY": "Configuración actualizada correctamente",
     "_DELETE_USER_INFO": "¿Está seguro de eliminar este usuario?",
     "_USER_DELETED_SUCCESFULLY": "Usuario eliminado correctamente",
     "_CORRESPONDING_AUTHOR": "Autor principal",
-    "_UPLOADED": "Subido"
+    "_UPLOADED": "Subido",
+    "_SOCIAL_EVENTS": "Eventos sociales",
+    "_POSTERS": "Posters",
+    "_NEW_CONFERENCE": "Nueva conferencia",
+    "_ADD_CONFERENCE": "Añadir conferencia",
+    "_EDIT_CONFERENCE": "Editar conferencia",
+    "_DELETE_CONFERENCE_INFO": "Borrar conferencia",
+    "_CONFERENCE_ADDED_SUCCESFULLY": "Conferencia añadida correctamente",
+    "_CONFERENCE_ALREADY_EXISTS": "Ya existe una conferencia con este nombre",
+    "_CONFERENCE_DELETED_SUCCESFULLY": "Conferencia eliminada correctamente"
 }

@@ -72,6 +72,11 @@ import { environment } from '../environments/environment';
 import { FirebaseCallerService } from './services/firebase-caller.service';
 import { CryptoService } from './services/crypto.service';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
+import {
+  ConferencesAdminComponent,
+  EditConferenceDialogComponent,
+  ConfirmDeleteConferenceDialogComponent
+} from './components/conferences-admin/conferences-admin.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -96,6 +101,7 @@ const appRoutes: Routes = [
   { path: 'paper', component: PaperComponent },
   { path: 'users-admin', component: UsersAdminComponent },
   { path: 'configuration-admin', component: ConfigurationComponent },
+  { path: 'conferences-admin', component: ConferencesAdminComponent },
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   { path: '**', redirectTo: 'index', pathMatch: 'full' }
 ];
@@ -157,7 +163,10 @@ export class MaterialModule { }
     UsersAdminComponent,
     EditUserDialogComponent,
     ConfirmDeleteUserDialogComponent,
-    ConfigurationComponent
+    ConfigurationComponent,
+    ConferencesAdminComponent,
+    EditConferenceDialogComponent,
+    ConfirmDeleteConferenceDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -202,7 +211,10 @@ export class MaterialModule { }
     UsersAdminComponent,
     EditUserDialogComponent,
     ConfirmDeleteUserDialogComponent,
-    ConfigurationComponent
+    ConfigurationComponent,
+    ConferencesAdminComponent,
+    EditConferenceDialogComponent,
+    ConfirmDeleteConferenceDialogComponent
   ],
   providers: [
     FirebaseCallerService,
