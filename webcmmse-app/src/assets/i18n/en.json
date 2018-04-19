@@ -128,5 +128,18 @@
     "_CERTIFICATE_SIGNATURE": "Certificate signature date",
     "_BILL_SPAIN": "Spain invoice number",
     "_BILL_OTHER": "Invoice number for other places",
-    "_CONFIG_UPDATED_SUCCESFULLY": "Configuration updated succesfully"
+    "_CONFIG_UPDATED_SUCCESFULLY": "Configuration updated succesfully",
+    "_DELETE_USER_INFO": "Are you sure to delete this user?",
+    "_USER_DELETED_SUCCESFULLY": "User deleted succesfully",
+    "_CORRESPONDING_AUTHOR": "Corresponding author",
+    "_UPLOADED": "Uploaded",
+    "_SOCIAL_EVENTS": "Social events",
+    "_POSTERS": "Posters",
+    "_NEW_CONFERENCE": "New conference",
+    "_ADD_CONFERENCE": "Add conference",
+    "_EDIT_CONFERENCE": "Edit conference",
+    "_DELETE_CONFERENCE_INFO": "Delete conference",
+    "_CONFERENCE_ADDED_SUCCESFULLY": "Conference added succesfully",
+    "_CONFERENCE_ALREADY_EXISTS": "Conference already exists",
+    "_CONFERENCE_DELETED_SUCCESFULLY": "Conference deleted succesfully"
 }

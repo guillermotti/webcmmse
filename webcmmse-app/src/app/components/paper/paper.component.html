@@ -80,9 +80,11 @@
               <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_FILE' | translate }} </mat-header-cell>
               <mat-cell *matCellDef="let row">
                 &nbsp;
-                <a href="{{ row.url_file }}" target="_blank">
-                  <i class="far fa-file"></i>
-                </a>
+                <ng-container *ngIf=" row.url_file !== ''">
+                  <a href="{{ row.url_file }}" target="_blank">
+                    <i class="far fa-file"></i>
+                  </a>
+                </ng-container>
               </mat-cell>
             </ng-container>
 
@@ -189,7 +191,12 @@
       <div class="container">
         <div class="example-container row">
           <div class="column3 text-center">
-            <mat-chip class="chipAuthor">{{ '_AUTHOR' | translate }} {{ i+1 }}</mat-chip>
+            <ng-container *ngIf="i === 0">
+              <mat-chip class="chipAuthor">{{ '_CORRESPONDING_AUTHOR' | translate }}</mat-chip>
+            </ng-container>
+            <ng-container *ngIf="i !== 0">
+              <mat-chip class="chipAuthor">{{ '_AUTHOR' | translate }}</mat-chip>
+            </ng-container>
           </div>
           <mat-form-field class="column3">
             <input matInput #input placeholder="{{ '_NAME' | translate}}" [(ngModel)]="author.first_name" required>

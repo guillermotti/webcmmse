@@ -20,14 +20,13 @@ import { Router } from '@angular/router';
 })
 export class PaperComponent implements OnInit, AfterViewInit {
 
-  year = AppConfig.year;
-  urlCMMSE = AppConfig.urlCMMSE;
-  minisymposiums = AppConfig.minisymposiums;
+  year; urlCMMSE; email;
+  minisymposiums = [];
   paper = {
     'minisymposium': '',
     'title': '',
     'poster': false,
-    'state': '_REVISION',
+    'state': '_UPLOADED',
     'authors': {}
   };
   authors = [{
@@ -36,14 +35,10 @@ export class PaperComponent implements OnInit, AfterViewInit {
     'last_name': '',
     'email': ''
   }];
-  email;
-
   formControl = new FormControl('', [Validators.required]);
 
   // For upload file
-  fileName;
-  fileURL;
-  progressBarValue;
+  fileName; fileURL; progressBarValue;
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
   uploadState: Observable<string>;
@@ -54,7 +49,6 @@ export class PaperComponent implements OnInit, AfterViewInit {
   // Table purposes
   displayedColumns = ['minisymposium', 'title', 'file', 'state', 'actions'];
   currentPapers: MatTableDataSource<any>;
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -82,7 +76,7 @@ export class PaperComponent implements OnInit, AfterViewInit {
       });
       user.papers = papers;
       this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-        this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
+        this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
           window.sessionStorage.setItem('user', JSON.stringify(response[0]));
         });
       });
@@ -92,6 +86,21 @@ export class PaperComponent implements OnInit, AfterViewInit {
       this.currentPapers = new MatTableDataSource(user.papers);
       this.currentPapers.paginator = this.paginator;
       this.currentPapers.sort = this.sort;
+      this.firebaseService.getCollection('conferences').subscribe(response => {
+        const values = [];
+        const sortedValues = [];
+        response.forEach(item => { // Taking values from response to sort them
+          values.push(item.value);
+        });
+        values.sort().forEach(item => { // Sorting values and retorning to array
+          sortedValues.push({ value: item });
+        });
+        this.minisymposiums = sortedValues;
+      });
+      this.firebaseService.getCollection('config').subscribe(response => {
+        this.year = response[0].conference_year;
+        this.urlCMMSE = response[0].conference_url;
+      });
     }
   }
 
@@ -140,7 +149,7 @@ export class PaperComponent implements OnInit, AfterViewInit {
         papers = { 'papers': [{ 'id_file': id, 'name_file': this.fileName, 'url_file': url }] };
       }
       this.firebaseService.updateItemFromCollection('users', user.id, papers).then(() => {
-        this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
+        this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
           window.sessionStorage.setItem('user', JSON.stringify(response[0]));
         });
         this.translationService.get('_FILE_UPLOADED_SUCCESFULLY').subscribe(resp => {
@@ -181,7 +190,7 @@ export class PaperComponent implements OnInit, AfterViewInit {
     this.paper.authors = this.authors;
     user.papers[user.papers.length - 1] = _.merge(user.papers[user.papers.length - 1], this.paper);
     this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-      this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
+      this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
       });
       this.translationService.get('_PAPER_DATA').subscribe(translate => {
@@ -196,7 +205,7 @@ export class PaperComponent implements OnInit, AfterViewInit {
           'minisymposium': '',
           'title': '',
           'poster': false,
-          'state': '_REVISION',
+          'state': '_UPLOADED',
           'authors': {}
         };
         this.authors = [{
@@ -312,14 +321,105 @@ export class PaperComponent implements OnInit, AfterViewInit {
   selector: 'app-edit-paper-dialog',
   templateUrl: 'edit-paper-dialog.html',
 })
-export class EditPaperDialogComponent {
+export class EditPaperDialogComponent implements OnInit {
 
-  minisymposiums = AppConfig.minisymposiums;
+  minisymposiums = [];
   formControl = new FormControl('', [Validators.required]);
+  // For upload file
+  fileName; fileURL; progressBarValue;
+  ref: AngularFireStorageReference;
+  task: AngularFireUploadTask;
+  uploadState: Observable<string>;
+  uploadProgress: Observable<number>;
+  downloadURL: Observable<string>;
+  @ViewChild('fileInput') myInputVariable: any;
 
   constructor(
     public dialogRef: MatDialogRef<EditPaperDialogComponent>, private translationService: TranslateService, public snackBar: MatSnackBar,
-    private firebaseService: FirebaseCallerService, @Inject(MAT_DIALOG_DATA) public data: any) { }
+    private firebaseService: FirebaseCallerService, @Inject(MAT_DIALOG_DATA) public data: any, private storage: AngularFireStorage) { }
+
+  ngOnInit() {
+    this.firebaseService.getCollection('conferences').subscribe(response => {
+      const values = [];
+      const sortedValues = [];
+      response.forEach(item => { // Taking values from response to sort them
+        values.push(item.value);
+      });
+      values.sort().forEach(item => { // Sorting values and retorning to array
+        sortedValues.push({ value: item });
+      });
+      this.minisymposiums = sortedValues;
+    });
+    this.fileURL = this.data.paper.url_file;
+    this.fileName = this.data.paper.name_file !== '' ? this.data.paper.name_file : '_FILE_NAME';
+  }
+
+  upload(event) {
+    this.fileName = event.target.files[0].name;
+    const user = JSON.parse(window.sessionStorage.getItem('user'));
+    const id = this.data.paper.id_file;
+    this.ref = this.storage.ref(id);
+    this.task = this.storage.upload('/papers/' + id, event.target.files[0]);
+    this.uploadState = this.task.snapshotChanges().pipe(map(s => s.state));
+    this.uploadProgress = this.task.percentageChanges();
+    this.task.percentageChanges().subscribe((value) => {
+      this.progressBarValue = value.toFixed(2).toString() + '%';
+    });
+    this.downloadURL = this.task.downloadURL();
+    this.downloadURL.subscribe(url => {
+      this.fileURL = url;
+      user.papers.forEach((paper, index) => {
+        if (this.data.paper.id_file === paper.id_file) {
+          paper.name_file = this.fileName;
+          this.data.paper.name_file = this.fileName;
+          paper.url_file = url;
+          this.data.url_file = url;
+          user.papers[index] = paper;
+        }
+      });
+      this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
+        this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
+          window.sessionStorage.setItem('user', JSON.stringify(response[0]));
+        });
+        this.translationService.get('_FILE_UPLOADED_SUCCESFULLY').subscribe(resp => {
+          this.snackBar.open(resp, null, {
+            duration: 2000,
+          });
+        });
+      });
+    });
+
+  }
+
+  openTabTo(url) {
+    window.open(url);
+  }
+
+  removePaper() {
+    const user = JSON.parse(window.sessionStorage.getItem('user'));
+    user.papers.forEach((paper, index) => {
+      if (this.data.paper.id_file === paper.id_file) {
+        paper.name_file = '';
+        paper.url_file = '';
+        user.papers[index] = paper;
+        const numberOfPaper = index + 1;
+        const id = 'paper' + user.id + '-' + numberOfPaper;
+        this.storage.ref('/papers/' + id).delete().subscribe(() => {
+          this.translationService.get('_FILE_DELETED_SUCCESFULLY').subscribe(resp => {
+            this.snackBar.open(resp, null, {
+              duration: 2000,
+            });
+          });
+        });
+      }
+    });
+    this.fileURL = null;
+    this.uploadState = null;
+    this.fileName = '_FILE_NAME';
+    this.myInputVariable.nativeElement.value = '';
+    this.firebaseService.updateItemFromCollection('users', user.id, user);
+    window.sessionStorage.setItem('user', JSON.stringify(user));
+  }
 
   onCloseClick(): void {
     this.dialogRef.close();
@@ -333,7 +433,7 @@ export class EditPaperDialogComponent {
       }
     });
     this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-      this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
+      this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
       });
       this.translationService.get('_PAPER_UPDATED_SUCCESFULLY').subscribe(resp => {
@@ -424,7 +524,7 @@ export class ConfirmDeleteDialogComponent {
     });
     user.papers = papers;
     this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-      this.firebaseService.getUserFromCollection(user.email, 'users').subscribe(response => {
+      this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
       });
       this.translationService.get('_PAPER_DELETED_SUCCESFULLY').subscribe(resp => {
