@@ -1,0 +1,116 @@
+<div class="dialog">
+    <div class="crossIcon">
+        <a (click)="onCloseClick()">
+            <i class="fas fa-times"></i>
+        </a>
+    </div>
+    <h1 mat-dialog-title>{{ '_EDIT_PAPER' | translate }}</h1>
+    <div mat-dialog-content>
+        <div class="row">
+            <mat-form-field class="col-sm-12 col-xs-12">
+                <mat-select placeholder="{{ '_MINISYMPOSIUMS' | translate}}" [(ngModel)]="data.paper.minisymposium" required [disabled]="isAllDisabled()">
+                    <mat-option *ngFor="let minisymposium of minisymposiums" [(value)]="minisymposium.value">
+                        {{ minisymposium.value | translate }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-sm-12 col-xs-12">
+                <input matInput #input placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="data.paper.title" required [disabled]="isAllDisabled()">
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-checkbox class="col-sm-12 col-xs-12" [(ngModel)]="data.paper.poster" [disabled]="isAuthorDisabled()">
+                &nbsp;{{ '_POSTER' | translate }}
+            </mat-checkbox>
+        </div>
+        <hr>
+        <div class="container">
+            <div class="example-container row">
+                <div class="col-sm-3 col-xs-3 text-center">
+                    <mat-chip class="chipPaper">{{ '_PAPER' | translate }}</mat-chip>
+                </div>
+                <div class="col-sm-3 col-xs-3 buttonSelectFile">
+                    <button mat-raised-button color="primary" (click)="fileInput.click()" [disabled]="isAllDisabled()">{{ '_SELECT_FILE' | translate }}</button>
+                </div>
+                <div class="col-sm-3 col-xs-3">
+                    <mat-chip-list>
+                        <mat-chip (remove)="removePaper()">
+                            <div *ngIf="fileURL">
+                                <a (click)="openTabTo(fileURL)" [href]="fileURL">{{ fileName | translate }} </a>
+                            </div>
+                            <div *ngIf="!fileURL">
+                                {{ fileName | translate }}
+                            </div>
+                            <mat-icon *ngIf="fileURL && !isAllDisabled()" matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+                </div>
+                <div class="col-sm-0 col-xs-0">
+                    <!-- <input accept=".png,.jpg" /> -->
+                    <input #fileInput type="file" (change)="upload($event)" class="uploadInput" />
+                </div>
+            </div>
+            <br>
+            <div *ngIf="uploadState | async" class="progress">
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadProgress | async) + '%'"
+                    [attr.aria-valuenow]="(uploadProgress | async)" aria-valuemin="0" aria-valuemax="100">
+                    {{ progressBarValue }}</div>
+            </div>
+            <br>
+        </div>
+        <ng-container *ngFor="let author of data.paper.authors; index as i">
+            <hr>
+            <div class="container">
+                <div class="example-container row">
+                    <div class="col-sm-6 col-xs-12 text-center">
+                        <ng-container *ngIf="i === 0">
+                            <mat-chip class="chipAuthor">{{ '_CORRESPONDING_AUTHOR' | translate }}</mat-chip>
+                        </ng-container>
+                        <ng-container *ngIf="i !== 0">
+                            <mat-chip class="chipAuthor">{{ '_AUTHOR' | translate }}</mat-chip>
+                        </ng-container>
+                    </div>
+                    <mat-form-field class="col-sm-6 col-xs-12">
+                        <input matInput #input placeholder="{{ '_NAME' | translate}}" [(ngModel)]="author.first_name" required [disabled]="isAuthorDisabled(i)">
+                        <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="container">
+                <div class="example-container row">
+                    <mat-form-field class="col-sm-6 col-xs-12">
+                        <input matInput #input placeholder="{{ '_LAST_NAME' | translate}}" [(ngModel)]="author.last_name" required [disabled]="isAuthorDisabled(i)">
+                        <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-6 col-xs-12">
+                        <input matInput #input placeholder="{{ '_EMAIL' | translate}}" [(ngModel)]="author.email" required type="email" email [disabled]="isAuthorDisabled(i)">
+                        <mat-error *ngIf="formControl.hasError('required')">{{ '_WRONG_EMAIL' | translate }}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </ng-container>
+        <div class="container">
+            <div class="example-container row">
+                <button mat-raised-button color="basic" (click)=addAuthor() [disabled]="addDisabled() || isAllDisabled()">{{ '_ADD_AUTHOR' | translate }}</button>
+                <button mat-raised-button color="warn" (click)=removeAuthor() [disabled]="removeDisabled() || isAllDisabled()">{{ '_REMOVE_AUTHOR' | translate }}</button>
+            </div>
+        </div>
+        <hr>
+        <div class="container text-center">
+            <div class="example-container">
+                <p *ngIf="isAllDisabled()">{{ '_THE_PAPER_IS' | translate }}
+                    <strong>{{data.paper.state | translate}}.</strong>
+                    {{ '_STATUS_MESSAGE' | translate }}</p>
+                <p *ngIf="data.paper.state === '_MAJOR/_MINOR'">{{ '_THE_PAPER_IS' | translate }}
+                    <strong>{{data.paper.state | translate}}.</strong>
+                    {{ '_STATUS_MESSAGE_MAJOR_MINOR' | translate }}</p>
+                <p *ngIf="data.paper.state === '_UPLOADED'">{{ '_THE_PAPER_IS' | translate }}
+                    <strong>{{data.paper.state | translate}}.</strong>
+                    {{ '_STATUS_MESSAGE_UPLOADED' | translate }}</p>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" (click)="onSaveClick(data.paper)" [disabled]="submitDialogDisabled()">{{'_SAVE_CHANGES' | translate}}</button>
+    </div>
+</div>

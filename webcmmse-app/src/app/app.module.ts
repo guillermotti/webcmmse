@@ -77,7 +77,11 @@ import {
   EditConferenceDialogComponent,
   ConfirmDeleteConferenceDialogComponent
 } from './components/conferences-admin/conferences-admin.component';
-import { PapersAdminComponent } from './components/papers-admin/papers-admin.component';
+import {
+  PapersAdminComponent,
+  EditPaperAdminDialogComponent,
+  ConfirmDeletePaperAdminDialogComponent
+} from './components/papers-admin/papers-admin.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -169,7 +173,9 @@ export class MaterialModule { }
     ConferencesAdminComponent,
     EditConferenceDialogComponent,
     ConfirmDeleteConferenceDialogComponent,
-    PapersAdminComponent
+    PapersAdminComponent,
+    EditPaperAdminDialogComponent,
+    ConfirmDeletePaperAdminDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -218,7 +224,9 @@ export class MaterialModule { }
     ConferencesAdminComponent,
     EditConferenceDialogComponent,
     ConfirmDeleteConferenceDialogComponent,
-    PapersAdminComponent
+    PapersAdminComponent,
+    EditPaperAdminDialogComponent,
+    ConfirmDeletePaperAdminDialogComponent
   ],
   providers: [
     FirebaseCallerService,

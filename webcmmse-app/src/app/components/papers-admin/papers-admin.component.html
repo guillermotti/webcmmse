@@ -125,11 +125,11 @@
             <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_ACTIONS' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
               &nbsp;
-              <a (click)="editUser(row)">
+              <a (click)="editPaper(row)">
                 <i class="fas fa-eye"></i>
               </a>
               &nbsp;
-              <a (click)="clickDeleteUser(row)">
+              <a (click)="clickDeletePaper(row)">
                 <i class="far fa-trash-alt"></i>
               </a>
             </mat-cell>

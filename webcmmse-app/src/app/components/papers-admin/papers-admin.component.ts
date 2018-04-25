@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild, AfterViewInit, Inject } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatSnackBar, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { AngularFireStorage } from 'angularfire2/storage';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 import { FirebaseCallerService } from '../../services/firebase-caller.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { FormControl, Validators } from '@angular/forms';
 import { AppConfig } from '../../config/app.config';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-papers-admin',
@@ -78,7 +80,7 @@ export class PapersAdminComponent implements OnInit {
       });
       this.firebaseService.updateItemFromCollection('users', response[0].id, response[0]).then(() => {
         const observable = this.firebaseService.getCollection('users').subscribe(resp => {
-          window.sessionStorage.setItem('users', JSON.stringify(resp[0]));
+          window.sessionStorage.setItem('users', JSON.stringify(resp));
           const papers = [];
           resp.forEach(itemUser => {
             if (itemUser.papers) {
@@ -102,57 +104,101 @@ export class PapersAdminComponent implements OnInit {
     });
   }
 
-  editUser(user) {
-    /**const dialogRef = this.dialog.open(EditUserDialogComponent, {
+  editPaper(paper) {
+    const dialogRef = this.dialog.open(EditPaperAdminDialogComponent, {
       width: 'auto',
-      data: { user: user }
+      data: { paper: paper }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      const users = JSON.parse(window.sessionStorage.getItem('users'));
-      this.users = new MatTableDataSource(users);
-      this.users.paginator = this.paginator;
-      this.users.sort = this.sort;
+      if (result) {
+        this.firebaseService.updateItemFromCollection('users', result[0].id, result[0]).then(() => {
+          this.translationService.get('_PAPER_UPDATED_SUCCESFULLY').subscribe(resp => {
+            this.snackBar.open(resp, null, {
+              duration: 2000,
+            });
+          });
+        });
+        const papers = [];
+        const obser = this.firebaseService.getCollection('users').subscribe(response => {
+          window.sessionStorage.setItem('users', JSON.stringify(response));
+          response.forEach(item => {
+            if (item.papers) {
+              item.papers.forEach(paperItem => {
+                papers.push(paperItem);
+              });
+            }
+          });
+          this.papers = new MatTableDataSource(papers);
+          this.papers.paginator = this.paginator;
+          this.papers.sort = this.sort;
+          obser.unsubscribe();
+        });
+      }
       console.log('The dialog was closed', result);
     });
 
-    dialogRef.updateSize('50%', 'auto');**/
+    dialogRef.updateSize('50%', 'auto');
   }
 
-  clickDeleteUser(user) {
-    /**const dialogRef = this.dialog.open(ConfirmDeleteUserDialogComponent, {
+  clickDeletePaper(paper) {
+    const dialogRef = this.dialog.open(ConfirmDeletePaperAdminDialogComponent, {
       width: '400px',
-      data: { user: user }
+      data: { paper: paper }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      const users = JSON.parse(window.sessionStorage.getItem('users'));
-      this.users = new MatTableDataSource(users);
-      this.users.paginator = this.paginator;
-      this.users.sort = this.sort;
+      if (result) {
+        this.firebaseService.updateItemFromCollection('users', result[0].id, result[0]).then(() => {
+          this.translationService.get('_PAPER_DELETED_SUCCESFULLY').subscribe(resp => {
+            this.snackBar.open(resp, null, {
+              duration: 2000,
+            });
+          });
+        });
+        const papers = [];
+        const obser = this.firebaseService.getCollection('users').subscribe(response => {
+          window.sessionStorage.setItem('users', JSON.stringify(response));
+          response.forEach(item => {
+            if (item.papers) {
+              item.papers.forEach(paperItem => {
+                papers.push(paperItem);
+              });
+            }
+          });
+          this.papers = new MatTableDataSource(papers);
+          this.papers.paginator = this.paginator;
+          this.papers.sort = this.sort;
+          obser.unsubscribe();
+        });
+      }
       console.log('The dialog was closed', result);
-    });**/
+    });
   }
 
 }
 
-/**@Component({
-  selector: 'app-edit-user-dialog',
-  templateUrl: 'edit-user-dialog.html',
+@Component({
+  selector: 'app-edit-paper-admin-dialog',
+  templateUrl: 'edit-paper-admin-dialog.html',
 })
-export class EditUserDialogComponent implements OnInit {
+export class EditPaperAdminDialogComponent implements OnInit {
 
-  formControl = new FormControl('', [Validators.required]);
-  edit = '_EDIT';
-  colorChange = 'primary';
-  fieldsDisabled = true;
-  titles = AppConfig.titles;
-  countries = AppConfig.countries;
   minisymposiums = [];
+  formControl = new FormControl('', [Validators.required]);
+  // For upload file
+  fileName; fileURL; progressBarValue;
+  ref: AngularFireStorageReference;
+  task: AngularFireUploadTask;
+  uploadState: Observable<string>;
+  uploadProgress: Observable<number>;
+  downloadURL: Observable<string>;
+  @ViewChild('fileInput') myInputVariable: any;
 
   constructor(
-    public dialogRef: MatDialogRef<EditUserDialogComponent>, private translationService: TranslateService, public snackBar: MatSnackBar,
-    private firebaseService: FirebaseCallerService, @Inject(MAT_DIALOG_DATA) public data: any) { }
+    public dialogRef: MatDialogRef<EditPaperAdminDialogComponent>,
+    private translationService: TranslateService, public snackBar: MatSnackBar,
+    private firebaseService: FirebaseCallerService, @Inject(MAT_DIALOG_DATA) public data: any, private storage: AngularFireStorage) { }
 
   ngOnInit() {
     this.firebaseService.getCollection('conferences').subscribe(response => {
@@ -166,32 +212,124 @@ export class EditUserDialogComponent implements OnInit {
       });
       this.minisymposiums = sortedValues;
     });
+    this.fileURL = this.data.paper.url_file;
+    this.fileName = this.data.paper.name_file !== '' ? this.data.paper.name_file : '_FILE_NAME';
+  }
+
+  upload(event) {
+    this.fileName = event.target.files[0].name;
+    const user = JSON.parse(window.sessionStorage.getItem('user'));
+    const id = this.data.paper.id_file;
+    this.ref = this.storage.ref(id);
+    this.task = this.storage.upload('/papers/' + id, event.target.files[0]);
+    this.uploadState = this.task.snapshotChanges().pipe(map(s => s.state));
+    this.uploadProgress = this.task.percentageChanges();
+    this.task.percentageChanges().subscribe((value) => {
+      this.progressBarValue = value.toFixed(2).toString() + '%';
+    });
+    this.downloadURL = this.task.downloadURL();
+    this.downloadURL.subscribe(url => {
+      this.fileURL = url;
+      user.papers.forEach((paper, index) => {
+        if (this.data.paper.id_file === paper.id_file) {
+          paper.name_file = this.fileName;
+          this.data.paper.name_file = this.fileName;
+          paper.url_file = url;
+          this.data.url_file = url;
+          user.papers[index] = paper;
+        }
+      });
+      this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
+        this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
+          window.sessionStorage.setItem('user', JSON.stringify(response[0]));
+        });
+        this.translationService.get('_FILE_UPLOADED_SUCCESFULLY').subscribe(resp => {
+          this.snackBar.open(resp, null, {
+            duration: 2000,
+          });
+        });
+      });
+    });
+
+  }
+
+  openTabTo(url) {
+    window.open(url);
+  }
+
+  removePaper() {
+    const user = JSON.parse(window.sessionStorage.getItem('user'));
+    user.papers.forEach((paper, index) => {
+      if (this.data.paper.id_file === paper.id_file) {
+        paper.name_file = '';
+        paper.url_file = '';
+        user.papers[index] = paper;
+        const numberOfPaper = index + 1;
+        const id = 'paper' + user.id + '-' + numberOfPaper;
+        this.storage.ref('/papers/' + id).delete().subscribe(() => {
+          this.translationService.get('_FILE_DELETED_SUCCESFULLY').subscribe(resp => {
+            this.snackBar.open(resp, null, {
+              duration: 2000,
+            });
+          });
+        });
+      }
+    });
+    this.fileURL = null;
+    this.uploadState = null;
+    this.fileName = '_FILE_NAME';
+    this.myInputVariable.nativeElement.value = '';
+    this.firebaseService.updateItemFromCollection('users', user.id, user);
+    window.sessionStorage.setItem('user', JSON.stringify(user));
   }
 
   onCloseClick(): void {
     this.dialogRef.close();
   }
 
-  onSaveClick(user): void {
-    if (this.edit === '_EDIT') {
-      this.edit = '_SAVE_CHANGES';
-      this.colorChange = 'accent';
-      this.fieldsDisabled = false;
-    } else {
-      this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-        this.firebaseService.getCollection('users').subscribe(response => {
-          window.sessionStorage.setItem('users', JSON.stringify(response));
-          this.edit = '_EDIT';
-          this.colorChange = 'primary';
-          this.fieldsDisabled = true;
-        });
-        this.translationService.get('_USER_UPDATED_SUCCESFULLY').subscribe(resp => {
-          this.snackBar.open(resp, null, {
-            duration: 2000,
-          });
-        });
+  onSaveClick(paper): void {
+    const obser = this.firebaseService.getItemFromCollection(paper.id_file.split('paper')[1].split('-')[0], 'users').subscribe(response => {
+      response[0].papers.forEach(item => {
+        if (item.id_file === paper.id_file) {
+          item.title = paper.title;
+          item.minisymposium = paper.minisymposium;
+          item.poster = paper.poster;
+          item.authors = paper.authors;
+        }
       });
-      // this.dialogRef.close();
+      this.dialogRef.close(response);
+      obser.unsubscribe();
+    });
+  }
+
+  addAuthor() {
+    const authorNumber = this.data.paper.authors.length + 1;
+    const author = {
+      'author': authorNumber,
+      'first_name': '',
+      'last_name': '',
+      'email': ''
+    };
+    this.data.paper.authors.push(author);
+  }
+
+  addDisabled() {
+    if (this.data.paper.authors.length < 10) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  removeAuthor() {
+    this.data.paper.authors.pop();
+  }
+
+  removeDisabled() {
+    if (this.data.paper.authors.length > 1) {
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -200,24 +338,46 @@ export class EditUserDialogComponent implements OnInit {
     return re.test(String(email).toLowerCase());
   }
 
-  submitDialogDisabled(user) {
-    if (user.title === '' || user.first_name === '' || user.last_name === '' || user.university_company === '' || user.country === ''
-      || user.email === '' || !this.validateEmail(user.email)) {
-      return true;
+  submitDialogDisabled() {
+    let disabled = false;
+    if (this.data.paper.minisymposium === '' || this.data.paper.title === '') {
+      disabled = true;
+    } else {
+      this.data.paper.authors.forEach(author => {
+        if (author.first_name === '' || author.last_name === '' || author.email === '' || !this.validateEmail(author.email)) {
+          disabled = true;
+        }
+      });
     }
-    return false;
+    return disabled;
+  }
+
+  isAllDisabled() {
+    if (this.data.paper.state === '_REVISION' || this.data.paper.state === '_ACCEPTED' || this.data.paper.state === '_REJECTED') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isAuthorDisabled(index) {
+    if (index === 0 && (this.data.paper.state === '_MAJOR/_MINOR' || this.isAllDisabled())) {
+      return true;
+    } else {
+      return this.isAllDisabled();
+    }
   }
 
 }
 
 @Component({
-  selector: 'app-confirm-delete-user-dialog',
-  templateUrl: 'confirm-delete-user-dialog.html',
+  selector: 'app-confirm-delete-paper-admin-dialog',
+  templateUrl: 'confirm-delete-paper-admin-dialog.html',
 })
-export class ConfirmDeleteUserDialogComponent {
+export class ConfirmDeletePaperAdminDialogComponent {
 
   constructor(
-    public dialogRef: MatDialogRef<ConfirmDeleteUserDialogComponent>, private translationService: TranslateService,
+    public dialogRef: MatDialogRef<ConfirmDeletePaperAdminDialogComponent>, private translationService: TranslateService,
     public snackBar: MatSnackBar, private storage: AngularFireStorage,
     private firebaseService: FirebaseCallerService, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
@@ -225,18 +385,16 @@ export class ConfirmDeleteUserDialogComponent {
     this.dialogRef.close();
   }
 
-  removeUserFromTable(user) {
-    // Update user and table of papers
-    const users = JSON.parse(window.sessionStorage.getItem('users'));
-    this.firebaseService.deleteItemFromCollection('users', user.user.id).then(() => {
-      this.translationService.get('_USER_DELETED_SUCCESFULLY').subscribe(resp => {
-        this.snackBar.open(resp, null, {
-          duration: 2000,
-        });
+  removePaperFromTable(paper) {
+    const obser = this.firebaseService.getItemFromCollection(paper.id_file.split('paper')[1].split('-')[0], 'users').subscribe(response => {
+      response[0].papers.forEach(item => {
+        if (item.id_file === paper.id_file) {
+          response[0].papers = _.pull(response[0].papers, item);
+        }
       });
+      obser.unsubscribe();
+      this.dialogRef.close(response);
     });
-
-    this.dialogRef.close();
   }
 
-}**/
+}
