@@ -30,10 +30,10 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/authors-admin" routerLinkActive="active">{{ '_AUTHORS' | translate }}</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" routerLink="/papers-admin" routerLinkActive="active">{{ '_PAPERS' | translate }}</a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" routerLink="/conferences-admin" routerLinkActive="active">{{ '_CONFERENCES' | translate }}</a>
           </li>
           <li class="nav-item">
@@ -59,7 +59,7 @@
   <section class="content-section text-center">
     <div class="container">
       <div class="content-section-heading">
-        <h1 class="mt-5">{{ '_CONFERENCES' | translate}}</h1>
+        <h1 class="mt-5">{{ '_PAPERS' | translate}}</h1>
       </div>
     </div>
   </section>
@@ -74,24 +74,51 @@
 
       <div class="example-container mat-elevation-z8">
 
-        <mat-table [dataSource]="conferences" matSort>
+        <mat-table [dataSource]="papers" matSort>
 
           <!-- TITLE Column -->
           <ng-container matColumnDef="title">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_TITLE' | translate }} </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.value}} </mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
           </ng-container>
 
-          <!-- PAPERS Column -->
-          <ng-container matColumnDef="papers">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_PAPERS' | translate }} </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.papers}} </mat-cell>
+          <!-- CONFERENCE Column -->
+          <ng-container matColumnDef="conference">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_CONFERENCE' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.minisymposium}} </mat-cell>
           </ng-container>
 
-          <!-- POSTERS Column -->
-          <ng-container matColumnDef="posters">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_POSTERS' | translate }} </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.posters}} </mat-cell>
+          <!-- CORRESPONDING AUTHOR Column -->
+          <ng-container matColumnDef="corresponding_author">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_CORRESPONDING_AUTHOR' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.authors ? row.authors[0].email : ''}} </mat-cell>
+          </ng-container>
+
+          <!-- FILE Column -->
+          <ng-container matColumnDef="file">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_PAPER' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              &nbsp;
+              <ng-container *ngIf=" row.url_file !== ''">
+                <a href="{{ row.url_file }}" target="_blank">
+                  <i class="far fa-file"></i>
+                </a>
+              </ng-container>
+            </mat-cell>
+          </ng-container>
+
+          <!-- COUNTRY Column -->
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_STATE' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-form-field>
+                <mat-select [(ngModel)]="row.state" (change)="changeStatus(row)">
+                  <mat-option *ngFor="let status of status" [value]="status">
+                    {{ status | translate }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-cell>
           </ng-container>
 
           <!-- ACTIONS Column -->
@@ -99,11 +126,11 @@
             <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_ACTIONS' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
               &nbsp;
-              <a (click)="editConference(row)">
-                <i class="fas fa-edit"></i>
+              <a (click)="editPaper(row)">
+                <i class="fas fa-eye"></i>
               </a>
               &nbsp;
-              <a (click)="clickDeleteConference(row)">
+              <a (click)="clickDeletePaper(row)">
                 <i class="far fa-trash-alt"></i>
               </a>
             </mat-cell>
@@ -118,23 +145,6 @@
       </div>
     </div>
     <br>
-    <div class="container">
-      <div class="content-section-heading">
-        <h5 class="mt-5">{{ '_NEW_CONFERENCE' | translate}}</h5>
-        <br>
-      </div>
-    </div>
-    <div class="container">
-      <div class="example-container row">
-        <mat-form-field class="col-xs-9 col-sm-9">
-          <input matInput #input placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="conference" (focus)="isNew=true;">
-        </mat-form-field>
-        <div class="col-xs-3 col-sm-3 text-center">
-          <button mat-raised-button color="primary" (click)="addConference()" [disabled]="isDisabled()">{{ '_ADD_CONFERENCE' | translate }}</button>
-        </div>
-      </div>
-      <mat-error *ngIf="!isNew" class="text-center">{{ '_CONFERENCE_ALREADY_EXISTS' | translate }}</mat-error>
-    </div>
   </section>
 
 </body>

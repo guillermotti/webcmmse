@@ -495,6 +495,22 @@ export class EditPaperDialogComponent implements OnInit {
     return disabled;
   }
 
+  isAllDisabled() {
+    if (this.data.paper.state === '_REVISION' || this.data.paper.state === '_ACCEPTED' || this.data.paper.state === '_REJECTED') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isAuthorDisabled(index) {
+    if (index === 0 && (this.data.paper.state === '_MAJOR/_MINOR' || this.isAllDisabled())) {
+      return true;
+    } else {
+      return this.isAllDisabled();
+    }
+  }
+
 }
 
 @Component({

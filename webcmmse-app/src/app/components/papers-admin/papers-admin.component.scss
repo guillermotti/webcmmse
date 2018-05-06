@@ -16,7 +16,11 @@ mat-header-row mat-header-cell:nth-child(6), mat-row mat-cell:nth-child(6) {
 }
 
 mat-header-row mat-header-cell:nth-child(5), mat-row mat-cell:nth-child(5) {
-    max-width: 10%;
+    max-width: 20%;
+}
+
+mat-header-row mat-header-cell:nth-child(4), mat-row mat-cell:nth-child(4) {
+    max-width: 8%;
 }
 
 .marginBottomUsers {
