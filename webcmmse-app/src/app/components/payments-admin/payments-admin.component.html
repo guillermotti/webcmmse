@@ -24,13 +24,13 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/users-admin" routerLinkActive="active">{{ '_USERS' | translate }}</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" routerLink="/payments-admin" routerLinkActive="active">{{ '_PAYMENTS' | translate }}</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/authors-admin" routerLinkActive="active">{{ '_AUTHORS' | translate }}</a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" routerLink="/papers-admin" routerLinkActive="active">{{ '_PAPERS' | translate }}</a>
           </li>
           <li class="nav-item">
@@ -59,7 +59,7 @@
   <section class="content-section text-center">
     <div class="container">
       <div class="content-section-heading">
-        <h1 class="mt-5">{{ '_PAPERS' | translate}}</h1>
+        <h1 class="mt-5">{{ '_PAYMENTS' | translate}}</h1>
       </div>
     </div>
   </section>
@@ -74,64 +74,55 @@
 
       <div class="example-container mat-elevation-z8">
 
-        <mat-table [dataSource]="papers" matSort>
+        <mat-table [dataSource]="payments" matSort>
 
-          <!-- TITLE Column -->
-          <ng-container matColumnDef="title">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_TITLE' | translate }} </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
+          <!-- NAME Column -->
+          <ng-container matColumnDef="fullName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_FULL_NAME' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.first_name}} {{row.last_name}}</mat-cell>
           </ng-container>
 
-          <!-- CONFERENCE Column -->
-          <ng-container matColumnDef="conference">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_CONFERENCE' | translate }} </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.minisymposium}} </mat-cell>
+          <!-- EMAIL Column -->
+          <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_EMAIL' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
           </ng-container>
 
-          <!-- CORRESPONDING AUTHOR Column -->
-          <ng-container matColumnDef="corresponding_author">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_CORRESPONDING_AUTHOR' | translate }} </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.authors ? row.authors[0].email : ''}} </mat-cell>
+          <!-- COUNTRY Column -->
+          <ng-container matColumnDef="country">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_COUNTRY' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.country}} </mat-cell>
           </ng-container>
 
-          <!-- FILE Column -->
-          <ng-container matColumnDef="file">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_PAPER' | translate }} </mat-header-cell>
+          <!-- PAYMENTFILE Column -->
+          <ng-container matColumnDef="paymentFile">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_PAYMENT_FILE' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
               &nbsp;
-              <ng-container *ngIf=" row.url_file !== ''">
-                <a href="{{ row.url_file }}" target="_blank">
+              <ng-container *ngIf="row.payment_file && row.payment_file.url_file !== ''">
+                <a href="{{ row.payment_file.url_file }}" target="_blank">
                   <i class="far fa-file"></i>
                 </a>
               </ng-container>
             </mat-cell>
           </ng-container>
 
-          <!-- COUNTRY Column -->
-          <ng-container matColumnDef="status">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_STATE' | translate }} </mat-header-cell>
+          <!-- CHECKPAYMENT Column -->
+          <ng-container matColumnDef="checkPayment">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_PAID' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
-              <mat-form-field>
-                <mat-select [(ngModel)]="row.state" (change)="changeStatus(row)">
-                  <mat-option *ngFor="let status of status" [value]="status">
-                    {{ status | translate }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+              <mat-checkbox [(ngModel)]="row.check_payment" [disabled]="!row.payment_file || row.payment_file.url_file === ''" (change)=checkPayment(row)>
+              </mat-checkbox>
             </mat-cell>
           </ng-container>
 
-          <!-- ACTIONS Column -->
-          <ng-container matColumnDef="actions">
-            <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_ACTIONS' | translate }} </mat-header-cell>
+          <!-- INVOICE Column -->
+          <ng-container matColumnDef="invoice">
+            <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_INVOICE_FILE' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
               &nbsp;
-              <a (click)="editPaper(row)">
-                <i class="fas fa-eye"></i>
-              </a>
-              &nbsp;
-              <a (click)="clickDeletePaper(row)">
-                <i class="far fa-trash-alt"></i>
+              <a *ngIf="row.check_payment" (click)="generateInvoice(row)">
+                <i class="far fa-file"></i>
               </a>
             </mat-cell>
           </ng-container>

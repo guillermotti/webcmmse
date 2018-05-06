@@ -149,5 +149,11 @@
     "_ACCEPTED": "ACCEPTED",
     "_REJECTED": "REJECTED",
     "_MAJOR/_MINOR": "MAJOR/ MINOR",
-    "_STATUS_UPDATED_SUCCESFULLY": "Estado del artículo actualizado correctamente"
+    "_STATUS_UPDATED_SUCCESFULLY": "Estado del artículo actualizado correctamente",
+    "_PAID": "Pagado",
+    "_FULL_NAME": "Nombre completo",
+    "_INVOICE_FILE": "Factura",
+    "_CONFIRM_PAYMENT": "Confirmar pago",
+    "_CONFIRM_PAYMENT_INFO": "Si confirma el pago, el usuario podrá descargar la factura, el certificado de asistencia y el certificado de ponencia. El usuario podrá descargar estos archivos solo una vez.",
+    "_USER_PAYMENT_UPDATED_SUCCESFULLY": "Pago de usuario actualizado correctamente"
 }

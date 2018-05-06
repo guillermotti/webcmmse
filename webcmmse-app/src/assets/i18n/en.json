@@ -149,5 +149,11 @@
     "_ACCEPTED": "ACCEPTED",
     "_REJECTED": "REJECTED",
     "_MAJOR/_MINOR": "MAJOR/ MINOR",
-    "_STATUS_UPDATED_SUCCESFULLY": "Status of the paper updated succesfully"
+    "_STATUS_UPDATED_SUCCESFULLY": "Status of the paper updated succesfully",
+    "_PAID": "Paid",
+    "_FULL_NAME": "Full name",
+    "_INVOICE_FILE": "Invoice file",
+    "_CONFIRM_PAYMENT": "Confirm payment",
+    "_CONFIRM_PAYMENT_INFO": "If you confirm the payment, the user could download the invoice file, the assistance certified file and ponent certified file. The user could download these files just once.",
+    "_USER_PAYMENT_UPDATED_SUCCESFULLY": "User payment updated succesfully"
 }

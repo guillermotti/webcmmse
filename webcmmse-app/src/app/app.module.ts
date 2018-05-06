@@ -82,6 +82,7 @@ import {
   EditPaperAdminDialogComponent,
   ConfirmDeletePaperAdminDialogComponent
 } from './components/papers-admin/papers-admin.component';
+import { PaymentsAdminComponent, ConfirmPaymentDialogComponent } from './components/payments-admin/payments-admin.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -108,6 +109,7 @@ const appRoutes: Routes = [
   { path: 'configuration-admin', component: ConfigurationComponent },
   { path: 'conferences-admin', component: ConferencesAdminComponent },
   { path: 'papers-admin', component: PapersAdminComponent },
+  { path: 'payments-admin', component: PaymentsAdminComponent },
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   { path: '**', redirectTo: 'index', pathMatch: 'full' }
 ];
@@ -175,7 +177,9 @@ export class MaterialModule { }
     ConfirmDeleteConferenceDialogComponent,
     PapersAdminComponent,
     EditPaperAdminDialogComponent,
-    ConfirmDeletePaperAdminDialogComponent
+    ConfirmDeletePaperAdminDialogComponent,
+    PaymentsAdminComponent,
+    ConfirmPaymentDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -226,7 +230,9 @@ export class MaterialModule { }
     ConfirmDeleteConferenceDialogComponent,
     PapersAdminComponent,
     EditPaperAdminDialogComponent,
-    ConfirmDeletePaperAdminDialogComponent
+    ConfirmDeletePaperAdminDialogComponent,
+    PaymentsAdminComponent,
+    ConfirmPaymentDialogComponent
   ],
   providers: [
     FirebaseCallerService,

@@ -37,6 +37,10 @@ body {
         margin-left: 5% !important;
         margin-right: 5% !important;
     }
+    
+    .bird {
+        width: 22% !important;
+    }
 }
 
 footer {
@@ -169,4 +173,8 @@ mat-cell a {
 
 a:focus {
     outline: none;
+}
+
+.bird {
+    width: 5%;
 }

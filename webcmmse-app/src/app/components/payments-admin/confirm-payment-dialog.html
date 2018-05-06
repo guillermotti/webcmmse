@@ -1,0 +1,19 @@
+<div class="dialog">
+    <div class="crossIcon">
+        <a (click)="onCancelClick()">
+            <i class="fas fa-times"></i>
+        </a>
+    </div>
+    <h1 mat-dialog-title>{{ '_CONFIRM_PAYMENT' | translate }}</h1>
+    <div mat-dialog-content>
+        <p>{{'_CONFIRM_PAYMENT_INFO' | translate}}</p>
+    </div>
+    <div mat-dialog-actions>
+        <div class="container">
+            <div class="example-container row">
+                <button mat-raised-button color="basic" (click)=changeStatusPayment(data.user)>{{ '_YES' | translate }}</button>
+                <button mat-raised-button color="warn" (click)=onCancelClick()>{{ '_CANCEL' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</div>
