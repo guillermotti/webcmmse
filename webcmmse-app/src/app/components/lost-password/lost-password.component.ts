@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AppConfig } from '../../config/app.config';
+import { FirebaseCallerService } from '../../services/firebase-caller.service';
 
 @Component({
   selector: 'app-lost-password',
@@ -7,19 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LostPasswordComponent implements OnInit {
 
-  // Esto debe ser configurable en un app.conf
-  date = new Date();
-  year = this.date.getFullYear();
-  urlCMMSE = 'http://cmmse.usal.es/cmmse2018/';
-
+  year;
+  urlCMMSE;
   hide = true;
   user;
   password;
   userIncorrect = false;
 
-  constructor() { }
+  constructor(private firebaseService: FirebaseCallerService) { }
 
   ngOnInit() {
+    this.firebaseService.getCollection('config').subscribe(response => {
+      this.year = response[0].conference_year;
+      this.urlCMMSE = response[0].conference_url;
+    });
   }
 
   recoverPassword() {

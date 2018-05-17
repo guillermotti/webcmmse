@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <img src="../../../assets/img/favicon.png" class="bird">
+      <a class="navbar-brand" href="{{ urlCMMSE }}">CMMSE {{ year }}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/users-admin" routerLinkActive="active">{{ '_USERS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/payments-admin" routerLinkActive="active">{{ '_PAYMENTS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/authors-admin" routerLinkActive="active">{{ '_AUTHORS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/papers-admin" routerLinkActive="active">{{ '_PAPERS' | translate }}</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" routerLink="/conferences-admin" routerLinkActive="active">{{ '_CONFERENCES' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/social-admin" routerLinkActive="active">{{ '_SOCIAL_EVENTS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/configuration-admin" routerLinkActive="active">{{ '_CONFIG' | translate }}</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" routerLinkActive="active">
+              <strong>{{ email }}</strong>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logOut()" routerLink="/login" routerLinkActive="active">{{ '_LOG_OUT' | translate }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <section class="content-section text-center">
+    <div class="container">
+      <div class="content-section-heading">
+        <h1 class="mt-5">
+          <i class="fas fa-comments"></i> &nbsp; {{ '_CONFERENCES' | translate}}</h1>
+      </div>
+    </div>
+  </section>
+  <br>
+  <section class="content-section marginBottomUsers">
+    <div class="container">
+      <div class="example-header">
+        <mat-form-field class="column12">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{ '_FILTER' | translate }}">
+        </mat-form-field>
+      </div>
+
+      <div class="example-container mat-elevation-z8">
+
+        <mat-table [dataSource]="conferences" matSort>
+
+          <!-- TITLE Column -->
+          <ng-container matColumnDef="title">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_TITLE' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.value}} </mat-cell>
+          </ng-container>
+
+          <!-- PAPERS Column -->
+          <ng-container matColumnDef="papers">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_PAPERS' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.papers}} </mat-cell>
+          </ng-container>
+
+          <!-- POSTERS Column -->
+          <ng-container matColumnDef="posters">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_POSTERS' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.posters}} </mat-cell>
+          </ng-container>
+
+          <!-- ACTIONS Column -->
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_ACTIONS' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              &nbsp;
+              <a (click)="editConference(row)">
+                <i class="fas fa-edit"></i>
+              </a>
+              &nbsp;
+              <a (click)="clickDeleteConference(row)">
+                <i class="far fa-trash-alt"></i>
+              </a>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;">
+          </mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      </div>
+    </div>
+    <br>
+    <div class="container">
+      <div class="content-section-heading">
+        <h5 class="mt-5">{{ '_NEW_CONFERENCE' | translate}}</h5>
+        <br>
+      </div>
+    </div>
+    <div class="container">
+      <div class="example-container row">
+        <mat-form-field class="col-xs-9 col-sm-9">
+          <input matInput #input placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="conference" (focus)="isNew=true;">
+        </mat-form-field>
+        <div class="col-xs-3 col-sm-3 text-center">
+          <button mat-raised-button color="primary" (click)="addConference()" [disabled]="isDisabled()">{{ '_ADD_CONFERENCE' | translate }}</button>
+        </div>
+      </div>
+      <mat-error *ngIf="!isNew" class="text-center">{{ '_CONFERENCE_ALREADY_EXISTS' | translate }}</mat-error>
+    </div>
+  </section>
+
+</body>
+
+</html>

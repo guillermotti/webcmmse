@@ -58,11 +58,32 @@ import { RegistrationComponent, AccordanceTermsDialogComponent } from './compone
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { LostPasswordComponent } from './components/lost-password/lost-password.component';
+import { UserHomeComponent, ChangePasswordDialogComponent } from './components/user-home/user-home.component';
+import { PaymentsInvoicesComponent } from './components/payments-invoices/payments-invoices.component';
+import { PaperComponent, EditPaperDialogComponent, ConfirmDeleteDialogComponent } from './components/paper/paper.component';
+import {
+  UsersAdminComponent,
+  EditUserDialogComponent,
+  ConfirmDeleteUserDialogComponent
+} from './components/users-admin/users-admin.component';
 
 import { environment } from '../environments/environment';
 
 import { FirebaseCallerService } from './services/firebase-caller.service';
-
+import { CryptoService } from './services/crypto.service';
+import { ConfigurationComponent } from './components/configuration/configuration.component';
+import {
+  ConferencesAdminComponent,
+  EditConferenceDialogComponent,
+  ConfirmDeleteConferenceDialogComponent
+} from './components/conferences-admin/conferences-admin.component';
+import {
+  PapersAdminComponent,
+  EditPaperAdminDialogComponent,
+  ConfirmDeletePaperAdminDialogComponent
+} from './components/papers-admin/papers-admin.component';
+import { PaymentsAdminComponent, ConfirmPaymentDialogComponent } from './components/payments-admin/payments-admin.component';
+import { DocumentsComponent } from './components/documents/documents.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -82,6 +103,15 @@ const appRoutes: Routes = [
   { path: 'register', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
   { path: 'recover', component: LostPasswordComponent },
+  { path: 'user', component: UserHomeComponent },
+  { path: 'payments-invoices', component: PaymentsInvoicesComponent },
+  { path: 'paper', component: PaperComponent },
+  { path: 'users-admin', component: UsersAdminComponent },
+  { path: 'configuration-admin', component: ConfigurationComponent },
+  { path: 'conferences-admin', component: ConferencesAdminComponent },
+  { path: 'papers-admin', component: PapersAdminComponent },
+  { path: 'payments-admin', component: PaymentsAdminComponent },
+  { path: 'documents', component: DocumentsComponent },
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   { path: '**', redirectTo: 'index', pathMatch: 'full' }
 ];
@@ -133,7 +163,26 @@ export class MaterialModule { }
     RegistrationComponent,
     LoginComponent,
     LostPasswordComponent,
-    AccordanceTermsDialogComponent
+    AccordanceTermsDialogComponent,
+    ChangePasswordDialogComponent,
+    EditPaperDialogComponent,
+    ConfirmDeleteDialogComponent,
+    UserHomeComponent,
+    PaymentsInvoicesComponent,
+    PaperComponent,
+    UsersAdminComponent,
+    EditUserDialogComponent,
+    ConfirmDeleteUserDialogComponent,
+    ConfigurationComponent,
+    ConferencesAdminComponent,
+    EditConferenceDialogComponent,
+    ConfirmDeleteConferenceDialogComponent,
+    PapersAdminComponent,
+    EditPaperAdminDialogComponent,
+    ConfirmDeletePaperAdminDialogComponent,
+    PaymentsAdminComponent,
+    ConfirmPaymentDialogComponent,
+    DocumentsComponent
   ],
   imports: [
     BrowserModule,
@@ -168,10 +217,30 @@ export class MaterialModule { }
     RegistrationComponent,
     LoginComponent,
     LostPasswordComponent,
-    AccordanceTermsDialogComponent
+    AccordanceTermsDialogComponent,
+    ChangePasswordDialogComponent,
+    EditPaperDialogComponent,
+    ConfirmDeleteDialogComponent,
+    UserHomeComponent,
+    PaymentsInvoicesComponent,
+    PaperComponent,
+    UsersAdminComponent,
+    EditUserDialogComponent,
+    ConfirmDeleteUserDialogComponent,
+    ConfigurationComponent,
+    ConferencesAdminComponent,
+    EditConferenceDialogComponent,
+    ConfirmDeleteConferenceDialogComponent,
+    PapersAdminComponent,
+    EditPaperAdminDialogComponent,
+    ConfirmDeletePaperAdminDialogComponent,
+    PaymentsAdminComponent,
+    ConfirmPaymentDialogComponent,
+    DocumentsComponent
   ],
   providers: [
-    FirebaseCallerService
+    FirebaseCallerService,
+    CryptoService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,19 @@
+<div class="dialog">
+    <div class="crossIcon">
+        <a (click)="onCloseClick()">
+            <i class="fas fa-times"></i>
+        </a>
+    </div>
+    <h1 mat-dialog-title>{{ '_EDIT_CONFERENCE' | translate }}</h1>
+    <div mat-dialog-content>
+        <div class="row">
+            <mat-form-field class="col-sm-12 col-xs-12">
+                <input matInput #input placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="data.conference.value" required>
+                <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" (click)="onSaveClick(data.conference)" [disabled]="submitDialogDisabled(data.conference)">{{ '_SAVE_CHANGES' | translate}}</button>
+    </div>
+</div>

@@ -10,7 +10,7 @@ export const environment = {
     authDomain: 'webcmmse-proob.firebaseapp.com',
     databaseURL: 'https://webcmmse-proob.firebaseio.com',
     projectId: 'webcmmse-proob',
-    storageBucket: '',
+    storageBucket: 'webcmmse-proob.appspot.com',
     messagingSenderId: '425105086637'
   }
 };

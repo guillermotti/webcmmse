@@ -1,0 +1,64 @@
+@media (min-width: 992px) {
+    ul {
+        width: 100%;
+
+        li:nth-child(1) {
+            width: 10%;
+        }
+
+        li:nth-child(2) {
+            width: 18%;
+        }
+
+        li:nth-child(3) {
+            width: 10%;
+        }
+
+        li:nth-child(4) {
+            width: 10%;
+        }
+
+        li:nth-child(5) {
+            width: 12%;
+        }
+
+        li:nth-child(6) {
+            width: 25%;
+            text-align: right;
+        }
+
+        li:nth-child(7) {
+            width: 15%;
+            text-align: left;
+        }
+
+        text-align: center;
+    }
+}
+
+.buttonSelectFile button {
+    width: 100%;
+}
+
+.chipAuthor {
+    margin-top: 8%;
+    background-color: gray;
+}
+
+.chipPaper {
+    margin-top: 1%;
+    background-color: gray;
+}
+
+mat-header-row mat-header-cell:nth-child(3), mat-header-row mat-header-cell:nth-child(5),
+mat-row mat-cell:nth-child(3), mat-row mat-cell:nth-child(5) {
+    max-width: 8%;
+}
+
+mat-header-row mat-header-cell:nth-child(4), mat-row mat-cell:nth-child(4) {
+    max-width: 10%;
+}
+
+.marginBottomPaper {
+    margin-bottom: 10%;
+}

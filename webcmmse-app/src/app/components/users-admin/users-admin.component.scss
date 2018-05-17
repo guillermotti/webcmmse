@@ -1,0 +1,24 @@
+@media (min-width: 992px) {
+    ul {
+        width: 100%;
+
+        li:nth-child(8) {
+            width: 15%;
+            text-align: right;
+        }
+
+        text-align: center;
+    }
+}
+
+mat-header-row mat-header-cell:nth-child(6), mat-row mat-cell:nth-child(6) {
+    max-width: 8%;
+}
+
+mat-header-row mat-header-cell:nth-child(5), mat-row mat-cell:nth-child(5) {
+    max-width: 10%;
+}
+
+.marginBottomUsers {
+    margin-bottom: 10%;
+}
