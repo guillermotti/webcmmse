@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <img src="../../../assets/img/favicon.png" class="bird">
+      <a class="navbar-brand" href="{{ urlCMMSE }}">CMMSE {{ year }}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/user" routerLinkActive="active">{{ '_USER' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/payments-invoices" routerLinkActive="active">{{ '_INVOICE' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/paper" routerLinkActive="active">{{ '_PAPER' | translate }}</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" routerLink="/documents" routerLinkActive="active">{{ '_DOCUMENTS' | translate }}</a>
+          </li>
+          <li></li>
+          <li class="nav-item active">
+            <a class="nav-link" routerLinkActive="active">
+              <strong>{{ email }}</strong>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logOut()" routerLink="/login" routerLinkActive="active">{{ '_LOG_OUT' | translate }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <section class="content-section">
+    <div class="container">
+      <div class="content-section-heading">
+        <h5 class="mt-5"><i class="fas fa-file-pdf"></i> &nbsp; {{ '_DOCUMENTS' | translate}}</h5>
+        <br>
+      </div>
+    </div>
+    <div class="container">
+      <div *ngIf="!check_payment">
+        <div class="example-container">
+          <p>{{ '_NO_PAYMENT_FILE' | translate }}</p>
+        </div>
+      </div>
+      <div *ngIf="check_payment">
+        <div class="example-container">
+          <p><strong>{{ '_IMPORTANT' | translate }}</strong> {{ '_DOWNLOAD_INFO' | translate }}</p>
+        </div>
+        <div class="content-section-heading">
+          <h6 class="mt-5">{{ '_INVOICE_FILE' | translate}}</h6>
+          <div *ngIf="invoice_downloaded" class="example-container">
+            <p>{{ '_DOWNLOAD_DISABLED' | translate }}</p>
+          </div>
+          <div class="button-row">
+            <button mat-raised-button color="primary" (click)="downloadInvoice()" [disabled]="invoice_downloaded">{{ '_DOWNLOAD' | translate }}</button>
+          </div>
+          <br>
+        </div>
+        <div class="content-section-heading">
+          <h6 class="mt-5">{{ '_ATTENDANCE_FILE' | translate}}</h6>
+          <div *ngIf="attendance_downloaded" class="example-container">
+            <p>{{ '_DOWNLOAD_DISABLED' | translate }}</p>
+          </div>
+          <div class="button-row">
+            <button mat-raised-button color="primary" (click)="downloadAttendance()" [disabled]="attendance_downloaded">{{ '_DOWNLOAD' | translate }}</button>
+          </div>
+          <br>
+        </div>
+        <div *ngIf="paper" class="content-section-heading">
+          <h6 class="mt-5">{{ '_PRESENTATION_FILE' | translate}}</h6>
+          <div *ngIf="presentation_downloaded" class="example-container">
+            <p>{{ '_DOWNLOAD_DISABLED' | translate }}</p>
+          </div>
+          <div class="button-row">
+            <button mat-raised-button color="primary" (click)="downloadPresentation()" [disabled]="presentation_downloaded">{{ '_DOWNLOAD' | translate }}</button>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+    <br>
+  </section>
+
+</body>
+
+</html>

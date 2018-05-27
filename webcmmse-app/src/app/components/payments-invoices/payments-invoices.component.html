@@ -30,6 +30,9 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/paper" routerLinkActive="active">{{ '_PAPER' | translate }}</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/documents" routerLinkActive="active">{{ '_DOCUMENTS' | translate }}</a>
+          </li>
           <li></li>
           <li class="nav-item active">
             <a class="nav-link" routerLinkActive="active">
@@ -48,7 +51,8 @@
   <section class="content-section">
     <div class="container">
       <div class="content-section-heading">
-        <h5 class="mt-5">{{ '_PAYMENTS' | translate}}</h5>
+        <h5 class="mt-5">
+          <i class="fas fa-credit-card"></i> &nbsp; {{ '_PAYMENTS' | translate}}</h5>
         <br>
       </div>
     </div>
@@ -90,7 +94,8 @@
   <section class="content-section marginBottomInvoices">
     <div class="container">
       <div class="content-section-heading">
-        <h5 class="mt-5">{{ '_INVOICES' | translate}}</h5>
+        <h5 class="mt-5">
+          <i class="fas fa-address-card"></i> &nbsp; {{ '_INVOICES' | translate}}</h5>
         <br>
       </div>
     </div>

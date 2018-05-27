@@ -83,6 +83,8 @@ import {
   ConfirmDeletePaperAdminDialogComponent
 } from './components/papers-admin/papers-admin.component';
 import { PaymentsAdminComponent, ConfirmPaymentDialogComponent } from './components/payments-admin/payments-admin.component';
+import { DocumentsComponent, ConfirmDownloadDocumentDialogComponent } from './components/documents/documents.component';
+import { ClosedComponent } from './components/closed/closed.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -110,6 +112,8 @@ const appRoutes: Routes = [
   { path: 'conferences-admin', component: ConferencesAdminComponent },
   { path: 'papers-admin', component: PapersAdminComponent },
   { path: 'payments-admin', component: PaymentsAdminComponent },
+  { path: 'documents', component: DocumentsComponent },
+  { path: 'closed', component: ClosedComponent },
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   { path: '**', redirectTo: 'index', pathMatch: 'full' }
 ];
@@ -148,7 +152,7 @@ const appRoutes: Routes = [
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule,
+    MatTooltipModule
   ]
 })
 export class MaterialModule { }
@@ -179,7 +183,10 @@ export class MaterialModule { }
     EditPaperAdminDialogComponent,
     ConfirmDeletePaperAdminDialogComponent,
     PaymentsAdminComponent,
-    ConfirmPaymentDialogComponent
+    ConfirmPaymentDialogComponent,
+    DocumentsComponent,
+    ClosedComponent,
+    ConfirmDownloadDocumentDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -232,7 +239,10 @@ export class MaterialModule { }
     EditPaperAdminDialogComponent,
     ConfirmDeletePaperAdminDialogComponent,
     PaymentsAdminComponent,
-    ConfirmPaymentDialogComponent
+    ConfirmPaymentDialogComponent,
+    DocumentsComponent,
+    ClosedComponent,
+    ConfirmDownloadDocumentDialogComponent
   ],
   providers: [
     FirebaseCallerService,

@@ -37,7 +37,7 @@ body {
         margin-left: 5% !important;
         margin-right: 5% !important;
     }
-    
+
     .bird {
         width: 22% !important;
     }
@@ -52,6 +52,7 @@ footer {
     .footer-text {
         text-align: left;
         margin-left: -10%;
+        color: rgba(255, 255, 255, 0.5);
     }
 
     color: black;
@@ -177,4 +178,24 @@ a:focus {
 
 .bird {
     width: 5%;
+}
+
+snack-bar-container.redSnack {
+    background: red !important;
+}
+
+footer {
+    .mat-select-value-text span {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .mat-form-field-label {
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+@media (min-width: 1024px) {
+    app-language-select {
+        margin-left: 20%;
+    }
 }

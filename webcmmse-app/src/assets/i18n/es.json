@@ -155,5 +155,18 @@
     "_INVOICE_FILE": "Factura",
     "_CONFIRM_PAYMENT": "Confirmar pago",
     "_CONFIRM_PAYMENT_INFO": "Si confirma el pago, el usuario podrá descargar la factura, el certificado de asistencia y el certificado de ponencia. El usuario podrá descargar estos archivos solo una vez.",
-    "_USER_PAYMENT_UPDATED_SUCCESFULLY": "Pago de usuario actualizado correctamente"
+    "_USER_PAYMENT_UPDATED_SUCCESFULLY": "Pago de usuario actualizado correctamente",
+    "_DOCUMENTS": "Documentos",
+    "_DOWNLOAD_INFO": "Para prevenir fraudes, solo podrá descargar cada archivo UNA única vez. Después de la primera descarga, no podrá volver a descargar el archivo de nuevo.",
+    "_NO_PAYMENT_FILE": "Actualmente no se ha verificado ningún justificante de pago por lo que no podrá descargar ningún documento. Por favor, suba un justificante de pago si todavía no lo ha hecho o espere a que verifiquemos que es correcto si ya lo ha subido.",
+    "_DOWNLOAD": "Descargar",
+    "_ATTENDANCE_FILE": "Certificado de asistencia",
+    "_PRESENTATION_FILE": "Certificado de ponencia",
+    "_DOWNLOAD_DISABLED": "Ya has descargado el archivo, no podrá volver a descargarlo.",
+    "_PASSWORD_REQUIREMENTS": "Utiliza ocho caracteres como mínimo con una combinación de letras, números y símbolos",
+    "_CMMSE_CLOSED": "El acceso a CMMSE está cerrado",
+    "_CMMSE_CLOSED_INFO": "abrirá pronto.",
+    "_USER_ALREADY_EXISTS": "Usuario ya existente",
+    "_CONFIRM_DOWNLOAD": "Confirmar descarga",
+    "_CONFERENCE": "Título de conferencia"
 }

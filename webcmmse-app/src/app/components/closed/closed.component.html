@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <img src="../../../assets/img/favicon.png" class="bird">
+      <a class="navbar-brand" href="{{ urlCMMSE }}">CMMSE {{ year }}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/index" routerLinkActive="active">{{'_HOME' | translate}}
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ urlCMMSE }}">{{ '_ABOUT' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">{{ '_LOG_IN' | translate }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <section class="content-section text-center">
+    <div class="container">
+      <div class="content-section-heading">
+        <h1 class="mt-5">
+          <i class="fas fa-ban"></i> &nbsp;
+          {{ '_CMMSE_CLOSED' | translate}}</h1>
+      </div>
+    </div>
+  </section>
+  <section class="content-section text-center marginBottomClosed">
+    <div class="container">
+      <div class="content-section-heading">
+        <h5 class="mt-5">CMMSE {{ nextYear }} {{ '_CMMSE_CLOSED_INFO' | translate}}</h5>
+        <br>
+      </div>
+    </div>
+  </section>
+
+</body>
+
+</html>

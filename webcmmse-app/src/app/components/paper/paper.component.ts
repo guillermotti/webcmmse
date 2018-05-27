@@ -315,6 +315,14 @@ export class PaperComponent implements OnInit, AfterViewInit {
     dialogRef.updateSize('50%', 'auto');
   }
 
+  isPaperUploaded(paper) {
+    if (paper.state === '_UPLOADED') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }
 
 @Component({

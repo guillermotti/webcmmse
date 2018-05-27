@@ -154,6 +154,19 @@
     "_FULL_NAME": "Full name",
     "_INVOICE_FILE": "Invoice file",
     "_CONFIRM_PAYMENT": "Confirm payment",
-    "_CONFIRM_PAYMENT_INFO": "If you confirm the payment, the user could download the invoice file, the assistance certified file and ponent certified file. The user could download these files just once.",
-    "_USER_PAYMENT_UPDATED_SUCCESFULLY": "User payment updated succesfully"
+    "_CONFIRM_PAYMENT_INFO": "If you confirm the payment, the user could download the invoice file, the attendance certificate file and presentation certificate file. The user could download these files just once.",
+    "_USER_PAYMENT_UPDATED_SUCCESFULLY": "User payment updated succesfully",
+    "_DOCUMENTS": "Documents",
+    "_DOWNLOAD_INFO": "To prevent fraud, you just could download each file ONCE. After first download, you could not download the file again.",
+    "_NO_PAYMENT_FILE": "It has not been verified any proof of payment so you can not download any document. Please, upload a proof of payment if you still did not upload it or wait until the proof of payment will be verified if you already upload the file.",
+    "_DOWNLOAD": "Download",
+    "_ATTENDANCE_FILE": "Attendance certificate",
+    "_PRESENTATION_FILE": "Presentation certificate",
+    "_DOWNLOAD_DISABLED": "You already download the file, you can not download it again.",
+    "_PASSWORD_REQUIREMENTS": "Use at least eight characters with a combination of letters, numbers and symbols",
+    "_CMMSE_CLOSED": "The access to CMMSE is closed",
+    "_CMMSE_CLOSED_INFO": "will be opened soon.",
+    "_USER_ALREADY_EXISTS": "User already exists",
+    "_CONFIRM_DOWNLOAD": "Confirm download",
+    "_CONFERENCE": "Conference title"
 }
