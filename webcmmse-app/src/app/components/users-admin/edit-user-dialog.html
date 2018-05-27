@@ -77,22 +77,8 @@
                 <mat-error *ngIf="formControl.hasError('required')">{{ '_WRONG_EMAIL' | translate }}</mat-error>
             </mat-form-field>
         </div>
-        <hr>
-        <!-- <ng-container *ngIf="data.user.payment_file">
-            <div class="row paymentUserAdmin">
-                <p class="col-sm-3 col-xs-5">
-                    <strong>{{'_PAYMENT_FILE' | translate}}</strong>
-                </p>
-                <a class="col-sm-3 col-xs-2" href="{{ data.user.payment_file.url_file }}" target="_blank">
-                    <i class="far fa-file"></i>
-                </a>
-                <mat-checkbox class="col-sm-6 col-xs-5" [(ngModel)]="data.user.check_payment" [disabled]="fieldsDisabled">
-                    &nbsp;{{ '_VALID_PAYMENT' | translate }}
-                </mat-checkbox>
-            </div>
-            <hr>
-        </ng-container> -->
         <ng-container *ngIf="data.user.bill">
+            <hr>
             <div class="row">
                 <p class="col-sm-12 col-xs-12">
                     <strong>{{'_BILL_INFO' | translate}}</strong>
@@ -126,9 +112,9 @@
                     <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
                 </mat-form-field>
             </div>
-            <hr>
         </ng-container>
         <ng-container *ngIf="data.user.papers && data.user.papers.length > 0">
+            <hr>
             <div class="row">
                 <p class="col-sm-12 col-xs-12">
                     <strong>{{'_PAPERS' | translate}}</strong>
@@ -153,6 +139,17 @@
                     </a>
                 </div>
             </ng-container>
+        </ng-container>
+        <ng-container *ngIf="data.user.presentation_downloaded || data.user.attendance_downloaded || data.user.invoice_downloaded">
+            <hr>
+            <div class="row">
+                <p class="col-sm-12 col-xs-12">
+                    <strong>{{'_RESET_DOCUMENTS' | translate}}</strong>
+                </p>
+                <div class="col-sm-12 col-xs-12">
+                    <button mat-raised-button color="warn" (click)="resetDocuments(data.user)" [disabled]="fieldsDisabled">{{'_RESET' | translate}}</button>
+                </div>
+            </div>
         </ng-container>
     </div>
     <div mat-dialog-actions>

@@ -42,7 +42,7 @@
     "_ACCORDANCE_TERMS": "Condiciones legales",
     "_SEE_DETAILS": "Ver detalles",
     "_WRONG_EMAIL": "Email no válido",
-    "_EMAIL_NO_MATCH": "Los emails no son iguales", 
+    "_EMAIL_NO_MATCH": "Los emails no son iguales",
     "_PASSWORD_NO_MATCH": "Las contraseñas no son iguales",
     "_REQUIRED_FIELDS_EMPTY": "Campos vacíos obligatorios",
     "_SUBMIT": "Enviar",
@@ -168,5 +168,8 @@
     "_CMMSE_CLOSED_INFO": "abrirá pronto.",
     "_USER_ALREADY_EXISTS": "Usuario ya existente",
     "_CONFIRM_DOWNLOAD": "Confirmar descarga",
-    "_CONFERENCE": "Título de conferencia"
+    "_CONFERENCE": "Título de conferencia",
+    "_RESET_DOCUMENTS": "Resetear documentos",
+    "_RESET": "Resetear",
+    "_DOCUMENTS_RESETED_SUCCESFULLY": "Documentos reseteados satisfactoriamente"
 }

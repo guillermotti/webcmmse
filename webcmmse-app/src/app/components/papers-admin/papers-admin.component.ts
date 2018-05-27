@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './papers-admin.component.html',
   styleUrls: ['./papers-admin.component.scss']
 })
-export class PapersAdminComponent implements OnInit, AfterViewInit {
+export class PapersAdminComponent implements OnInit {
 
   year; urlCMMSE; email;
   status = ['_UPLOADED', '_REVISION', '_ACCEPTED', '_REJECTED', '_MAJOR/_MINOR'];
@@ -43,6 +43,8 @@ export class PapersAdminComponent implements OnInit, AfterViewInit {
         response.forEach(item => {
           if (item.papers) {
             item.papers.forEach(paper => {
+              paper.corresponding_author = paper.authors[0].email;
+              paper.conference = paper.minisymposium;
               papers.push(paper);
             });
           }
@@ -58,17 +60,6 @@ export class PapersAdminComponent implements OnInit, AfterViewInit {
         this.urlCMMSE = response[0].conference_url;
         observable.unsubscribe();
       });
-    }
-  }
-
-  /**
- * Set the paginator and sort after the view init since this component will
- * be able to query its view for the initialized paginator and sort.
- */
-  ngAfterViewInit() {
-    if (this.papers) {
-      this.papers.paginator = this.paginator;
-      this.papers.sort = this.sort;
     }
   }
 
@@ -96,6 +87,8 @@ export class PapersAdminComponent implements OnInit, AfterViewInit {
           resp.forEach(itemUser => {
             if (itemUser.papers) {
               itemUser.papers.forEach(itemPaper => {
+                itemPaper.corresponding_author = itemPaper.authors[0].email;
+                itemPaper.conference = itemPaper.minisymposium;
                 papers.push(itemPaper);
               });
             }
@@ -136,6 +129,8 @@ export class PapersAdminComponent implements OnInit, AfterViewInit {
           response.forEach(item => {
             if (item.papers) {
               item.papers.forEach(paperItem => {
+                paperItem.corresponding_author = paperItem.authors[0].email;
+                paperItem.conference = paperItem.minisymposium;
                 papers.push(paperItem);
               });
             }
@@ -173,6 +168,8 @@ export class PapersAdminComponent implements OnInit, AfterViewInit {
           response.forEach(item => {
             if (item.papers) {
               item.papers.forEach(paperItem => {
+                paperItem.corresponding_author = paperItem.authors[0].email;
+                paperItem.conference = paperItem.minisymposium;
                 papers.push(paperItem);
               });
             }

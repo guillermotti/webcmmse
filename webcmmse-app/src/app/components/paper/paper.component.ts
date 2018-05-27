@@ -5,7 +5,7 @@ import { MatSnackBar, MatTableDataSource, MatPaginator, MatSort, MatDialog, MatD
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators/map';
+import { map } from 'rxjs/operators';
 
 import { AppConfig } from '../../config/app.config';
 import { FirebaseCallerService } from '../../services/firebase-caller.service';

@@ -86,13 +86,13 @@
           <!-- CONFERENCE Column -->
           <ng-container matColumnDef="conference">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_CONFERENCE' | translate }} </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.minisymposium}} </mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.conference}} </mat-cell>
           </ng-container>
 
           <!-- CORRESPONDING AUTHOR Column -->
           <ng-container matColumnDef="corresponding_author">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_CORRESPONDING_AUTHOR' | translate }} </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.authors[0].email}} </mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.corresponding_author}} </mat-cell>
           </ng-container>
 
           <!-- FILE Column -->

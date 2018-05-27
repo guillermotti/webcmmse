@@ -168,5 +168,8 @@
     "_CMMSE_CLOSED_INFO": "will be opened soon.",
     "_USER_ALREADY_EXISTS": "User already exists",
     "_CONFIRM_DOWNLOAD": "Confirm download",
-    "_CONFERENCE": "Conference title"
+    "_CONFERENCE": "Conference title",
+    "_RESET_DOCUMENTS": "Reset documents",
+    "_RESET": "Reset",
+    "_DOCUMENTS_RESETED_SUCCESFULLY": "Documents reseted succesfully"
 }
