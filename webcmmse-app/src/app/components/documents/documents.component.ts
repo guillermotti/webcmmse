@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { FirebaseCallerService } from '../../services/firebase-caller.service';
 import * as _ from 'lodash';
@@ -13,7 +13,7 @@ import * as jsPDF from 'jspdf';
 })
 export class DocumentsComponent implements OnInit {
 
-  year; urlCMMSE; email; check_payment; invoice_downloaded; attendance_downloaded; presentation_downloaded; bill; paper;
+  year; urlCMMSE; email; check_payment; invoice_downloaded; attendance_downloaded; presentation_downloaded; paper;
 
   constructor(public dialog: MatDialog, private translateService: TranslateService,
     private firebaseService: FirebaseCallerService, public snackBar: MatSnackBar) { }
@@ -36,8 +36,12 @@ export class DocumentsComponent implements OnInit {
         window.sessionStorage.setItem('config', JSON.stringify(response[0]));
       });
       this.email = user.email;
-      this.bill = _.isNil(user.bill) || _.isEmpty(user.bill) ? false : true;
-      this.paper = _.isNil(user.papers) || _.isEmpty(user.papers) ? false : true;
+      this.paper = false;
+      user.papers.forEach(paper => {
+        if (paper.state === '_ACCEPTED') {
+          this.paper = true;
+        }
+      });
     }
   }
 
@@ -45,14 +49,14 @@ export class DocumentsComponent implements OnInit {
     window.sessionStorage.clear();
   }
 
-  downloadInvoice() {
+  generateInvoice() {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     const config = JSON.parse(window.sessionStorage.getItem('config'));
     const initialDate = new Date(config.conference_initial_day);
     const endDate = new Date(config.conference_end_day);
     const today = new Date();
-    let userTitle = '';
-    this.translateService.get(user.bill.title).subscribe(response => {
+    let userTitle = user.bill ? user.bill.title : user.title;
+    this.translateService.get(userTitle).subscribe(response => {
       userTitle = response;
     });
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -87,19 +91,32 @@ export class DocumentsComponent implements OnInit {
         doc.setFontSize(14);
         doc.setTextColor(0, 0, 0);
         doc.setFontType('bolditalic');
-        doc.text(105, 80, 'INVOICE Num. ' + user.bill.invoice_number, null, null, 'center');
+        if (user.bill) {
+          doc.text(105, 80, 'INVOICE Num. ' + user.bill.invoice_number, null, null, 'center');
+        }
         doc.setFontSize(12);
         doc.setFontType('bold');
-        doc.text(25, 100, userTitle + ' ' + user.bill.first_name + ' ' + user.bill.last_name);
-        doc.text(25, 105, 'University/College/Company: ');
-        doc.text(25, 110, 'Address: ');
-        doc.text(25, 115, 'CIF/VAT Number/Tax ID: ');
-        doc.text(25, 135, 'Description');
-        doc.text(180, 135, 'Value', null, null, 'right');
-        doc.setFontType('normal');
-        doc.text(80, 105, user.bill.university_company);
-        doc.text(43, 110, user.bill.address);
-        doc.text(75, 115, user.bill.CIF);
+        if (user.bill) {
+          doc.text(25, 100, userTitle + ' ' + user.bill.first_name + ' ' + user.bill.last_name);
+          doc.text(25, 105, 'University/College/Company: ');
+          doc.text(25, 110, 'Address: ');
+          doc.text(25, 115, 'CIF/VAT Number/Tax ID: ');
+          doc.text(25, 135, 'Description');
+          doc.text(180, 135, 'Value', null, null, 'right');
+          doc.setFontType('normal');
+          doc.text(80, 105, user.bill.university_company);
+          doc.text(43, 110, user.bill.address);
+          doc.text(75, 115, user.bill.CIF);
+        } else {
+          doc.text(25, 100, userTitle + ' ' + user.first_name + ' ' + user.last_name);
+          doc.text(25, 105, 'University/College/Company: ');
+          doc.text(25, 110, 'Address: ');
+          doc.text(25, 135, 'Description');
+          doc.text(180, 135, 'Value', null, null, 'right');
+          doc.setFontType('normal');
+          doc.text(80, 105, user.university_company);
+          doc.text(43, 110, user.address);
+        }
         doc.rect(25, 136, 155, 0);
         doc.text(25, 140, 'CMMSE ' + config.conference_year + ' Registration Fee');
         doc.text(180, 140, config.fee_to_pay + ' euros', null, null, 'right');
@@ -109,7 +126,7 @@ export class DocumentsComponent implements OnInit {
         doc.text(105, 255, 'President of the Organizing Committee', null, null, 'center');
         doc.text(105, 260, 'CMMSE ' + config.conference_year, null, null, 'center');
         doc.fromHTML(sign, 85, 215, {}, function () {
-          doc.save(user.first_name + user.last_name + 'Invoice.pdf');
+          doc.save(user.first_name.replace(/\s/g, '') + user.last_name.replace(/\s/g, '') + 'Invoice.pdf');
         });
       });
     });
@@ -122,7 +139,7 @@ export class DocumentsComponent implements OnInit {
     });
   }
 
-  downloadAttendance() {
+  generateAttendance() {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     const config = JSON.parse(window.sessionStorage.getItem('config'));
     const initialDate = new Date(config.conference_initial_day);
@@ -202,7 +219,7 @@ export class DocumentsComponent implements OnInit {
     });
   }
 
-  downloadPresentation() {
+  generatePresentation() {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     const config = JSON.parse(window.sessionStorage.getItem('config'));
     const initialDate = new Date(config.conference_initial_day);
@@ -285,6 +302,68 @@ export class DocumentsComponent implements OnInit {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
       });
     });
+  }
+
+  downloadInvoice() {
+    const dialogRef = this.dialog.open(ConfirmDownloadDocumentDialogComponent, {
+      width: '400px',
+      data: { document: 'invoice' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'invoice') {
+        this.generateInvoice();
+      }
+      console.log('The dialog was closed', result);
+    });
+  }
+
+  downloadAttendance() {
+    const dialogRef = this.dialog.open(ConfirmDownloadDocumentDialogComponent, {
+      width: '400px',
+      data: { document: 'attendance' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'attendance') {
+        this.generateAttendance();
+      }
+      console.log('The dialog was closed', result);
+    });
+  }
+
+  downloadPresentation() {
+    const dialogRef = this.dialog.open(ConfirmDownloadDocumentDialogComponent, {
+      width: '400px',
+      data: { document: 'presentation' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'presentation') {
+        this.generatePresentation();
+      }
+      console.log('The dialog was closed', result);
+    });
+  }
+
+}
+
+@Component({
+  selector: 'app-confirm-download-document-dialog',
+  templateUrl: 'confirm-download-document-dialog.html',
+})
+export class ConfirmDownloadDocumentDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmDownloadDocumentDialogComponent>, private translationService: TranslateService,
+    public snackBar: MatSnackBar, private firebaseService: FirebaseCallerService, @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  onCancelClick(): void {
+    this.dialogRef.close();
+  }
+
+  downloadDocument() {
+    this.dialogRef.close(this.data.document);
   }
 
 }

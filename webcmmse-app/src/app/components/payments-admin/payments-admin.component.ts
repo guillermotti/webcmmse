@@ -78,8 +78,8 @@ export class PaymentsAdminComponent implements OnInit {
     const initialDate = new Date(config.conference_initial_day);
     const endDate = new Date(config.conference_end_day);
     const today = new Date();
-    let userTitle = '';
-    this.translationService.get(user.bill.title).subscribe(response => {
+    let userTitle = user.bill ? user.bill.title : user.title;
+    this.translationService.get(userTitle).subscribe(response => {
       userTitle = response;
     });
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -114,19 +114,32 @@ export class PaymentsAdminComponent implements OnInit {
         doc.setFontSize(14);
         doc.setTextColor(0, 0, 0);
         doc.setFontType('bolditalic');
-        doc.text(105, 80, 'INVOICE Num. ' + user.bill.invoice_number, null, null, 'center');
+        if (user.bill) {
+          doc.text(105, 80, 'INVOICE Num. ' + user.bill.invoice_number, null, null, 'center');
+        }
         doc.setFontSize(12);
         doc.setFontType('bold');
-        doc.text(25, 100, userTitle + ' ' + user.bill.first_name + ' ' + user.bill.last_name);
-        doc.text(25, 105, 'University/College/Company: ');
-        doc.text(25, 110, 'Address: ');
-        doc.text(25, 115, 'CIF/VAT Number/Tax ID: ');
-        doc.text(25, 135, 'Description');
-        doc.text(180, 135, 'Value', null, null, 'right');
-        doc.setFontType('normal');
-        doc.text(80, 105, user.bill.university_company);
-        doc.text(43, 110, user.bill.address);
-        doc.text(75, 115, user.bill.CIF);
+        if (user.bill) {
+          doc.text(25, 100, userTitle + ' ' + user.bill.first_name + ' ' + user.bill.last_name);
+          doc.text(25, 105, 'University/College/Company: ');
+          doc.text(25, 110, 'Address: ');
+          doc.text(25, 115, 'CIF/VAT Number/Tax ID: ');
+          doc.text(25, 135, 'Description');
+          doc.text(180, 135, 'Value', null, null, 'right');
+          doc.setFontType('normal');
+          doc.text(80, 105, user.bill.university_company);
+          doc.text(43, 110, user.bill.address);
+          doc.text(75, 115, user.bill.CIF);
+        } else {
+          doc.text(25, 100, userTitle + ' ' + user.first_name + ' ' + user.last_name);
+          doc.text(25, 105, 'University/College/Company: ');
+          doc.text(25, 110, 'Address: ');
+          doc.text(25, 135, 'Description');
+          doc.text(180, 135, 'Value', null, null, 'right');
+          doc.setFontType('normal');
+          doc.text(80, 105, user.university_company);
+          doc.text(43, 110, user.address);
+        }
         doc.rect(25, 136, 155, 0);
         doc.text(25, 140, 'CMMSE ' + config.conference_year + ' Registration Fee');
         doc.text(180, 140, config.fee_to_pay + ' euros', null, null, 'right');
@@ -136,7 +149,7 @@ export class PaymentsAdminComponent implements OnInit {
         doc.text(105, 255, 'President of the Organizing Committee', null, null, 'center');
         doc.text(105, 260, 'CMMSE ' + config.conference_year, null, null, 'center');
         doc.fromHTML(sign, 85, 215, {}, function () {
-          doc.save('prueba.pdf');
+          doc.save(user.first_name.replace(/\s/g, '') + user.last_name.replace(/\s/g, '') + 'Invoice.pdf');
         });
       });
     });
@@ -161,7 +174,7 @@ export class ConfirmPaymentDialogComponent {
 
   changeStatusPayment(user) {
     const observable = this.firebaseService.getCollection('config').subscribe(response => {
-      if (user.check_payment === true && _.isNil(user.bill.invoice_number)) {
+      if (user.check_payment === true && user.bill && _.isNil(user.bill.invoice_number)) {
         if (user.country === 'Spain') {
           user.bill.invoice_number = response[0].bill_spain;
           response[0].bill_spain = response[0].bill_spain + 1;

@@ -162,5 +162,11 @@
     "_DOWNLOAD": "Descargar",
     "_ATTENDANCE_FILE": "Certificado de asistencia",
     "_PRESENTATION_FILE": "Certificado de ponencia",
-    "_DOWNLOAD_DISABLED": "Ya has descargado el archivo, no podrá volver a descargarlo."
+    "_DOWNLOAD_DISABLED": "Ya has descargado el archivo, no podrá volver a descargarlo.",
+    "_PASSWORD_REQUIREMENTS": "Utiliza ocho caracteres como mínimo con una combinación de letras, números y símbolos",
+    "_CMMSE_CLOSED": "El acceso a CMMSE está cerrado",
+    "_CMMSE_CLOSED_INFO": "abrirá pronto.",
+    "_USER_ALREADY_EXISTS": "Usuario ya existente",
+    "_CONFIRM_DOWNLOAD": "Confirmar descarga",
+    "_CONFERENCE": "Título de conferencia"
 }

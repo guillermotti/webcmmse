@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './papers-admin.component.html',
   styleUrls: ['./papers-admin.component.scss']
 })
-export class PapersAdminComponent implements OnInit {
+export class PapersAdminComponent implements OnInit, AfterViewInit {
 
   year; urlCMMSE; email;
   status = ['_UPLOADED', '_REVISION', '_ACCEPTED', '_REJECTED', '_MAJOR/_MINOR'];
@@ -58,6 +58,17 @@ export class PapersAdminComponent implements OnInit {
         this.urlCMMSE = response[0].conference_url;
         observable.unsubscribe();
       });
+    }
+  }
+
+  /**
+ * Set the paginator and sort after the view init since this component will
+ * be able to query its view for the initialized paginator and sort.
+ */
+  ngAfterViewInit() {
+    if (this.papers) {
+      this.papers.paginator = this.paginator;
+      this.papers.sort = this.sort;
     }
   }
 
