@@ -52,7 +52,8 @@
     <ng-container *ngIf="checkPapers()">
       <div class="container">
         <div class="content-section-heading">
-          <h5 class="mt-5"><i class="fas fa-archive"></i> &nbsp; {{ '_MY_PAPERS' | translate}}</h5>
+          <h5 class="mt-5">
+            <i class="fas fa-archive"></i> &nbsp; {{ '_MY_PAPERS' | translate}}</h5>
           <br>
         </div>
       </div>
@@ -107,9 +108,11 @@
                   <i class="far fa-edit"></i>
                 </a>
                 &nbsp;
-                <a (click)="clickDeletePaper(row)">
-                  <i class="far fa-trash-alt"></i>
-                </a>
+                <ng-container *ngIf="isPaperUploaded(row)">
+                  <a (click)="clickDeletePaper(row)">
+                    <i class="far fa-trash-alt"></i>
+                  </a>
+                </ng-container>
               </mat-cell>
             </ng-container>
 

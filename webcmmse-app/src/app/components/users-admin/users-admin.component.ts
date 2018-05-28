@@ -175,6 +175,28 @@ export class EditUserDialogComponent implements OnInit {
     return false;
   }
 
+  resetDocuments(user) {
+    if (user.attendance_downloaded === true) {
+      user.attendance_downloaded = false;
+    }
+    if (user.invoice_downloaded === true) {
+      user.invoice_downloaded = false;
+    }
+    if (user.presentation_downloaded === true) {
+      user.presentation_downloaded = false;
+    }
+    this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
+      this.firebaseService.getCollection('users').subscribe(response => {
+        window.sessionStorage.setItem('users', JSON.stringify(response));
+      });
+      this.translationService.get('_DOCUMENTS_RESETED_SUCCESFULLY').subscribe(resp => {
+        this.snackBar.open(resp, null, {
+          duration: 2000,
+        });
+      });
+    });
+  }
+
 }
 
 @Component({

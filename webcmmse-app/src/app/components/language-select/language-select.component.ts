@@ -21,6 +21,8 @@ export class LanguageSelectComponent {
     @Input()
     items: Array<String>;
 
+    lang: string;
+
     /**
      Defines a behaviour when select component is selected. In this case, it calls to onChangeFunction
      @public
@@ -51,6 +53,7 @@ export class LanguageSelectComponent {
     constructor(public translate: TranslateService) {
         translate.addLangs(AppConfig.langs);
         translate.setDefaultLang(AppConfig.defaultLang);
+        this.lang = AppConfig.defaultLang;
     }
 
 }

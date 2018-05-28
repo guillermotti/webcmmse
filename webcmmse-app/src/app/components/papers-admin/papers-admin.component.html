@@ -59,7 +59,8 @@
   <section class="content-section text-center">
     <div class="container">
       <div class="content-section-heading">
-        <h1 class="mt-5"><i class="fas fa-archive"></i> &nbsp; {{ '_PAPERS' | translate}}</h1>
+        <h1 class="mt-5">
+          <i class="fas fa-archive"></i> &nbsp; {{ '_PAPERS' | translate}}</h1>
       </div>
     </div>
   </section>
@@ -85,18 +86,18 @@
           <!-- CONFERENCE Column -->
           <ng-container matColumnDef="conference">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_CONFERENCE' | translate }} </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.minisymposium}} </mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.conference}} </mat-cell>
           </ng-container>
 
           <!-- CORRESPONDING AUTHOR Column -->
           <ng-container matColumnDef="corresponding_author">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_CORRESPONDING_AUTHOR' | translate }} </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.authors ? row.authors[0].email : ''}} </mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.corresponding_author}} </mat-cell>
           </ng-container>
 
           <!-- FILE Column -->
           <ng-container matColumnDef="file">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_PAPER' | translate }} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_PAPER' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
               &nbsp;
               <ng-container *ngIf=" row.url_file !== ''">
@@ -107,9 +108,9 @@
             </mat-cell>
           </ng-container>
 
-          <!-- COUNTRY Column -->
+          <!-- STATE Column -->
           <ng-container matColumnDef="status">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_STATE' | translate }} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_STATE' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
               <mat-form-field>
                 <mat-select [(ngModel)]="row.state" (change)="changeStatus(row)">
@@ -141,7 +142,7 @@
           </mat-row>
         </mat-table>
 
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        <mat-paginator [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
       </div>
     </div>
     <br>

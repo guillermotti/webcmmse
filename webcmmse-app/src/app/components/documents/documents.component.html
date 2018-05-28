@@ -63,9 +63,9 @@
       </div>
       <div *ngIf="check_payment">
         <div class="example-container">
-          <p>{{ '_DOWNLOAD_INFO' | translate }}</p>
+          <p><strong>{{ '_IMPORTANT' | translate }}</strong> {{ '_DOWNLOAD_INFO' | translate }}</p>
         </div>
-        <div *ngIf="bill" class="content-section-heading">
+        <div class="content-section-heading">
           <h6 class="mt-5">{{ '_INVOICE_FILE' | translate}}</h6>
           <div *ngIf="invoice_downloaded" class="example-container">
             <p>{{ '_DOWNLOAD_DISABLED' | translate }}</p>

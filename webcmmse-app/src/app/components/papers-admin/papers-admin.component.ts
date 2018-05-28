@@ -43,6 +43,8 @@ export class PapersAdminComponent implements OnInit {
         response.forEach(item => {
           if (item.papers) {
             item.papers.forEach(paper => {
+              paper.corresponding_author = paper.authors[0].email;
+              paper.conference = paper.minisymposium;
               papers.push(paper);
             });
           }
@@ -85,6 +87,8 @@ export class PapersAdminComponent implements OnInit {
           resp.forEach(itemUser => {
             if (itemUser.papers) {
               itemUser.papers.forEach(itemPaper => {
+                itemPaper.corresponding_author = itemPaper.authors[0].email;
+                itemPaper.conference = itemPaper.minisymposium;
                 papers.push(itemPaper);
               });
             }
@@ -125,6 +129,8 @@ export class PapersAdminComponent implements OnInit {
           response.forEach(item => {
             if (item.papers) {
               item.papers.forEach(paperItem => {
+                paperItem.corresponding_author = paperItem.authors[0].email;
+                paperItem.conference = paperItem.minisymposium;
                 papers.push(paperItem);
               });
             }
@@ -162,6 +168,8 @@ export class PapersAdminComponent implements OnInit {
           response.forEach(item => {
             if (item.papers) {
               item.papers.forEach(paperItem => {
+                paperItem.corresponding_author = paperItem.authors[0].email;
+                paperItem.conference = paperItem.minisymposium;
                 papers.push(paperItem);
               });
             }
