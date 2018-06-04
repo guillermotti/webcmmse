@@ -169,7 +169,7 @@
       <mat-error *ngIf="form.email !== form.emailCheck && !emailControl2.hasError('required')">{{ '_EMAIL_NO_MATCH' | translate }}</mat-error>
       <mat-error *ngIf="form.password !== form.passwordCheck">{{ '_PASSWORD_NO_MATCH' | translate }}</mat-error>
       <mat-error *ngIf="areFieldsEmpty()">{{ '_REQUIRED_FIELDS_EMPTY' | translate }}</mat-error>
-      <mat-error *ngIf="arePasswordWeak()">{{ '_PASSWORD_REQUIREMENTS' | translate }}</mat-error>
+      <mat-error *ngIf="isPasswordWeak()">{{ '_PASSWORD_REQUIREMENTS' | translate }}</mat-error>
     </div>
     <br>
   </section>

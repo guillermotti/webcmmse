@@ -169,8 +169,18 @@ export class ChangePasswordDialogComponent implements OnDestroy {
 
   areFieldsEmpty() {
     if (this.newPassword === '' || this.newPasswordCheck === '' || this.oldPassword === '' || this.newPassword !== this.newPasswordCheck
-      || _.isNil(this.newPassword) || _.isNil(this.newPasswordCheck) || _.isNil(this.oldPassword)) {
+      || _.isNil(this.newPassword) || _.isNil(this.newPasswordCheck) || _.isNil(this.oldPassword || this.isPasswordWeak())) {
       return true;
+    }
+  }
+
+  isPasswordWeak() {
+    const pwd = this.newPassword;
+    const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*\d)(?=.*[^A-Za-z0-9])([A-Za-z\d$@$!%*?&]|[^ ]){8,}$/;
+    if (!regex.test(pwd)) {
+      return true;
+    } else {
+      return false;
     }
   }
 

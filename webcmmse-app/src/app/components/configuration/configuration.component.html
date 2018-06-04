@@ -59,7 +59,8 @@
   <section class="content-section text-center">
     <div class="container">
       <div class="content-section-heading">
-        <h1 class="mt-5"><i class="fas fa-wrench"></i> &nbsp; {{ '_CONFIG' | translate}}</h1>
+        <h1 class="mt-5">
+          <i class="fas fa-wrench"></i> &nbsp; {{ '_CONFIG' | translate}}</h1>
       </div>
     </div>
   </section>
@@ -160,6 +161,45 @@
           <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
         </mat-form-field>
       </div>
+    </div>
+    <br>
+  </section>
+  <section class="content-section">
+    <div class="container">
+      <div class="row">
+        <p class="col-sm-12 col-xs-12">
+          <strong>{{'_EMAIL_CONFIGURATION' | translate}}</strong>
+        </p>
+      </div>
+      <br>
+      <div class="row">
+        <mat-form-field class="col-sm-6 col-xs-12">
+          <input matInput #input placeholder="{{ '_MAIL_SENDER' | translate}}" [(ngModel)]="config.email_sender" [disabled]="fieldsDisabled"
+            required>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-sm-6 col-xs-12">
+          <input matInput #input placeholder="{{ '_EMAIL_PASSWORD' | translate}}" [type]="hide ? 'password' : 'text'" [(ngModel)]="emailPassword"
+            [disabled]="fieldsDisabled" required>
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+      <br>
+      <div class="row">
+        <mat-form-field class="col-sm-12 col-xs-12">
+          <mat-chip-list #chipList>
+            <mat-chip *ngFor="let email of config.emails" [selectable]="!fieldsDisabled" [removable]="!fieldsDisabled" (remove)="remove(email)">
+              {{email}}
+              <mat-icon matChipRemove *ngIf="!fieldsDisabled">cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="{{ '_BCC_EMAILS' | translate}}" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]=true
+              (matChipInputTokenEnd)="add($event)" [disabled]="fieldsDisabled"/>
+          </mat-chip-list>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+      <br>
     </div>
     <br>
   </section>

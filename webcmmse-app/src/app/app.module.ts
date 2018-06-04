@@ -85,6 +85,7 @@ import {
 import { PaymentsAdminComponent, ConfirmPaymentDialogComponent } from './components/payments-admin/payments-admin.component';
 import { DocumentsComponent, ConfirmDownloadDocumentDialogComponent } from './components/documents/documents.component';
 import { ClosedComponent } from './components/closed/closed.component';
+import { MailSenderService } from './services/mail-sender.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -246,7 +247,8 @@ export class MaterialModule { }
   ],
   providers: [
     FirebaseCallerService,
-    CryptoService
+    CryptoService,
+    MailSenderService
   ],
   bootstrap: [AppComponent]
 })

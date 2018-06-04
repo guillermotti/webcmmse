@@ -12,6 +12,8 @@ import { FirebaseCallerService } from '../../services/firebase-caller.service';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { CryptoService } from '../../services/crypto.service';
+import { MailSenderService } from '../../services/mail-sender.service';
 
 @Component({
   selector: 'app-paper',
@@ -20,7 +22,7 @@ import { Router } from '@angular/router';
 })
 export class PaperComponent implements OnInit, AfterViewInit {
 
-  year; urlCMMSE; email;
+  year; urlCMMSE; email; emailBCC; emailSender; emailPass;
   minisymposiums = [];
   paper = {
     'minisymposium': '',
@@ -53,7 +55,8 @@ export class PaperComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private storage: AngularFireStorage, private firebaseService: FirebaseCallerService, public dialog: MatDialog,
-    private translationService: TranslateService, public snackBar: MatSnackBar, private router: Router) {
+    private translationService: TranslateService, public snackBar: MatSnackBar, private mailSenderService: MailSenderService,
+    private router: Router, private cryptoService: CryptoService) {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     // Assign the data to the data source for the table to render
     this.currentPapers = new MatTableDataSource(user.papers);
@@ -197,6 +200,15 @@ export class PaperComponent implements OnInit, AfterViewInit {
         this.snackBar.open(translate, null, {
           duration: 2000,
         });
+        const form = {
+          year: this.year, emailSender: this.emailSender, date: new Date().toString(), user: user.first_name + ' ' + user.last_name,
+          emailPass: this.emailPass, name: _.capitalize(user.first_name) + ' ' + _.capitalize(user.last_name),
+          title: this.paper.title, url: this.fileURL, bcc: this.emailBCC,
+          author: this.paper.authors[0].first_name + ' ' + this.paper.authors[0].last_name, authorEmail: this.paper.authors[0].email
+        };
+        this.mailSenderService.sendNewPaperMessage(form).subscribe(() => {
+          console.log('Mensaje enviado correctamente');
+        });
         // Removing all values and scrolling to top
         this.currentPapers = new MatTableDataSource(user.papers);
         this.currentPapers.paginator = this.paginator;
@@ -331,7 +343,7 @@ export class PaperComponent implements OnInit, AfterViewInit {
 })
 export class EditPaperDialogComponent implements OnInit {
 
-  minisymposiums = [];
+  minisymposiums = []; year; emailBCC; emailSender; emailPass;
   formControl = new FormControl('', [Validators.required]);
   // For upload file
   fileName; fileURL; progressBarValue;
@@ -344,7 +356,8 @@ export class EditPaperDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<EditPaperDialogComponent>, private translationService: TranslateService, public snackBar: MatSnackBar,
-    private firebaseService: FirebaseCallerService, @Inject(MAT_DIALOG_DATA) public data: any, private storage: AngularFireStorage) { }
+    private firebaseService: FirebaseCallerService, @Inject(MAT_DIALOG_DATA) public data: any, private storage: AngularFireStorage,
+    private cryptoService: CryptoService, private mailSenderService: MailSenderService) { }
 
   ngOnInit() {
     this.firebaseService.getCollection('conferences').subscribe(response => {
@@ -357,6 +370,12 @@ export class EditPaperDialogComponent implements OnInit {
         sortedValues.push({ value: item });
       });
       this.minisymposiums = sortedValues;
+    });
+    this.firebaseService.getCollection('config').subscribe(response => {
+      this.year = response[0].conference_year;
+      this.emailBCC = response[0].emails;
+      this.emailSender = response[0].email_sender;
+      this.emailPass = this.cryptoService.decrypt(response[0].email_password);
     });
     this.fileURL = this.data.paper.url_file;
     this.fileName = this.data.paper.name_file !== '' ? this.data.paper.name_file : '_FILE_NAME';
@@ -449,6 +468,18 @@ export class EditPaperDialogComponent implements OnInit {
           duration: 2000,
         });
       });
+      if (this.data.paper.state === '_MAJOR/_MINOR') {
+        const form = {
+          year: this.year, emailSender: this.emailSender, url: this.data.paper.url_file,
+          author: this.data.paper.authors[0].first_name + ' ' + this.data.paper.authors[0].last_name,
+          authorEmail: this.data.paper.authors[0].email, date: new Date().toString(),
+          emailPass: this.emailPass, title: this.data.paper.title,
+          bcc: this.emailBCC
+        };
+        this.mailSenderService.sendChangeDataPaperMessage(form).subscribe(() => {
+          console.log('Mensaje enviado correctamente');
+        });
+      }
     });
     this.dialogRef.close();
   }
