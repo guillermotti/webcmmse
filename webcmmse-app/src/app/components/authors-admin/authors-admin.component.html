@@ -78,19 +78,19 @@
         <mat-table [dataSource]="authors" matSort>
 
           <!-- FIRST NAME Column -->
-          <ng-container matColumnDef="firstName">
+          <ng-container matColumnDef="first_name">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_NAME' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.first_name}} </mat-cell>
           </ng-container>
 
           <!-- LAST NAME Column -->
-          <ng-container matColumnDef="lastName">
+          <ng-container matColumnDef="last_name">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_LAST_NAME' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.last_name}} </mat-cell>
           </ng-container>
 
           <!-- UNIVERSITY Column -->
-          <ng-container matColumnDef="university">
+          <ng-container matColumnDef="university_company">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_UNIVERSITY' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.university_company}} </mat-cell>
           </ng-container>

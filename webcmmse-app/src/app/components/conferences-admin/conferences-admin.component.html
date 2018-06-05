@@ -78,7 +78,7 @@
         <mat-table [dataSource]="conferences" matSort>
 
           <!-- TITLE Column -->
-          <ng-container matColumnDef="title">
+          <ng-container matColumnDef="value">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_TITLE' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.value}} </mat-cell>
           </ng-container>

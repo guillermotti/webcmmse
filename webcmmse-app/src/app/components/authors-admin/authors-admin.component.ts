@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatSnackBar } from '@angular/material';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { FirebaseCallerService } from '../../services/firebase-caller.service';
@@ -16,7 +16,7 @@ export class AuthorsAdminComponent implements OnInit {
   year; urlCMMSE; email; conference;
 
   // Table purposes
-  displayedColumns = ['firstName', 'lastName', 'university', 'country', 'numberPapers', 'numberPosters'];
+  displayedColumns = ['first_name', 'last_name', 'university_company', 'country', 'numberPapers', 'numberPosters'];
   authors: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -32,7 +32,7 @@ export class AuthorsAdminComponent implements OnInit {
       this.router.navigate(['login']);
     } else {
       // Assign the data to the data source for the table to render
-      this.firebaseService.getCollection('users').subscribe(users => {
+      const obser = this.firebaseService.getCollection('users').subscribe(users => {
         const usersWithPapers = [];
         users.forEach(item => {
           if (!_.isEmpty(item.papers)) {
@@ -50,12 +50,14 @@ export class AuthorsAdminComponent implements OnInit {
         this.authors = new MatTableDataSource(usersWithPapers);
         this.authors.paginator = this.paginator;
         this.authors.sort = this.sort;
+        obser.unsubscribe();
       });
       this.email = user.user;
-      this.firebaseService.getCollection('config').subscribe(response => {
+      const observable = this.firebaseService.getCollection('config').subscribe(response => {
         this.year = response[0].conference_year;
         this.urlCMMSE = response[0].conference_url;
         window.sessionStorage.setItem('config', JSON.stringify(response[0]));
+        observable.unsubscribe();
       });
     }
   }

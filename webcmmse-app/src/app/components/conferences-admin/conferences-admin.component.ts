@@ -18,7 +18,7 @@ export class ConferencesAdminComponent implements OnInit, AfterViewInit {
   isNew = true;
 
   // Table purposes
-  displayedColumns = ['title', 'papers', 'posters', 'actions'];
+  displayedColumns = ['value', 'papers', 'posters', 'actions'];
   conferences: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

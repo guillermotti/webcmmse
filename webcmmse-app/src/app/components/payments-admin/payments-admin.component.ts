@@ -18,7 +18,7 @@ export class PaymentsAdminComponent implements OnInit {
   isNew = true;
 
   // Table purposes
-  displayedColumns = ['fullName', 'email', 'country', 'paymentFile', 'checkPayment', 'invoice'];
+  displayedColumns = ['first_name', 'email', 'country', 'paymentFile', 'checkPayment', 'invoice'];
   payments: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

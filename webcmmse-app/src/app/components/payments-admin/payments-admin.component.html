@@ -78,7 +78,7 @@
         <mat-table [dataSource]="payments" matSort>
 
           <!-- NAME Column -->
-          <ng-container matColumnDef="fullName">
+          <ng-container matColumnDef="first_name">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_FULL_NAME' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.first_name}} {{row.last_name}}</mat-cell>
           </ng-container>
@@ -97,7 +97,7 @@
 
           <!-- PAYMENTFILE Column -->
           <ng-container matColumnDef="paymentFile">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_PAYMENT_FILE' | translate }} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_PAYMENT_FILE' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
               &nbsp;
               <ng-container *ngIf="row.payment_file && row.payment_file.url_file !== ''">
@@ -110,7 +110,7 @@
 
           <!-- CHECKPAYMENT Column -->
           <ng-container matColumnDef="checkPayment">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_PAID' | translate }} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_PAID' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
               <mat-checkbox [(ngModel)]="row.check_payment" [disabled]="!row.payment_file || row.payment_file.url_file === ''" (change)=checkPayment(row)>
               </mat-checkbox>
