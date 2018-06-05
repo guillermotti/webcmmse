@@ -18,7 +18,7 @@ export class PaymentsAdminComponent implements OnInit {
   isNew = true;
 
   // Table purposes
-  displayedColumns = ['first_name', 'email', 'country', 'paymentFile', 'checkPayment', 'invoice'];
+  displayedColumns = ['first_name', 'email', 'country', 'paymentFile', 'tax', 'checkPayment', 'invoice'];
   payments: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -71,6 +71,10 @@ export class PaymentsAdminComponent implements OnInit {
         this.payments.sort = this.sort;
       });
     });
+  }
+
+  changeTax(user) {
+    this.firebaseService.updateItemFromCollection('users', user.id, user);
   }
 
   generateInvoice(user) {
@@ -142,7 +146,7 @@ export class PaymentsAdminComponent implements OnInit {
         }
         doc.rect(25, 136, 155, 0);
         doc.text(25, 140, 'CMMSE ' + config.conference_year + ' Registration Fee');
-        doc.text(180, 140, config.fee_to_pay + ' euros', null, null, 'right');
+        doc.text(180, 140, user.tax + ' euros', null, null, 'right');
         doc.text(180, 180, monthNames[today.getMonth()] + ' ' + today.getDate() + ', ' + today.getFullYear(), null, null, 'right');
         doc.setFontType('bold');
         doc.text(105, 250, 'Jesús Vigo Aguiar', null, null, 'center');

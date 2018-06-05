@@ -37,7 +37,7 @@
             <a class="nav-link" routerLink="/conferences-admin" routerLinkActive="active">{{ '_CONFERENCES' | translate }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/social-admin" routerLinkActive="active">{{ '_SOCIAL_EVENTS' | translate }}</a>
+            <a class="nav-link" routerLink="/documents-admin" routerLinkActive="active">{{ '_DOCUMENTS' | translate }}</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/configuration-admin" routerLinkActive="active">{{ '_CONFIG' | translate }}</a>
@@ -99,7 +99,7 @@
           <ng-container matColumnDef="paymentFile">
             <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_PAYMENT_FILE' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
-              &nbsp;
+              &nbsp; &nbsp;
               <ng-container *ngIf="row.payment_file && row.payment_file.url_file !== ''">
                 <a href="{{ row.payment_file.url_file }}" target="_blank">
                   <i class="far fa-file"></i>
@@ -108,10 +108,22 @@
             </mat-cell>
           </ng-container>
 
+          <!-- TAX Column -->
+          <ng-container matColumnDef="tax">
+            <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_TO_PAID' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-form-field>
+                <input matInput #input type="number" (blur)=changeTax(row) [(ngModel)]="row.tax">
+                <i class="fas fa-euro-sign" matSuffix></i>
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+
           <!-- CHECKPAYMENT Column -->
           <ng-container matColumnDef="checkPayment">
             <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_PAID' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
+              &nbsp;
               <mat-checkbox [(ngModel)]="row.check_payment" [disabled]="!row.payment_file || row.payment_file.url_file === ''" (change)=checkPayment(row)>
               </mat-checkbox>
             </mat-cell>
@@ -121,7 +133,7 @@
           <ng-container matColumnDef="invoice">
             <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_INVOICE_FILE' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
-              &nbsp;
+              &nbsp; &nbsp;
               <a *ngIf="row.check_payment" (click)="generateInvoice(row)">
                 <i class="far fa-file"></i>
               </a>

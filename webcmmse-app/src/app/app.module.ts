@@ -87,6 +87,7 @@ import { DocumentsComponent, ConfirmDownloadDocumentDialogComponent } from './co
 import { ClosedComponent } from './components/closed/closed.component';
 import { MailSenderService } from './services/mail-sender.service';
 import { AuthorsAdminComponent } from './components/authors-admin/authors-admin.component';
+import { DocumentsAdminComponent } from './components/documents-admin/documents-admin.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -111,6 +112,7 @@ const appRoutes: Routes = [
   { path: 'paper', component: PaperComponent },
   { path: 'users-admin', component: UsersAdminComponent },
   { path: 'authors-admin', component: AuthorsAdminComponent },
+  { path: 'documents-admin', component: DocumentsAdminComponent },
   { path: 'configuration-admin', component: ConfigurationComponent },
   { path: 'conferences-admin', component: ConferencesAdminComponent },
   { path: 'papers-admin', component: PapersAdminComponent },
@@ -190,7 +192,8 @@ export class MaterialModule { }
     DocumentsComponent,
     ClosedComponent,
     ConfirmDownloadDocumentDialogComponent,
-    AuthorsAdminComponent
+    AuthorsAdminComponent,
+    DocumentsAdminComponent
   ],
   imports: [
     BrowserModule,
@@ -247,7 +250,8 @@ export class MaterialModule { }
     DocumentsComponent,
     ClosedComponent,
     ConfirmDownloadDocumentDialogComponent,
-    AuthorsAdminComponent
+    AuthorsAdminComponent,
+    DocumentsAdminComponent
   ],
   providers: [
     FirebaseCallerService,

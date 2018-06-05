@@ -36,7 +36,8 @@ export class RegistrationComponent implements OnInit {
     'year': '',
     'bcc': '',
     'emailSender': '',
-    'emailPass': ''
+    'emailPass': '',
+    'tax': ''
   };
 
   formControl = new FormControl('', [Validators.required]);
@@ -57,6 +58,7 @@ export class RegistrationComponent implements OnInit {
       this.emailBCC = response[0].emails;
       this.emailSender = response[0].email_sender;
       this.emailPass = this.cryptoService.decrypt(response[0].email_password);
+      this.form.tax = response[0].fee_to_pay;
     });
     const passCheckInput = document.getElementById('passCheck');
     const emailCheckInput = document.getElementById('emailCheck');
