@@ -53,7 +53,7 @@ export class ConfigurationComponent implements OnInit {
   ngOnInit() {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     if (_.isNil(user)) {
-      window.location.href = window.location.href.split('users-admin')[0] + 'login';
+      this.router.navigate(['login']);
     } else {
       this.firebaseService.getCollection('config').subscribe(response => {
         this.config = response[0];

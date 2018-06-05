@@ -38,7 +38,7 @@ export class PapersAdminComponent implements OnInit {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     const papers = [];
     if (_.isNil(user)) {
-      window.location.href = window.location.href.split('users-admin')[0] + 'login';
+      this.router.navigate(['login']);
     } else {
       // Assign the data to the data source for the table to render
       const obser = this.firebaseService.getCollection('users').subscribe(response => {
