@@ -1,0 +1,21 @@
+@media (min-width: 992px) {
+    ul {
+        width: 100%;
+
+        li:nth-child(8) {
+            width: 15%;
+            text-align: right;
+        }
+
+        text-align: center;
+    }
+}
+
+.marginBottomDocuments {
+    margin-bottom: 10%;
+}
+
+.green {
+    background-color: green;
+    color: white;
+}

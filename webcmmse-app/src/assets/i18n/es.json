@@ -133,7 +133,6 @@
     "_USER_DELETED_SUCCESFULLY": "Usuario eliminado correctamente",
     "_CORRESPONDING_AUTHOR": "Autor principal",
     "_UPLOADED": "SUBIDO",
-    "_SOCIAL_EVENTS": "Eventos sociales",
     "_POSTERS": "Posters",
     "_NEW_CONFERENCE": "Nueva conferencia",
     "_ADD_CONFERENCE": "Añadir conferencia",
@@ -171,5 +170,13 @@
     "_CONFERENCE": "Título de conferencia",
     "_RESET_DOCUMENTS": "Resetear documentos",
     "_RESET": "Resetear",
-    "_DOCUMENTS_RESETED_SUCCESFULLY": "Documentos reseteados satisfactoriamente"
+    "_DOCUMENTS_RESETED_SUCCESFULLY": "Documentos reseteados satisfactoriamente",
+    "_TO_PAID": "A pagar",
+    "_EMAIL_CONFIGURATION": "Configuración de email",
+    "_EMAIL_SENDER": "Email de envío",
+    "_EMAIL_PASSWORD": "Contraseña de email de envío",
+    "_BCC_EMAILS": "Emails en copia oculta (BCC)",
+    "_PDF_DOCUMENTS": "Documentos PDF",
+    "_EXCEL_DOCUMENTS": "Documentos EXCEL",
+    "_ID_BADGE": "Etiquetas"
 }

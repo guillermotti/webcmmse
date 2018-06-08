@@ -18,7 +18,7 @@ export class PaymentsAdminComponent implements OnInit {
   isNew = true;
 
   // Table purposes
-  displayedColumns = ['fullName', 'email', 'country', 'paymentFile', 'checkPayment', 'invoice'];
+  displayedColumns = ['first_name', 'email', 'country', 'paymentFile', 'tax', 'checkPayment', 'invoice'];
   payments: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -31,7 +31,7 @@ export class PaymentsAdminComponent implements OnInit {
   ngOnInit() {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     if (_.isNil(user)) {
-      window.location.href = window.location.href.split('users-admin')[0] + 'login';
+      this.router.navigate(['login']);
     } else {
       // Assign the data to the data source for the table to render
       this.firebaseService.getCollection('users').subscribe(users => {
@@ -73,6 +73,10 @@ export class PaymentsAdminComponent implements OnInit {
     });
   }
 
+  changeTax(user) {
+    this.firebaseService.updateItemFromCollection('users', user.id, user);
+  }
+
   generateInvoice(user) {
     const config = JSON.parse(window.sessionStorage.getItem('config'));
     const initialDate = new Date(config.conference_initial_day);
@@ -90,71 +94,67 @@ export class PaymentsAdminComponent implements OnInit {
       unit: 'mm',
       format: 'a4'
     });
-    const waterMark = `<div style="position:absolute; width:100%; height:100%; opacity: 0.1">
-      <img src="../../../assets/img/ave.jpg" style="width:120; height:170;"></div>`;
-    const cmmseImage = `<div style="position:absolute; width:20%; height:20%; opacity: 0.1">
-    <img src="../../../assets/img/CMMSE.jpg" style="width:70; height:45"></div>`;
-    const sign = `<div style="position:absolute; width:100%; height:10%; opacity: 0.1">
-    <img src="../../../assets/img/FirmaJesus.jpg" style="width:50; height:30"></div>`;
-    doc.fromHTML(waterMark, 50, 50, {}, function () {
-      doc.fromHTML(cmmseImage, 20, 0, {}, function () {
-        doc.setFontSize(20);
-        doc.setTextColor(0, 0, 255);
-        doc.text(160, 18, 'CMMSE ' + config.conference_year, null, null, 'center');
-        doc.setFontSize(8);
-        doc.text(160, 22, 'International Conference on', null, null, 'center');
-        doc.text(160, 25, 'Computational and Mathematical', null, null, 'center');
-        doc.text(160, 28, 'Methods in Science and Engineering', null, null, 'center');
-        doc.text(160, 31, monthNames[initialDate.getMonth()] + ' ' + initialDate.getDate()
-          + ' - ' + endDate.getDate() + ', ' + config.conference_year, null, null, 'center');
-        doc.text(160, 34, config.conference_place, null, null, 'center');
-        doc.text(160, 37, config.conference_url, null, null, 'center');
-        doc.text(160, 40, 'C.I.F. ' + config.CIF, null, null, 'center');
-        doc.setFont('times');
-        doc.setFontSize(14);
-        doc.setTextColor(0, 0, 0);
-        doc.setFontType('bolditalic');
-        if (user.bill) {
-          doc.text(105, 80, 'INVOICE Num. ' + user.bill.invoice_number, null, null, 'center');
-        }
-        doc.setFontSize(12);
-        doc.setFontType('bold');
-        if (user.bill) {
-          doc.text(25, 100, userTitle + ' ' + user.bill.first_name + ' ' + user.bill.last_name);
-          doc.text(25, 105, 'University/College/Company: ');
-          doc.text(25, 110, 'Address: ');
-          doc.text(25, 115, 'CIF/VAT Number/Tax ID: ');
-          doc.text(25, 135, 'Description');
-          doc.text(180, 135, 'Value', null, null, 'right');
-          doc.setFontType('normal');
-          doc.text(80, 105, user.bill.university_company);
-          doc.text(43, 110, user.bill.address);
-          doc.text(75, 115, user.bill.CIF);
-        } else {
-          doc.text(25, 100, userTitle + ' ' + user.first_name + ' ' + user.last_name);
-          doc.text(25, 105, 'University/College/Company: ');
-          doc.text(25, 110, 'Address: ');
-          doc.text(25, 135, 'Description');
-          doc.text(180, 135, 'Value', null, null, 'right');
-          doc.setFontType('normal');
-          doc.text(80, 105, user.university_company);
-          doc.text(43, 110, user.address);
-        }
-        doc.rect(25, 136, 155, 0);
-        doc.text(25, 140, 'CMMSE ' + config.conference_year + ' Registration Fee');
-        doc.text(180, 140, config.fee_to_pay + ' euros', null, null, 'right');
-        doc.text(180, 180, monthNames[today.getMonth()] + ' ' + today.getDate() + ', ' + today.getFullYear(), null, null, 'right');
-        doc.setFontType('bold');
-        doc.text(105, 250, 'Jesús Vigo Aguiar', null, null, 'center');
-        doc.text(105, 255, 'President of the Organizing Committee', null, null, 'center');
-        doc.text(105, 260, 'CMMSE ' + config.conference_year, null, null, 'center');
-        doc.fromHTML(sign, 85, 215, {}, function () {
-          doc.save(user.first_name.replace(/\s/g, '') + user.last_name.replace(/\s/g, '') + 'Invoice.pdf');
-        });
-      });
+    const htmlImages =
+      `<div><img src="../../../assets/img/CMMSE.jpg" style="position:absolute;
+        margin-left:85px; margin-top:10px; width:70; height:45;"></div>
+      <div><img src="../../../assets/img/ave.jpg" style="position:absolute;
+        margin-left:180px; margin-top:20px; width:120; height:170;"></div>
+      <div><img src="../../../assets/img/FirmaJesus.jpg" style="position:absolute;
+        margin-left:325px; margin-top:-20px; width:50; height:30"></div>`;
+    doc.fromHTML(htmlImages, 0, 0, {}, function () {
+      doc.setFontSize(20);
+      doc.setTextColor(0, 0, 255);
+      doc.text(160, 18, 'CMMSE ' + config.conference_year, null, null, 'center');
+      doc.setFontSize(8);
+      doc.text(160, 22, 'International Conference on', null, null, 'center');
+      doc.text(160, 25, 'Computational and Mathematical', null, null, 'center');
+      doc.text(160, 28, 'Methods in Science and Engineering', null, null, 'center');
+      doc.text(160, 31, monthNames[initialDate.getMonth()] + ' ' + initialDate.getDate()
+        + ' - ' + endDate.getDate() + ', ' + config.conference_year, null, null, 'center');
+      doc.text(160, 34, config.conference_place, null, null, 'center');
+      doc.text(160, 37, config.conference_url, null, null, 'center');
+      doc.text(160, 40, 'C.I.F. ' + config.CIF, null, null, 'center');
+      doc.setFont('times');
+      doc.setFontSize(14);
+      doc.setTextColor(0, 0, 0);
+      doc.setFontType('bolditalic');
+      if (user.bill) {
+        doc.text(105, 80, 'INVOICE Num. ' + user.bill.invoice_number, null, null, 'center');
+      }
+      doc.setFontSize(12);
+      doc.setFontType('bold');
+      if (user.bill) {
+        doc.text(25, 100, userTitle + ' ' + user.bill.first_name + ' ' + user.bill.last_name);
+        doc.text(25, 105, 'University/College/Company: ');
+        doc.text(25, 110, 'Address: ');
+        doc.text(25, 115, 'CIF/VAT Number/Tax ID: ');
+        doc.text(25, 135, 'Description');
+        doc.text(180, 135, 'Value', null, null, 'right');
+        doc.setFontType('normal');
+        doc.text(80, 105, user.bill.university_company);
+        doc.text(43, 110, user.bill.address);
+        doc.text(75, 115, user.bill.CIF);
+      } else {
+        doc.text(25, 100, userTitle + ' ' + user.first_name + ' ' + user.last_name);
+        doc.text(25, 105, 'University/College/Company: ');
+        doc.text(25, 110, 'Address: ');
+        doc.text(25, 135, 'Description');
+        doc.text(180, 135, 'Value', null, null, 'right');
+        doc.setFontType('normal');
+        doc.text(80, 105, user.university_company);
+        doc.text(43, 110, user.address);
+      }
+      doc.rect(25, 136, 155, 0);
+      doc.text(25, 140, 'CMMSE ' + config.conference_year + ' Registration Fee');
+      doc.text(180, 140, user.tax + ' euros', null, null, 'right');
+      doc.text(180, 180, monthNames[today.getMonth()] + ' ' + today.getDate() + ', ' + today.getFullYear(), null, null, 'right');
+      doc.setFontType('bold');
+      doc.text(105, 250, 'Jesús Vigo Aguiar', null, null, 'center');
+      doc.text(105, 255, 'President of the Organizing Committee', null, null, 'center');
+      doc.text(105, 260, 'CMMSE ' + config.conference_year, null, null, 'center');
+      doc.save(user.first_name.replace(/\s/g, '') + user.last_name.replace(/\s/g, '') + 'Invoice.pdf');
     });
   }
-
 }
 
 @Component({

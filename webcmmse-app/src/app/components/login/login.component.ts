@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   rootUser;
   cmmseOpened;
 
-  constructor(private firebaseCaller: FirebaseCallerService, private crytoService: CryptoService, private router: Router) { }
+  constructor(private firebaseCaller: FirebaseCallerService, private cryptoService: CryptoService, private router: Router) { }
 
   ngOnInit() {
     this.firebaseCaller.getCollection('config').subscribe(response => {
@@ -46,14 +46,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submitLogin() {
-    if (this.crytoService.decrypt(this.rootPass) === this.password && this.user === this.rootUser) {
+    if (this.cryptoService.decrypt(this.rootPass) === this.password && this.user === this.rootUser) {
       const user = { user: this.rootUser, password: this.rootPass };
       window.sessionStorage.setItem('user', JSON.stringify(user));
       this.router.navigate(['users-admin']);
     } else {
       if (this.cmmseOpened) {
         this.subscription = this.firebaseCaller.getUserFromCollection(this.user).subscribe(response => {
-          if (!_.isEmpty(response) && this.crytoService.decrypt(response[0].password) === this.password) {
+          if (!_.isEmpty(response) && this.cryptoService.decrypt(response[0].password) === this.password) {
             window.sessionStorage.setItem('user', JSON.stringify(response[0]));
             this.router.navigate(['user']);
           } else {

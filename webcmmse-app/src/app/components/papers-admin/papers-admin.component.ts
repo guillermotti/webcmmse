@@ -9,6 +9,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { AppConfig } from '../../config/app.config';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
+import { CryptoService } from '../../services/crypto.service';
+import { MailSenderService } from '../../services/mail-sender.service';
 
 @Component({
   selector: 'app-papers-admin',
@@ -17,7 +19,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class PapersAdminComponent implements OnInit {
 
-  year; urlCMMSE; email;
+  year; urlCMMSE; email; emailSender; emailPass; emailBCC;
   status = ['_UPLOADED', '_REVISION', '_ACCEPTED', '_REJECTED', '_MAJOR/_MINOR'];
 
   // Table purposes
@@ -27,7 +29,8 @@ export class PapersAdminComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private storage: AngularFireStorage, private firebaseService: FirebaseCallerService, public dialog: MatDialog,
-    private translationService: TranslateService, public snackBar: MatSnackBar, private router: Router) {
+    private translationService: TranslateService, public snackBar: MatSnackBar, private mailSenderService: MailSenderService,
+    private router: Router, private cryptoService: CryptoService) {
 
   }
 
@@ -35,7 +38,7 @@ export class PapersAdminComponent implements OnInit {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     const papers = [];
     if (_.isNil(user)) {
-      window.location.href = window.location.href.split('users-admin')[0] + 'login';
+      this.router.navigate(['login']);
     } else {
       // Assign the data to the data source for the table to render
       const obser = this.firebaseService.getCollection('users').subscribe(response => {
@@ -58,6 +61,9 @@ export class PapersAdminComponent implements OnInit {
       const observable = this.firebaseService.getCollection('config').subscribe(response => {
         this.year = response[0].conference_year;
         this.urlCMMSE = response[0].conference_url;
+        this.emailBCC = response[0].emails;
+        this.emailSender = response[0].email_sender;
+        this.emailPass = this.cryptoService.decrypt(response[0].email_password);
         observable.unsubscribe();
       });
     }
@@ -92,6 +98,17 @@ export class PapersAdminComponent implements OnInit {
                 papers.push(itemPaper);
               });
             }
+          });
+          this.translationService.get(paper.state).subscribe(translation => {
+            const form = {
+              year: this.year, emailSender: this.emailSender, url: paper.url_file,
+              author: paper.authors[0].first_name + ' ' + paper.authors[0].last_name, authorEmail: paper.authors[0].email,
+              emailPass: this.emailPass, state: translation, title: paper.title, name: _.capitalize(response[0].first_name),
+              bcc: this.emailBCC
+            };
+            this.mailSenderService.sendChangePaperStatusMessage(form).subscribe(() => {
+              console.log('Mensaje enviado correctamente');
+            });
           });
           this.papers = new MatTableDataSource(papers);
           this.papers.paginator = this.paginator;

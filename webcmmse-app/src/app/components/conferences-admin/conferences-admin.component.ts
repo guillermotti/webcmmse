@@ -18,7 +18,7 @@ export class ConferencesAdminComponent implements OnInit, AfterViewInit {
   isNew = true;
 
   // Table purposes
-  displayedColumns = ['title', 'papers', 'posters', 'actions'];
+  displayedColumns = ['value', 'papers', 'posters', 'actions'];
   conferences: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -31,7 +31,7 @@ export class ConferencesAdminComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     if (_.isNil(user)) {
-      window.location.href = window.location.href.split('users-admin')[0] + 'login';
+      this.router.navigate(['login']);
     } else {
       // Assign the data to the data source for the table to render
       this.firebaseService.getCollection('conferences').subscribe(response => {

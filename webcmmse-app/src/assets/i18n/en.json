@@ -133,7 +133,6 @@
     "_USER_DELETED_SUCCESFULLY": "User deleted succesfully",
     "_CORRESPONDING_AUTHOR": "Corresponding author",
     "_UPLOADED": "UPLOADED",
-    "_SOCIAL_EVENTS": "Social events",
     "_POSTERS": "Posters",
     "_NEW_CONFERENCE": "New conference",
     "_ADD_CONFERENCE": "Add conference",
@@ -171,5 +170,13 @@
     "_CONFERENCE": "Conference title",
     "_RESET_DOCUMENTS": "Reset documents",
     "_RESET": "Reset",
-    "_DOCUMENTS_RESETED_SUCCESFULLY": "Documents reseted succesfully"
+    "_DOCUMENTS_RESETED_SUCCESFULLY": "Documents reseted succesfully",
+    "_TO_PAID": "To paid",
+    "_EMAIL_CONFIGURATION": "Email configuration",
+    "_EMAIL_SENDER": "Email sender",
+    "_EMAIL_PASSWORD": "Email sender password",
+    "_BCC_EMAILS": "Emails on carbon copy (BCC)",
+    "_PDF_DOCUMENTS": "PDF Documents",
+    "_EXCEL_DOCUMENTS": "EXCEL Documents",
+    "_ID_BADGE": "Id bagde"
 }
