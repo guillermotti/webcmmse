@@ -175,5 +175,8 @@
     "_EMAIL_CONFIGURATION": "Email configuration",
     "_EMAIL_SENDER": "Email sender",
     "_EMAIL_PASSWORD": "Email sender password",
-    "_BCC_EMAILS": "Emails on carbon copy (BCC)"
+    "_BCC_EMAILS": "Emails on carbon copy (BCC)",
+    "_PDF_DOCUMENTS": "PDF Documents",
+    "_EXCEL_DOCUMENTS": "EXCEL Documents",
+    "_ID_BADGE": "Id bagde"
 }

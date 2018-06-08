@@ -76,10 +76,13 @@
         </p>
       </div>
       <br>
-      <div class="row">
-
+      <div class="button-row">
+        <button mat-raised-button color="warn" (click)="downloadAttendanceFiles()">{{'_ATTENDANCE_FILE' | translate}}</button>&nbsp;
+        <button mat-raised-button color="warn" (click)="downloadPresentationFiles()">{{'_PRESENTATION_FILE' | translate}}</button>&nbsp;
+        <button mat-raised-button color="warn" (click)="downloadInvoiceFiles()">{{'_INVOICE_FILE' | translate}}</button>
       </div>
     </div>
+    <br>
     <br>
   </section>
 
@@ -93,8 +96,34 @@
         </p>
       </div>
       <br>
-      <div class="row">
+      <div class="button-row">
+        <button mat-raised-button class="green" (click)="downloadUsers()">{{'_USERS' | translate}}</button>&nbsp;
+        <button mat-raised-button class="green" (click)="downloadPapers()">{{'_PAPERS' | translate}}</button>&nbsp;
+        <button mat-raised-button class="green" (click)="downloadAuthors()">{{'_AUTHORS' | translate}}</button>
+      </div>
+    </div>
+    <br>
+    <br>
+  </section>
 
+  <!-- ID BADGE SECTION-->
+  <section class="content-section marginBottomDocuments">
+    <div class="container">
+      <div class="row">
+        <p class="col-sm-12 col-xs-12">
+          <strong>
+            <i class="fas fa-id-badge"></i> &nbsp; {{'_ID_BADGE' | translate}}</strong>
+        </p>
+      </div>
+      <br>
+      <div class="button-row">
+        <button mat-raised-button color="primary" (click)="downloadIdBadge()">{{'_ID_BADGE' | translate}}</button>&nbsp; &nbsp;
+        <mat-form-field class="column2">
+          <input matInput #input type="number" [min]=50 [max]=200 placeholder="{{ '_WIDTH' | translate}}" [(ngModel)]="width" required>
+        </mat-form-field> &nbsp; &nbsp;
+        <mat-form-field class="column2">
+          <input matInput #input type="number" [min]=50 [max]=200 placeholder="{{ '_HEIGHT' | translate}}" [(ngModel)]="height" required>
+        </mat-form-field>
       </div>
     </div>
     <br>
