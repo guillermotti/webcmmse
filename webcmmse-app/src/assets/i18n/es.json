@@ -178,5 +178,16 @@
     "_BCC_EMAILS": "Emails en copia oculta (BCC)",
     "_PDF_DOCUMENTS": "Documentos PDF",
     "_EXCEL_DOCUMENTS": "Documentos EXCEL",
-    "_ID_BADGE": "Etiquetas"
+    "_ID_BADGE": "Etiquetas",
+    "_SIZE": "Tamaño",
+    "_DANGER_ZONE": "Zona de peligro",
+    "_ENABLE_BUTTONS": "Enable buttons",
+    "_RESET_USERS": "Resetear usuarios",
+    "_RESET_CONFERENCES": "Resetear conferencias",
+    "_CONFERENCES_REMOVED_SUCCESFULLY": "Conferencias reseteadas satisfactoriamente",
+    "_USERS_REMOVED_SUCCESFULLY": "Usuarios reseteados satisfactoriamente",
+    "_R": "Color rojo",
+    "_G": "Color verde",
+    "_B": "Color azul",
+    "_TEXT": "Texto en la etiqueta"
 }

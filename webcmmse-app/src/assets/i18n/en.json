@@ -178,5 +178,16 @@
     "_BCC_EMAILS": "Emails on carbon copy (BCC)",
     "_PDF_DOCUMENTS": "PDF Documents",
     "_EXCEL_DOCUMENTS": "EXCEL Documents",
-    "_ID_BADGE": "Id bagde"
+    "_ID_BADGE": "Id bagde",
+    "_SIZE": "Size",
+    "_DANGER_ZONE": "Danger zone",
+    "_ENABLE_BUTTONS": "Enable buttons",
+    "_RESET_USERS": "Reset users",
+    "_RESET_CONFERENCES": "Reset conferences",
+    "_CONFERENCES_REMOVED_SUCCESFULLY": "Conferences removed succesfully",
+    "_USERS_REMOVED_SUCCESFULLY": "Users removed succesfully",
+    "_R": "Red color",
+    "_G": "Green color",
+    "_B": "Blue color",
+    "_TEXT": "Text for the badge"
 }

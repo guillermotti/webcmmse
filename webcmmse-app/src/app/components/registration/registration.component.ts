@@ -116,7 +116,8 @@ export class RegistrationComponent implements OnInit {
           state: this.form.state,
           title: this.form.title,
           university_company: this.form.universityCompany,
-          check_payment: false
+          check_payment: false,
+          tax: this.form.tax
         };
         this.firebaseService.addItemToCollection('users', user).then(() => {
           this.translationService.get('_REGISTER_SUCCESFUL').subscribe(resp => {

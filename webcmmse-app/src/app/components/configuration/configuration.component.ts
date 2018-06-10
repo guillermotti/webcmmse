@@ -40,7 +40,7 @@ export class ConfigurationComponent implements OnInit {
   };
   fieldsDisabled = true; opened; termOpened;
   formControl = new FormControl('', [Validators.required]);
-  minDate = new Date(); hide = true; rootPassword; emailPassword;
+  minDate = new Date(); hide = true; rootPassword; emailPassword; restartDatabase;
   change = '_CHANGE_DATA'; colorChange = 'primary';
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA, SPACE];
@@ -72,6 +72,7 @@ export class ConfigurationComponent implements OnInit {
         });
       });
       this.user = user.user;
+      this.restartDatabase = false;
     }
   }
 
@@ -140,6 +141,32 @@ export class ConfigurationComponent implements OnInit {
     if (index >= 0) {
       this.config.emails.splice(index, 1);
     }
+  }
+
+  restartUsers() {
+    this.firebaseService.getCollection('users').subscribe(users => {
+      users.forEach(user => {
+        this.firebaseService.deleteItemFromCollection('users', user.id);
+      });
+      this.translationService.get('_USERS_REMOVED_SUCCESFULLY').subscribe(resp => {
+        this.snackBar.open(resp, null, {
+          duration: 2000,
+        });
+      });
+    });
+  }
+
+  restartConferences() {
+    this.firebaseService.getCollection('conferences').subscribe(conferences => {
+      conferences.forEach(conf => {
+        this.firebaseService.deleteItemFromCollection('conferences', conf.id);
+      });
+      this.translationService.get('_CONFERENCES_REMOVED_SUCCESFULLY').subscribe(resp => {
+        this.snackBar.open(resp, null, {
+          duration: 2000,
+        });
+      });
+    });
   }
 
 }
