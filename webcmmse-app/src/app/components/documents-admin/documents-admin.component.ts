@@ -59,7 +59,7 @@ export class DocumentsAdminComponent implements OnInit {
 
     const data = [];
     data.push(header);
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach(user => {
         if (!_.isEmpty(user.papers)) {
           user.numberPapers = 0;
@@ -85,6 +85,8 @@ export class DocumentsAdminComponent implements OnInit {
       /* save to file */
       const wbout: ArrayBuffer = XLSX.write(wb, wopts);
       FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+
+      obser.unsubscribe();
     });
   }
 
@@ -98,7 +100,7 @@ export class DocumentsAdminComponent implements OnInit {
 
     const data = [];
     data.push(header);
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach(user => {
         if (!_.isEmpty(user.papers)) {
           user.papers.forEach(paper => {
@@ -123,6 +125,8 @@ export class DocumentsAdminComponent implements OnInit {
       /* save to file */
       const wbout: ArrayBuffer = XLSX.write(wb, wopts);
       FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+
+      obser.unsubscribe();
     });
   }
 
@@ -135,7 +139,7 @@ export class DocumentsAdminComponent implements OnInit {
 
     const data = [];
     data.push(header);
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach(user => {
         const userToExport = [user.first_name, user.last_name, user.email, user.university_company, user.country, user.state,
         user.city, user.postal_code, user.address, user.phone, user.check_payment ? 'Yes' : 'No',
@@ -152,6 +156,8 @@ export class DocumentsAdminComponent implements OnInit {
       /* save to file */
       const wbout: ArrayBuffer = XLSX.write(wb, wopts);
       FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+
+      obser.unsubscribe();
     });
   }
 
@@ -175,7 +181,7 @@ export class DocumentsAdminComponent implements OnInit {
         margin-left:180px; margin-top:20px; width:120; height:170;"></div>
       <div><img src="../../../assets/img/FirmaJesus.jpg" style="position:absolute;
         margin-left:325px; margin-top:-20px; width:50; height:30"></div>`;
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach((user, index) => {
         let userTitle = user.bill ? user.bill.title : user.title;
         this.translationService.get(userTitle).subscribe(response => {
@@ -217,7 +223,9 @@ export class DocumentsAdminComponent implements OnInit {
           } else {
             doc.text(25, 100, userTitle + ' ' + user.first_name + ' ' + user.last_name);
             doc.text(25, 105, 'University/College/Company: ');
-            doc.text(25, 110, 'Address: ');
+            if (user.address) {
+              doc.text(25, 110, 'Address: ');
+            }
             doc.text(25, 135, 'Description');
             doc.text(180, 135, 'Value', null, null, 'right');
             doc.setFontType('normal');
@@ -239,6 +247,7 @@ export class DocumentsAdminComponent implements OnInit {
           }
         });
       });
+      obser.unsubscribe();
     });
   }
 
@@ -266,7 +275,7 @@ export class DocumentsAdminComponent implements OnInit {
         margin-left:180px; margin-top:40px; width:50; height:30"></div>
       <div><img src="../../../assets/img/FirmaJesus.jpg" style="position:absolute;
         margin-left:430px; margin-top:-110px; width:50; height:30"></div>`;
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach(user => {
         if (user && user.papers) {
           this.translationService.get(user.title).subscribe(response => {
@@ -325,6 +334,7 @@ export class DocumentsAdminComponent implements OnInit {
           }
         });
       });
+      obser.unsubscribe();
     });
   }
 
@@ -351,7 +361,7 @@ export class DocumentsAdminComponent implements OnInit {
         margin-left:180px; margin-top:40px; width:50; height:30"></div>
       <div><img src="../../../assets/img/FirmaJesus.jpg" style="position:absolute;
         margin-left:430px; margin-top:-110px; width:50; height:30"></div>`;
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach((user, index) => {
         let userTitle = user.bill ? user.bill.title : user.title;
         this.translationService.get(userTitle).subscribe(response => {
@@ -401,14 +411,14 @@ export class DocumentsAdminComponent implements OnInit {
           }
         });
       });
+      obser.unsubscribe();
     });
   }
 
   downloadIdBadge() {
-    let width;
-    let height;
-    let infoWidth;
+    let width; let height; let infoWidth;
     const _this = this;
+    let text = true;
     switch (this.size) {
       case '15x7.5':
         width = 150;
@@ -438,12 +448,12 @@ export class DocumentsAdminComponent implements OnInit {
       unit: 'mm',
       format: 'a4'
     });
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       let users3 = [];
       const usersTotal = [];
       users.forEach((user, index) => {
         users3.push(user);
-        if ((index + 1) % 3 === 0 || users.length - 3 < index) {
+        if ((index + 1) % 3 === 0 || users.length - 2 < index) {
           usersTotal.push(users3);
           users3 = [];
         }
@@ -475,14 +485,17 @@ export class DocumentsAdminComponent implements OnInit {
           doc.text(infoWidth, 38, 'Mathematical Methods in Science and Engineering', null, null, 'center');
           doc.text(infoWidth, 42, monthNames[initialDate.getMonth()] + ' ' + initialDate.getDate()
             + ' - ' + endDate.getDate() + ', ' + config.conference_year + '. ' + config.conference_place, null, null, 'center');
-          doc.setFontSize(16);
-          doc.text(infoWidth, 60, user[0].last_name + ', ' + user[0].first_name, null, null, 'center');
-          doc.setFontSize(9);
-          doc.text(infoWidth, 65, user[0].university_company, null, null, 'center');
-          doc.setFontSize(12);
-          doc.text(infoWidth, 69, user[0].country, null, null, 'center');
-          doc.setFontSize(16);
-          doc.text(infoWidth, 77, _this.text, null, null, 'center');
+          if (_this.text) {
+            doc.setFontSize(18);
+            doc.text(infoWidth, 65, _this.text, null, null, 'center');
+          } else {
+            doc.setFontSize(16);
+            doc.text(infoWidth, 60, user[0].last_name + ', ' + user[0].first_name, null, null, 'center');
+            doc.setFontSize(9);
+            doc.text(infoWidth, 65, user[0].university_company, null, null, 'center');
+            doc.setFontSize(12);
+            doc.text(infoWidth, 69, user[0].country, null, null, 'center');
+          }
 
           // Second badge
           if (user[1]) {
@@ -503,14 +516,17 @@ export class DocumentsAdminComponent implements OnInit {
             doc.text(infoWidth, 128, 'Mathematical Methods in Science and Engineering', null, null, 'center');
             doc.text(infoWidth, 132, monthNames[initialDate.getMonth()] + ' ' + initialDate.getDate()
               + ' - ' + endDate.getDate() + ', ' + config.conference_year + '. ' + config.conference_place, null, null, 'center');
-            doc.setFontSize(16);
-            doc.text(infoWidth, 150, user[1].last_name + ', ' + user[1].first_name, null, null, 'center');
-            doc.setFontSize(9);
-            doc.text(infoWidth, 155, user[1].university_company, null, null, 'center');
-            doc.setFontSize(12);
-            doc.text(infoWidth, 159, user[1].country, null, null, 'center');
-            doc.setFontSize(16);
-            doc.text(infoWidth, 167, _this.text, null, null, 'center');
+            if (_this.text) {
+              doc.setFontSize(18);
+              doc.text(infoWidth, 155, _this.text, null, null, 'center');
+            } else {
+              doc.setFontSize(16);
+              doc.text(infoWidth, 150, user[1].last_name + ', ' + user[1].first_name, null, null, 'center');
+              doc.setFontSize(9);
+              doc.text(infoWidth, 155, user[1].university_company, null, null, 'center');
+              doc.setFontSize(12);
+              doc.text(infoWidth, 159, user[1].country, null, null, 'center');
+            }
           }
 
           // Third badge
@@ -532,23 +548,33 @@ export class DocumentsAdminComponent implements OnInit {
             doc.text(infoWidth, 218, 'Mathematical Methods in Science and Engineering', null, null, 'center');
             doc.text(infoWidth, 222, monthNames[initialDate.getMonth()] + ' ' + initialDate.getDate()
               + ' - ' + endDate.getDate() + ', ' + config.conference_year + '. ' + config.conference_place, null, null, 'center');
-            doc.setFontSize(16);
-            doc.text(infoWidth, 240, user[2].last_name + ', ' + user[2].first_name, null, null, 'center');
-            doc.setFontSize(9);
-            doc.text(infoWidth, 245, user[2].university_company, null, null, 'center');
-            doc.setFontSize(12);
-            doc.text(infoWidth, 249, user[2].country, null, null, 'center');
-            doc.setFontSize(16);
-            doc.text(infoWidth, 257, _this.text, null, null, 'center');
+            if (_this.text) {
+              doc.setFontSize(18);
+              doc.text(infoWidth, 245, _this.text, null, null, 'center');
+            } else {
+              doc.setFontSize(16);
+              doc.text(infoWidth, 240, user[2].last_name + ', ' + user[2].first_name, null, null, 'center');
+              doc.setFontSize(9);
+              doc.text(infoWidth, 245, user[2].university_company, null, null, 'center');
+              doc.setFontSize(12);
+              doc.text(infoWidth, 249, user[2].country, null, null, 'center');
+            }
           }
-
-          if (index < usersTotal.length - 1) {
-            doc.addPage();
+          if (_this.text && text) {
+            doc.save('IdBadges' + _this.text + '.pdf');
+            text = false;
           } else {
-            doc.save('IdBadgesAll.pdf');
+            if (index < usersTotal.length - 1) {
+              doc.addPage();
+            } else {
+              if (text) {
+                doc.save('IdBadgesAll.pdf');
+              }
+            }
           }
         });
       });
+      obser.unsubscribe();
     });
   }
 

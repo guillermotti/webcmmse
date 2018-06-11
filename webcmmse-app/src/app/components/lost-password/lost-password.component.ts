@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class LostPasswordComponent implements OnInit {
 
-  year; urlCMMSE; user; userIncorrect; emailSender; emailPass;
+  year; urlCMMSE; user; userIncorrect; emailSender; emailPass; emailOpen;
   emailControl = new FormControl('', [Validators.required, Validators.email]);
 
   constructor(private firebaseService: FirebaseCallerService, private cryptoService: CryptoService,
@@ -26,6 +26,7 @@ export class LostPasswordComponent implements OnInit {
       this.urlCMMSE = response[0].conference_url;
       this.emailSender = response[0].email_sender;
       this.emailPass = this.cryptoService.decrypt(response[0].email_password);
+      this.emailOpen = response[0].email_opened;
     });
   }
 
@@ -37,9 +38,12 @@ export class LostPasswordComponent implements OnInit {
         this.firebaseService.updateItemFromCollection('users', response[0].id, response[0]);
         const form = { year: this.year, emailSender: this.emailSender,
           emailPass: this.emailPass, password: newPass, email: this.user, name: _.capitalize(response[0].first_name)};
-        this.mailSenderService.sendNewPasswordMessage(form).subscribe(() => {
-          console.log('Mensaje enviado correctamente');
-        });
+        if (this.emailOpen) {
+          const obser = this.mailSenderService.sendNewPasswordMessage(form).subscribe(() => {
+            console.log('Mensaje enviado correctamente');
+            obser.unsubscribe();
+          });
+        }
         this.router.navigate(['login']);
       } else {
         this.userIncorrect = true;

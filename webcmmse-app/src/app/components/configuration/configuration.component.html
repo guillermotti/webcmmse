@@ -72,6 +72,7 @@
           <strong>
             <i class="fas fa-info-circle"></i> &nbsp; {{'_CMMSE_INFO' | translate}}</strong>
         </p>
+        <br>
         <mat-slide-toggle class="col-sm-6 col-xs-12" [(ngModel)]="config.cmmse_opened" [disabled]="fieldsDisabled">{{'_CMMSE_OPENED' | translate}} {{ opened}}</mat-slide-toggle>
         <mat-slide-toggle class="col-sm-6 col-xs-12" [(ngModel)]="config.send_term_opened" [disabled]="fieldsDisabled">{{'_SEND_TERM_OPENED' | translate}} {{ termOpened}}</mat-slide-toggle>
       </div>
@@ -172,6 +173,8 @@
           <strong>
             <i class="fas fa-envelope"></i> &nbsp; {{'_EMAIL_CONFIGURATION' | translate}}</strong>
         </p>
+        <br>
+        <mat-slide-toggle class="col-sm-12 col-xs-12" [(ngModel)]="config.email_opened" [disabled]="fieldsDisabled">{{'_EMAIL_OPENED' | translate}} {{ openedEmail }}</mat-slide-toggle>
       </div>
       <br>
       <div class="row">

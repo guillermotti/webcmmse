@@ -19,7 +19,7 @@ import { MailSenderService } from '../../services/mail-sender.service';
 })
 export class PapersAdminComponent implements OnInit {
 
-  year; urlCMMSE; email; emailSender; emailPass; emailBCC;
+  year; urlCMMSE; email; emailSender; emailPass; emailBCC; emailOpen;
   status = ['_UPLOADED', '_REVISION', '_ACCEPTED', '_REJECTED', '_MAJOR/_MINOR'];
 
   // Table purposes
@@ -64,6 +64,7 @@ export class PapersAdminComponent implements OnInit {
         this.emailBCC = response[0].emails;
         this.emailSender = response[0].email_sender;
         this.emailPass = this.cryptoService.decrypt(response[0].email_password);
+        this.emailOpen = response[0].email_opened;
         observable.unsubscribe();
       });
     }
@@ -106,9 +107,12 @@ export class PapersAdminComponent implements OnInit {
               emailPass: this.emailPass, state: translation, title: paper.title, name: _.capitalize(response[0].first_name),
               bcc: this.emailBCC
             };
-            this.mailSenderService.sendChangePaperStatusMessage(form).subscribe(() => {
-              console.log('Mensaje enviado correctamente');
-            });
+            if (this.emailOpen) {
+              const obser2 = this.mailSenderService.sendChangePaperStatusMessage(form).subscribe(() => {
+                console.log('Mensaje enviado correctamente');
+                obser2.unsubscribe();
+              });
+            }
           });
           this.papers = new MatTableDataSource(papers);
           this.papers.paginator = this.paginator;
@@ -131,7 +135,7 @@ export class PapersAdminComponent implements OnInit {
       data: { paper: paper }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    const obser = dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.firebaseService.updateItemFromCollection('users', result[0].id, result[0]).then(() => {
           this.translationService.get('_PAPER_UPDATED_SUCCESFULLY').subscribe(resp => {
@@ -141,7 +145,7 @@ export class PapersAdminComponent implements OnInit {
           });
         });
         const papers = [];
-        const obser = this.firebaseService.getCollection('users').subscribe(response => {
+        const obser2 = this.firebaseService.getCollection('users').subscribe(response => {
           window.sessionStorage.setItem('users', JSON.stringify(response));
           response.forEach(item => {
             if (item.papers) {
@@ -155,10 +159,11 @@ export class PapersAdminComponent implements OnInit {
           this.papers = new MatTableDataSource(papers);
           this.papers.paginator = this.paginator;
           this.papers.sort = this.sort;
-          obser.unsubscribe();
+          obser2.unsubscribe();
         });
       }
       console.log('The dialog was closed', result);
+      obser.unsubscribe();
     });
 
     dialogRef.updateSize('50%', 'auto');
@@ -170,7 +175,7 @@ export class PapersAdminComponent implements OnInit {
       data: { paper: paper }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    const obser = dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.firebaseService.updateItemFromCollection('users', result[0].id, result[0]).then(() => {
           this.translationService.get('_PAPER_DELETED_SUCCESFULLY').subscribe(resp => {
@@ -180,7 +185,7 @@ export class PapersAdminComponent implements OnInit {
           });
         });
         const papers = [];
-        const obser = this.firebaseService.getCollection('users').subscribe(response => {
+        const obser2 = this.firebaseService.getCollection('users').subscribe(response => {
           window.sessionStorage.setItem('users', JSON.stringify(response));
           response.forEach(item => {
             if (item.papers) {
@@ -194,10 +199,11 @@ export class PapersAdminComponent implements OnInit {
           this.papers = new MatTableDataSource(papers);
           this.papers.paginator = this.paginator;
           this.papers.sort = this.sort;
-          obser.unsubscribe();
+          obser2.unsubscribe();
         });
       }
       console.log('The dialog was closed', result);
+      obser.unsubscribe();
     });
   }
 
@@ -226,7 +232,7 @@ export class EditPaperAdminDialogComponent implements OnInit {
     private firebaseService: FirebaseCallerService, @Inject(MAT_DIALOG_DATA) public data: any, private storage: AngularFireStorage) { }
 
   ngOnInit() {
-    this.firebaseService.getCollection('conferences').subscribe(response => {
+    const obser = this.firebaseService.getCollection('conferences').subscribe(response => {
       const values = [];
       const sortedValues = [];
       response.forEach(item => { // Taking values from response to sort them
@@ -236,6 +242,7 @@ export class EditPaperAdminDialogComponent implements OnInit {
         sortedValues.push({ value: item });
       });
       this.minisymposiums = sortedValues;
+      obser.unsubscribe();
     });
     this.fileURL = this.data.paper.url_file;
     this.fileName = this.data.paper.name_file !== '' ? this.data.paper.name_file : '_FILE_NAME';
@@ -253,7 +260,7 @@ export class EditPaperAdminDialogComponent implements OnInit {
       this.progressBarValue = value.toFixed(2).toString() + '%';
     });
     this.downloadURL = this.task.downloadURL();
-    this.downloadURL.subscribe(url => {
+    const obser = this.downloadURL.subscribe(url => {
       this.fileURL = url;
       user.papers.forEach((paper, index) => {
         if (this.data.paper.id_file === paper.id_file) {
@@ -265,8 +272,9 @@ export class EditPaperAdminDialogComponent implements OnInit {
         }
       });
       this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-        this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
+        const obser2 = this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
           window.sessionStorage.setItem('user', JSON.stringify(response[0]));
+          obser2.unsubscribe();
         });
         this.translationService.get('_FILE_UPLOADED_SUCCESFULLY').subscribe(resp => {
           this.snackBar.open(resp, null, {
@@ -274,6 +282,7 @@ export class EditPaperAdminDialogComponent implements OnInit {
           });
         });
       });
+      obser.unsubscribe();
     });
 
   }
@@ -283,29 +292,32 @@ export class EditPaperAdminDialogComponent implements OnInit {
   }
 
   removePaper() {
-    const user = JSON.parse(window.sessionStorage.getItem('user'));
-    user.papers.forEach((paper, index) => {
-      if (this.data.paper.id_file === paper.id_file) {
-        paper.name_file = '';
-        paper.url_file = '';
-        user.papers[index] = paper;
-        const numberOfPaper = index + 1;
-        const id = 'paper' + user.id + '-' + numberOfPaper;
-        this.storage.ref('/papers/' + id).delete().subscribe(() => {
-          this.translationService.get('_FILE_DELETED_SUCCESFULLY').subscribe(resp => {
-            this.snackBar.open(resp, null, {
-              duration: 2000,
+    const userId = this.data.paper.id_file.split('paper')[1].split('-')[0];
+    const obser = this.firebaseService.getItemFromCollection(userId, 'users').subscribe(response => {
+      response[0].papers.forEach((paper, index) => {
+        if (this.data.paper.id_file === paper.id_file) {
+          paper.name_file = '';
+          paper.url_file = '';
+          response[0].papers[index] = paper;
+          const numberOfPaper = index + 1;
+          const id = 'paper' + response[0].id + '-' + numberOfPaper;
+          this.storage.ref('/papers/' + id).delete().subscribe(() => {
+            this.translationService.get('_FILE_DELETED_SUCCESFULLY').subscribe(resp => {
+              this.snackBar.open(resp, null, {
+                duration: 2000,
+              });
             });
           });
-        });
-      }
+        }
+      });
+      this.fileURL = null;
+      this.uploadState = null;
+      this.fileName = '_FILE_NAME';
+      this.myInputVariable.nativeElement.value = '';
+      this.firebaseService.updateItemFromCollection('users', response[0].id, response[0]);
+      window.sessionStorage.setItem('user', JSON.stringify(response[0]));
+      obser.unsubscribe();
     });
-    this.fileURL = null;
-    this.uploadState = null;
-    this.fileName = '_FILE_NAME';
-    this.myInputVariable.nativeElement.value = '';
-    this.firebaseService.updateItemFromCollection('users', user.id, user);
-    window.sessionStorage.setItem('user', JSON.stringify(user));
   }
 
   onCloseClick(): void {

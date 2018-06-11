@@ -189,5 +189,6 @@
     "_R": "Color rojo",
     "_G": "Color verde",
     "_B": "Color azul",
-    "_TEXT": "Texto en la etiqueta"
+    "_TEXT": "Texto en la etiqueta",
+    "_EMAIL_OPENED": "El servicio de mail está"
 }

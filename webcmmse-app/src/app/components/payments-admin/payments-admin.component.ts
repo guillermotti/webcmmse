@@ -64,17 +64,25 @@ export class PaymentsAdminComponent implements OnInit {
       data: { user: user }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = dialogRef.afterClosed().subscribe(result => {
+      const obser2 = this.firebaseService.getCollection('users').subscribe(users => {
         this.payments = new MatTableDataSource(users);
         this.payments.paginator = this.paginator;
         this.payments.sort = this.sort;
+        obser2.unsubscribe();
       });
+      obser.unsubscribe();
     });
   }
 
   changeTax(user) {
-    this.firebaseService.updateItemFromCollection('users', user.id, user);
+    this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
+      this.translationService.get('_USER_PAYMENT_UPDATED_SUCCESFULLY').subscribe(resp => {
+        this.snackBar.open(resp, null, {
+          duration: 2000,
+        });
+      });
+    });
   }
 
   generateInvoice(user) {
@@ -137,7 +145,9 @@ export class PaymentsAdminComponent implements OnInit {
       } else {
         doc.text(25, 100, userTitle + ' ' + user.first_name + ' ' + user.last_name);
         doc.text(25, 105, 'University/College/Company: ');
-        doc.text(25, 110, 'Address: ');
+        if (user.address) {
+          doc.text(25, 110, 'Address: ');
+        }
         doc.text(25, 135, 'Description');
         doc.text(180, 135, 'Value', null, null, 'right');
         doc.setFontType('normal');

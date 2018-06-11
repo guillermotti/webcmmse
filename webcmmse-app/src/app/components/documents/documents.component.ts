@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatSnackBar, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { FirebaseCallerService } from '../../services/firebase-caller.service';
@@ -110,7 +109,9 @@ export class DocumentsComponent implements OnInit {
       } else {
         doc.text(25, 100, userTitle + ' ' + user.first_name + ' ' + user.last_name);
         doc.text(25, 105, 'University/College/Company: ');
-        doc.text(25, 110, 'Address: ');
+        if (user.address) {
+          doc.text(25, 110, 'Address: ');
+        }
         doc.text(25, 135, 'Description');
         doc.text(180, 135, 'Value', null, null, 'right');
         doc.setFontType('normal');
@@ -130,8 +131,10 @@ export class DocumentsComponent implements OnInit {
 
     user.invoice_downloaded = true;
     this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-      this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
+      const obser = this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
+        this.ngOnInit();
+        obser.unsubscribe();
       });
     });
   }
@@ -205,8 +208,10 @@ export class DocumentsComponent implements OnInit {
 
     user.attendance_downloaded = true;
     this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-      this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
+      const obser = this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
+        this.ngOnInit();
+        obser.unsubscribe();
       });
     });
   }
@@ -282,15 +287,17 @@ export class DocumentsComponent implements OnInit {
         if (index < user.papers.length - 1) {
           doc.addPage();
         } else {
-          doc.save(paper.title + 'PresentationCertificate.pdf');
+          doc.save('PresentationCertificate.pdf');
         }
       });
     });
 
     user.presentation_downloaded = true;
     this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-      this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
+      const obser = this.firebaseService.getUserFromCollection(user.email).subscribe(response => {
         window.sessionStorage.setItem('user', JSON.stringify(response[0]));
+        this.ngOnInit();
+        obser.unsubscribe();
       });
     });
   }
@@ -301,11 +308,12 @@ export class DocumentsComponent implements OnInit {
       data: { document: 'invoice' }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    const obser = dialogRef.afterClosed().subscribe(result => {
       if (result === 'invoice') {
         this.generateInvoice();
       }
       console.log('The dialog was closed', result);
+      obser.unsubscribe();
     });
   }
 
@@ -315,11 +323,12 @@ export class DocumentsComponent implements OnInit {
       data: { document: 'attendance' }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    const obser = dialogRef.afterClosed().subscribe(result => {
       if (result === 'attendance') {
         this.generateAttendance();
       }
       console.log('The dialog was closed', result);
+      obser.unsubscribe();
     });
   }
 
@@ -329,11 +338,12 @@ export class DocumentsComponent implements OnInit {
       data: { document: 'presentation' }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    const obser = dialogRef.afterClosed().subscribe(result => {
       if (result === 'presentation') {
         this.generatePresentation();
       }
       console.log('The dialog was closed', result);
+      obser.unsubscribe();
     });
   }
 

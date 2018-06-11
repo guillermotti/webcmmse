@@ -16,7 +16,7 @@ import { MailSenderService } from '../../services/mail-sender.service';
 })
 export class RegistrationComponent implements OnInit {
 
-  year; urlCMMSE; hide = true; hide2 = true; emailBCC; emailSender; emailPass;
+  year; urlCMMSE; hide = true; hide2 = true; emailBCC; emailSender; emailPass; emailOpen;
   form = {
     'name': '',
     'lastName': '',
@@ -59,6 +59,7 @@ export class RegistrationComponent implements OnInit {
       this.emailSender = response[0].email_sender;
       this.emailPass = this.cryptoService.decrypt(response[0].email_password);
       this.form.tax = response[0].fee_to_pay;
+      this.emailOpen = response[0].email_opened;
     });
     const passCheckInput = document.getElementById('passCheck');
     const emailCheckInput = document.getElementById('emailCheck');
@@ -128,9 +129,12 @@ export class RegistrationComponent implements OnInit {
             this.form.bcc = this.emailBCC;
             this.form.emailSender = this.emailSender;
             this.form.emailPass = this.emailPass;
-            this.mailSenderService.sendRegistrationMessage(this.form).subscribe(() => {
-              console.log('Mensaje enviado correctamente');
-            });
+            if (this.emailOpen) {
+              const obser2 = this.mailSenderService.sendRegistrationMessage(this.form).subscribe(() => {
+                console.log('Mensaje enviado correctamente');
+                obser2.unsubscribe();
+              });
+            }
           });
           this.router.navigate(['login']);
         });
@@ -154,8 +158,9 @@ export class RegistrationComponent implements OnInit {
       data: {}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    const obser = dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
+      obser.unsubscribe();
     });
   }
 

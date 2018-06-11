@@ -134,7 +134,7 @@
             <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_INVOICE_FILE' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
               &nbsp; &nbsp;
-              <a *ngIf="row.check_payment" (click)="generateInvoice(row)">
+              <a (click)="generateInvoice(row)">
                 <i class="far fa-file"></i>
               </a>
             </mat-cell>

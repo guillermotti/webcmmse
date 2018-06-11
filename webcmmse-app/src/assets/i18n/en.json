@@ -189,5 +189,6 @@
     "_R": "Red color",
     "_G": "Green color",
     "_B": "Blue color",
-    "_TEXT": "Text for the badge"
+    "_TEXT": "Text for the badge",
+    "_EMAIL_OPENED": "The email service is"
 }
