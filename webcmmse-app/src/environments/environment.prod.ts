@@ -1,11 +1,11 @@
 export const environment = {
   production: true,
   firebase: {
-    apiKey: 'AIzaSyDg1IIUV0NwS-HWmduRT8XaUxrIxU2j9Ak',
-    authDomain: 'webcmmse-proob.firebaseapp.com',
-    databaseURL: 'https://webcmmse-proob.firebaseio.com',
-    projectId: 'webcmmse-proob',
-    storageBucket: 'webcmmse-proob.appspot.com',
-    messagingSenderId: '425105086637'
+    apiKey: 'AIzaSyB3SL7QTKLQX638FZJfegOQoAffhmc7tgg',
+    authDomain: 'cmmse-app.firebaseapp.com',
+    databaseURL: 'https://cmmse-app.firebaseio.com',
+    projectId: 'cmmse-app',
+    storageBucket: 'cmmse-app.appspot.com',
+    messagingSenderId: '607132431203'
   }
 };

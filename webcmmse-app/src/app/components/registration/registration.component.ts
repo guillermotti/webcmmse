@@ -37,6 +37,7 @@ export class RegistrationComponent implements OnInit {
     'bcc': '',
     'emailSender': '',
     'emailPass': '',
+    'emails': [],
     'tax': ''
   };
 
@@ -129,6 +130,7 @@ export class RegistrationComponent implements OnInit {
             this.form.bcc = this.emailBCC;
             this.form.emailSender = this.emailSender;
             this.form.emailPass = this.emailPass;
+            this.form.emails = [this.form.email, this.form.emailSender];
             if (this.emailOpen) {
               const obser2 = this.mailSenderService.sendRegistrationMessage(this.form).subscribe(() => {
                 console.log('Mensaje enviado correctamente');

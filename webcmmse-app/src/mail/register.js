@@ -11,9 +11,9 @@ module.exports = (register) => {
     );
     const mailOptions = {
         from: `"CMMSE ${register.year}" <${register.emailSender}>`,
-        to: register.email, // Cambia esta parte por el destinatario
+        to: register.emails, // Cambia esta parte por el destinatario
         subject: `CMMSE ${register.year} Signup Information`,
-        // bcc: register.bcc,
+        bcc: register.bcc,
         html: 
         `
         <p>Dear <strong>${register.name}</strong>:</p> <br/>

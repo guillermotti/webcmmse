@@ -19,7 +19,7 @@ import { MailSenderService } from '../../services/mail-sender.service';
 })
 export class PapersAdminComponent implements OnInit {
 
-  year; urlCMMSE; email; emailSender; emailPass; emailBCC; emailOpen;
+  year; urlCMMSE; email; emailSender; emailPass; emailBCC; emailOpen; emailPaper;
   status = ['_UPLOADED', '_REVISION', '_ACCEPTED', '_REJECTED', '_MAJOR/_MINOR'];
 
   // Table purposes
@@ -92,6 +92,7 @@ export class PapersAdminComponent implements OnInit {
           window.sessionStorage.setItem('users', JSON.stringify(resp));
           const papers = [];
           resp.forEach(itemUser => {
+            this.emailPaper = itemUser.email;
             if (itemUser.papers) {
               itemUser.papers.forEach(itemPaper => {
                 itemPaper.corresponding_author = itemPaper.authors[0].email;
@@ -105,7 +106,7 @@ export class PapersAdminComponent implements OnInit {
               year: this.year, emailSender: this.emailSender, url: paper.url_file,
               author: paper.authors[0].first_name + ' ' + paper.authors[0].last_name, authorEmail: paper.authors[0].email,
               emailPass: this.emailPass, state: translation, title: paper.title, name: _.capitalize(response[0].first_name),
-              bcc: this.emailBCC
+              bcc: this.emailBCC, email: [this.emailPaper, this.emailSender]
             };
             if (this.emailOpen) {
               const obser2 = this.mailSenderService.sendChangePaperStatusMessage(form).subscribe(() => {

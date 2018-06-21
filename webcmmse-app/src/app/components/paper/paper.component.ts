@@ -106,6 +106,9 @@ export class PaperComponent implements OnInit, AfterViewInit {
       this.firebaseService.getCollection('config').subscribe(response => {
         this.year = response[0].conference_year;
         this.urlCMMSE = response[0].conference_url;
+        this.emailBCC = response[0].emails;
+        this.emailSender = response[0].email_sender;
+        this.emailPass = this.cryptoService.decrypt(response[0].email_password);
         this.emailOpen = response[0].email_opened;
       });
     }

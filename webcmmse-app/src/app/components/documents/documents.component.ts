@@ -223,6 +223,7 @@ export class DocumentsComponent implements OnInit {
     const endDate = new Date(config.conference_end_day);
     const certificateDate = new Date(config.certificate_signature);
     const today = new Date();
+    const papers = [];
     let userTitle = '';
     this.translateService.get(user.title).subscribe(response => {
       userTitle = response;
@@ -244,7 +245,14 @@ export class DocumentsComponent implements OnInit {
         margin-left:180px; margin-top:40px; width:50; height:30"></div>
       <div><img src="../../../assets/img/FirmaJesus.jpg" style="position:absolute;
         margin-left:430px; margin-top:-110px; width:50; height:30"></div>`;
-    user.papers.forEach((paper, index) => {
+
+    user.papers.forEach(paper => {
+      if (paper.state === '_ACCEPTED') {
+        papers.push(paper);
+      }
+    });
+
+    papers.forEach((paper, index) => {
       doc.fromHTML(htmlImages, 0, 0, {}, function () {
         doc.setFontSize(20);
         doc.setTextColor(0, 0, 255);
@@ -284,7 +292,7 @@ export class DocumentsComponent implements OnInit {
         doc.text(20, 220, 'Sincerely,');
         doc.text(55, 270, 'Bruce A. Wade');
         doc.text(120, 270, 'J. Vigo-Aguiar');
-        if (index < user.papers.length - 1) {
+        if (index < papers.length - 1) {
           doc.addPage();
         } else {
           doc.save('PresentationCertificate.pdf');
