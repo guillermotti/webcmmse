@@ -82,6 +82,7 @@ export class PapersAdminComponent implements OnInit {
 
   changeStatus(paper) {
     const obser = this.firebaseService.getItemFromCollection(paper.id_file.split('paper')[1].split('-')[0], 'users').subscribe(response => {
+      this.emailPaper = response[0].email;
       response[0].papers.forEach(item => {
         if (item.id_file === paper.id_file) {
           item.state = paper.state;
@@ -92,7 +93,6 @@ export class PapersAdminComponent implements OnInit {
           window.sessionStorage.setItem('users', JSON.stringify(resp));
           const papers = [];
           resp.forEach(itemUser => {
-            this.emailPaper = itemUser.email;
             if (itemUser.papers) {
               itemUser.papers.forEach(itemPaper => {
                 itemPaper.corresponding_author = itemPaper.authors[0].email;
