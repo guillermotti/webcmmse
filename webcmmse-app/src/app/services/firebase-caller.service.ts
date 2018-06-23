@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Query } from '@firebase/firestore-types';
 
 @Injectable()
 export class FirebaseCallerService {

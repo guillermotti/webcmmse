@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <img src="../../../assets/img/favicon.png" class="bird">
+      <a class="navbar-brand" href="{{ urlCMMSE }}">CMMSE {{ year }}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/users-admin" routerLinkActive="active">{{ '_USERS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/payments-admin" routerLinkActive="active">{{ '_PAYMENTS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/authors-admin" routerLinkActive="active">{{ '_AUTHORS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/papers-admin" routerLinkActive="active">{{ '_PAPERS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/conferences-admin" routerLinkActive="active">{{ '_CONFERENCES' | translate }}</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" routerLink="/documents-admin" routerLinkActive="active">{{ '_DOCUMENTS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/configuration-admin" routerLinkActive="active">{{ '_CONFIG' | translate }}</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" routerLinkActive="active">
+              <strong>{{ user }}</strong>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logOut()" routerLink="/login" routerLinkActive="active">{{ '_LOG_OUT' | translate }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <section class="content-section text-center">
+    <div class="container">
+      <div class="content-section-heading">
+        <h1 class="mt-5">
+          <i class="fas fa-file-alt"></i> &nbsp; {{ '_DOCUMENTS' | translate}}</h1>
+      </div>
+    </div>
+  </section>
+  <br>
+
+  <!-- PDF SECTION-->
+  <section class="content-section">
+    <div class="container">
+      <div class="row">
+        <p class="col-sm-12 col-xs-12">
+          <strong>
+            <i class="fas fa-file-pdf"></i> &nbsp; {{'_PDF_DOCUMENTS' | translate}}</strong>
+        </p>
+      </div>
+      <br>
+      <div class="button-row">
+        <button mat-raised-button color="warn" (click)="downloadAttendanceFiles()">{{'_ATTENDANCE_FILE' | translate}}</button>&nbsp;
+        <button mat-raised-button color="warn" (click)="downloadPresentationFiles()">{{'_PRESENTATION_FILE' | translate}}</button>&nbsp;
+        <button mat-raised-button color="warn" (click)="downloadInvoiceFiles()">{{'_INVOICE_FILE' | translate}}</button>
+      </div>
+    </div>
+    <br>
+    <br>
+  </section>
+
+  <!-- EXCEL SECTION-->
+  <section class="content-section">
+    <div class="container">
+      <div class="row">
+        <p class="col-sm-12 col-xs-12">
+          <strong>
+            <i class="fas fa-file-excel"></i> &nbsp; {{'_EXCEL_DOCUMENTS' | translate}}</strong>
+        </p>
+      </div>
+      <br>
+      <div class="button-row">
+        <button mat-raised-button class="green" (click)="downloadUsers()">{{'_USERS' | translate}}</button>&nbsp;
+        <button mat-raised-button class="green" (click)="downloadPapers()">{{'_PAPERS' | translate}}</button>&nbsp;
+        <button mat-raised-button class="green" (click)="downloadAuthors()">{{'_AUTHORS' | translate}}</button>
+      </div>
+    </div>
+    <br>
+    <br>
+  </section>
+
+  <!-- ID BADGE SECTION-->
+  <section class="content-section marginBottomDocuments">
+    <div class="container">
+      <div class="row">
+        <p class="col-sm-12 col-xs-12">
+          <strong>
+            <i class="fas fa-id-badge"></i> &nbsp; {{'_ID_BADGE' | translate}}</strong>
+        </p>
+      </div>
+      <br>
+      <div class="row">
+        <mat-form-field class="col-sm-2 col-xs-12">
+          <mat-select placeholder="{{ '_SIZE' | translate}}" [(ngModel)]="size" required>
+            <mat-option *ngFor="let size of sizes" (click)="sizeSelect()" [(value)]="size.value">
+              {{ size.value | translate }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-sm-2 col-xs-12">
+          <input matInput #input type="number" [min]="0" [max]="255" placeholder="{{ '_R' | translate}}" [(ngModel)]="R">
+        </mat-form-field>
+        <mat-form-field class="col-sm-2 col-xs-12">
+          <input matInput #input type="number" [min]="0" [max]="255" placeholder="{{ '_G' | translate}}" [(ngModel)]="G">
+        </mat-form-field>
+        <mat-form-field class="col-sm-2 col-xs-12">
+          <input matInput #input type="number" [min]="0" [max]="255" placeholder="{{ '_B' | translate}}" [(ngModel)]="B">
+        </mat-form-field>
+        <mat-form-field class="col-sm-2 col-xs-12">
+          <input matInput #input placeholder="{{ '_TEXT' | translate}}" [(ngModel)]="text">
+        </mat-form-field>
+      </div>
+      <div class="button-row">
+        <button mat-raised-button color="primary" (click)="downloadIdBadge()" [disabled]="!sizeSelected">{{'_ID_BADGE' | translate}}</button>&nbsp; &nbsp;
+      </div>
+    </div>
+    <br>
+  </section>
+
+</body>
+
+</html>

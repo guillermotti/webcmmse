@@ -37,7 +37,7 @@
             <a class="nav-link" routerLink="/conferences-admin" routerLinkActive="active">{{ '_CONFERENCES' | translate }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/social-admin" routerLinkActive="active">{{ '_SOCIAL_EVENTS' | translate }}</a>
+            <a class="nav-link" routerLink="/documents-admin" routerLinkActive="active">{{ '_DOCUMENTS' | translate }}</a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" routerLink="/configuration-admin" routerLinkActive="active">{{ '_CONFIG' | translate }}</a>
@@ -59,7 +59,8 @@
   <section class="content-section text-center">
     <div class="container">
       <div class="content-section-heading">
-        <h1 class="mt-5"><i class="fas fa-wrench"></i> &nbsp; {{ '_CONFIG' | translate}}</h1>
+        <h1 class="mt-5">
+          <i class="fas fa-wrench"></i> &nbsp; {{ '_CONFIG' | translate}}</h1>
       </div>
     </div>
   </section>
@@ -68,8 +69,10 @@
     <div class="container">
       <div class="row">
         <p class="col-sm-12 col-xs-12">
-          <strong>{{'_CMMSE_INFO' | translate}}</strong>
+          <strong>
+            <i class="fas fa-info-circle"></i> &nbsp; {{'_CMMSE_INFO' | translate}}</strong>
         </p>
+        <br>
         <mat-slide-toggle class="col-sm-6 col-xs-12" [(ngModel)]="config.cmmse_opened" [disabled]="fieldsDisabled">{{'_CMMSE_OPENED' | translate}} {{ opened}}</mat-slide-toggle>
         <mat-slide-toggle class="col-sm-6 col-xs-12" [(ngModel)]="config.send_term_opened" [disabled]="fieldsDisabled">{{'_SEND_TERM_OPENED' | translate}} {{ termOpened}}</mat-slide-toggle>
       </div>
@@ -163,13 +166,77 @@
     </div>
     <br>
   </section>
-  <section class="content-section text-center marginBottomConfig">
+  <section class="content-section">
+    <div class="container">
+      <div class="row">
+        <p class="col-sm-12 col-xs-12">
+          <strong>
+            <i class="fas fa-envelope"></i> &nbsp; {{'_EMAIL_CONFIGURATION' | translate}}</strong>
+        </p>
+        <br>
+        <mat-slide-toggle class="col-sm-12 col-xs-12" [(ngModel)]="config.email_opened" [disabled]="fieldsDisabled">{{'_EMAIL_OPENED' | translate}} {{ openedEmail }}</mat-slide-toggle>
+      </div>
+      <br>
+      <div class="row">
+        <mat-form-field class="col-sm-6 col-xs-12">
+          <input matInput #input placeholder="{{ '_EMAIL_SENDER' | translate}}" [(ngModel)]="config.email_sender" [disabled]="fieldsDisabled"
+            required>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-sm-6 col-xs-12">
+          <input matInput #input placeholder="{{ '_EMAIL_PASSWORD' | translate}}" [type]="hide ? 'password' : 'text'" [(ngModel)]="emailPassword"
+            [disabled]="fieldsDisabled" required>
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+      <br>
+      <div class="row">
+        <mat-form-field class="col-sm-12 col-xs-12">
+          <mat-chip-list #chipList>
+            <mat-chip *ngFor="let email of config.emails" [selectable]="!fieldsDisabled" [removable]="!fieldsDisabled" (remove)="remove(email)">
+              {{email}}
+              <mat-icon matChipRemove *ngIf="!fieldsDisabled">cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="{{ '_BCC_EMAILS' | translate}}" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]=true (matChipInputTokenEnd)="add($event)" [disabled]="fieldsDisabled" />
+          </mat-chip-list>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+      <br>
+    </div>
+    <br>
+  </section>
+  <section class="content-section text-center">
     <div class="container">
       <div class="button-row">
-        <button mat-raised-button color="{{colorChange}}" (click)=changeData() [disabled]="areFieldsEmpty()">{{ change | translate }}</button>
+        <button mat-raised-button color="{{colorChange}}" (click)="changeData()" [disabled]="areFieldsEmpty()">{{ change | translate }}</button>
       </div>
     </div>
     <br>
+    <br>
+  </section>
+
+  <section class="content-section marginBottomConfig">
+    <div class="container">
+      <br>
+      <div class="row">
+        <p class="col-sm-12 col-xs-12">
+          <strong>
+            <i class="fas fa-exclamation-triangle"></i> &nbsp; {{'_DANGER_ZONE' | translate}}</strong>
+        </p>
+      </div>
+      <br>
+      <div class="row">
+        <mat-slide-toggle class="col-sm-4 col-xs-12" [(ngModel)]="restartDatabase">{{'_ENABLE_BUTTONS' | translate}}</mat-slide-toggle>
+        <div class="resetButtons">
+          <button mat-raised-button color="warn" (click)="restartUsers()" [disabled]="!restartDatabase">{{ '_RESET_USERS' | translate }}</button>
+          <button mat-raised-button color="warn" (click)="restartConferences()" [disabled]="!restartDatabase">{{ '_RESET_CONFERENCES' | translate }}</button>
+        </div>
+      </div>
+      <br>
+    </div>
     <br>
   </section>
 

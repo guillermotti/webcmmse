@@ -8,7 +8,7 @@
     <div mat-dialog-content>
         <div class="row">
             <mat-form-field class="col-sm-12 col-xs-12">
-                <mat-select placeholder="{{ '_MINISYMPOSIUMS' | translate}}" [(ngModel)]="data.paper.minisymposium" required [disabled]="isAllDisabled()">
+                <mat-select placeholder="{{ '_MINISYMPOSIUMS' | translate}}" [(ngModel)]="data.paper.minisymposium" required>
                     <mat-option *ngFor="let minisymposium of minisymposiums" [(value)]="minisymposium.value">
                         {{ minisymposium.value | translate }}
                     </mat-option>
@@ -16,10 +16,10 @@
                 <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
             </mat-form-field>
             <mat-form-field class="col-sm-12 col-xs-12">
-                <input matInput #input placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="data.paper.title" required [disabled]="isAllDisabled()">
+                <input matInput #input placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="data.paper.title" required>
                 <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
             </mat-form-field>
-            <mat-checkbox class="col-sm-12 col-xs-12" [(ngModel)]="data.paper.poster" [disabled]="isAuthorDisabled()">
+            <mat-checkbox class="col-sm-12 col-xs-12" [(ngModel)]="data.paper.poster">
                 &nbsp;{{ '_POSTER' | translate }}
             </mat-checkbox>
         </div>
@@ -71,7 +71,7 @@
                         </ng-container>
                     </div>
                     <mat-form-field class="col-sm-6 col-xs-12">
-                        <input matInput #input placeholder="{{ '_NAME' | translate}}" [(ngModel)]="author.first_name" required [disabled]="isAuthorDisabled(i)">
+                        <input matInput #input placeholder="{{ '_NAME' | translate}}" [(ngModel)]="author.first_name" required>
                         <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
                     </mat-form-field>
                 </div>
@@ -79,11 +79,11 @@
             <div class="container">
                 <div class="example-container row">
                     <mat-form-field class="col-sm-6 col-xs-12">
-                        <input matInput #input placeholder="{{ '_LAST_NAME' | translate}}" [(ngModel)]="author.last_name" required [disabled]="isAuthorDisabled(i)">
+                        <input matInput #input placeholder="{{ '_LAST_NAME' | translate}}" [(ngModel)]="author.last_name" required>
                         <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field class="col-sm-6 col-xs-12">
-                        <input matInput #input placeholder="{{ '_EMAIL' | translate}}" [(ngModel)]="author.email" required type="email" email [disabled]="isAuthorDisabled(i)">
+                        <input matInput #input placeholder="{{ '_EMAIL' | translate}}" [(ngModel)]="author.email" required type="email" email>
                         <mat-error *ngIf="formControl.hasError('required')">{{ '_WRONG_EMAIL' | translate }}</mat-error>
                     </mat-form-field>
                 </div>
@@ -91,8 +91,8 @@
         </ng-container>
         <div class="container">
             <div class="example-container row">
-                <button mat-raised-button color="basic" (click)=addAuthor() [disabled]="addDisabled() || isAllDisabled()">{{ '_ADD_AUTHOR' | translate }}</button>
-                <button mat-raised-button color="warn" (click)=removeAuthor() [disabled]="removeDisabled() || isAllDisabled()">{{ '_REMOVE_AUTHOR' | translate }}</button>
+                <button mat-raised-button color="basic" (click)=addAuthor() [disabled]="addDisabled()">{{ '_ADD_AUTHOR' | translate }}</button>
+                <button mat-raised-button color="warn" (click)=removeAuthor() [disabled]="removeDisabled()">{{ '_REMOVE_AUTHOR' | translate }}</button>
             </div>
         </div>
         <hr>

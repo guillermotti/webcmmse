@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <img src="../../../assets/img/favicon.png" class="bird">
+      <a class="navbar-brand" href="{{ urlCMMSE }}">CMMSE {{ year }}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/users-admin" routerLinkActive="active">{{ '_USERS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/payments-admin" routerLinkActive="active">{{ '_PAYMENTS' | translate }}</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" routerLink="/authors-admin" routerLinkActive="active">{{ '_AUTHORS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/papers-admin" routerLinkActive="active">{{ '_PAPERS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/conferences-admin" routerLinkActive="active">{{ '_CONFERENCES' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/documents-admin" routerLinkActive="active">{{ '_DOCUMENTS' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/configuration-admin" routerLinkActive="active">{{ '_CONFIG' | translate }}</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" routerLinkActive="active">
+              <strong>{{ email }}</strong>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logOut()" routerLink="/login" routerLinkActive="active">{{ '_LOG_OUT' | translate }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <section class="content-section text-center">
+    <div class="container">
+      <div class="content-section-heading">
+        <h1 class="mt-5">
+          <i class="fas fa-address-card"></i> &nbsp; {{ '_AUTHORS' | translate}}</h1>
+      </div>
+    </div>
+  </section>
+  <br>
+  <section class="content-section marginBottomUsers">
+    <div class="container">
+      <div class="example-header">
+        <mat-form-field class="column12">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{ '_FILTER' | translate }}">
+        </mat-form-field>
+      </div>
+
+      <div class="example-container mat-elevation-z8">
+
+        <mat-table [dataSource]="authors" matSort>
+
+          <!-- FIRST NAME Column -->
+          <ng-container matColumnDef="first_name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_NAME' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.first_name}} </mat-cell>
+          </ng-container>
+
+          <!-- LAST NAME Column -->
+          <ng-container matColumnDef="last_name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_LAST_NAME' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.last_name}} </mat-cell>
+          </ng-container>
+
+          <!-- UNIVERSITY Column -->
+          <ng-container matColumnDef="university_company">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_UNIVERSITY' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.university_company}} </mat-cell>
+          </ng-container>
+
+          <!-- COUNTRY Column -->
+          <ng-container matColumnDef="country">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_COUNTRY' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.country}} </mat-cell>
+          </ng-container>
+
+          <!-- PAYMENTFILE Column -->
+          <ng-container matColumnDef="numberPapers">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_PAPERS' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.numberPapers}} </mat-cell>
+          </ng-container>
+
+          <!-- CHECKPAYMENT Column -->
+          <ng-container matColumnDef="numberPosters">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_POSTERS' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.numberPosters}} </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;">
+          </mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      </div>
+    </div>
+    <br>
+  </section>
+
+</body>
+
+</html>

@@ -7,6 +7,7 @@ import { CryptoService } from '../../services/crypto.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
+import { MailSenderService } from '../../services/mail-sender.service';
 
 @Component({
   selector: 'app-registration',
@@ -15,7 +16,7 @@ import * as _ from 'lodash';
 })
 export class RegistrationComponent implements OnInit {
 
-  year; urlCMMSE; hide = true; hide2 = true;
+  year; urlCMMSE; hide = true; hide2 = true; emailBCC; emailSender; emailPass; emailOpen;
   form = {
     'name': '',
     'lastName': '',
@@ -31,7 +32,13 @@ export class RegistrationComponent implements OnInit {
     'emailCheck': '',
     'password': '',
     'passwordCheck': '',
-    'check': false
+    'check': false,
+    'year': '',
+    'bcc': '',
+    'emailSender': '',
+    'emailPass': '',
+    'emails': [],
+    'tax': ''
   };
 
   formControl = new FormControl('', [Validators.required]);
@@ -42,13 +49,18 @@ export class RegistrationComponent implements OnInit {
   countries = AppConfig.countries;
 
   constructor(public dialog: MatDialog, public snackBar: MatSnackBar,
-    private firebaseService: FirebaseCallerService, private crytoService: CryptoService,
-    private translationService: TranslateService, private router: Router) { }
+    private firebaseService: FirebaseCallerService, private cryptoService: CryptoService,
+    private translationService: TranslateService, private router: Router, public mailSenderService: MailSenderService) { }
 
   ngOnInit() {
     this.firebaseService.getCollection('config').subscribe(response => {
       this.year = response[0].conference_year;
       this.urlCMMSE = response[0].conference_url;
+      this.emailBCC = response[0].emails;
+      this.emailSender = response[0].email_sender;
+      this.emailPass = this.cryptoService.decrypt(response[0].email_password);
+      this.form.tax = response[0].fee_to_pay;
+      this.emailOpen = response[0].email_opened;
     });
     const passCheckInput = document.getElementById('passCheck');
     const emailCheckInput = document.getElementById('emailCheck');
@@ -61,7 +73,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   isFormValid() {
-    if (this.areFieldsEmpty() || this.form.check === false || this.arePasswordWeak()) {
+    if (this.areFieldsEmpty() || this.form.check === false || this.isPasswordWeak()) {
       return true;
     } else if (this.form.email !== this.form.emailCheck || this.form.password !== this.form.passwordCheck) {
       return true;
@@ -80,7 +92,7 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
-  arePasswordWeak() {
+  isPasswordWeak() {
     const pwd = this.form.password;
     const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*\d)(?=.*[^A-Za-z0-9])([A-Za-z\d$@$!%*?&]|[^ ]){8,}$/;
     if (!regex.test(pwd)) {
@@ -100,19 +112,31 @@ export class RegistrationComponent implements OnInit {
           email: this.form.email,
           first_name: this.form.name,
           last_name: this.form.lastName,
-          password: this.crytoService.encrypt(this.form.password),
+          password: this.cryptoService.encrypt(this.form.password),
           phone: this.form.phone,
           postal_code: this.form.postalCode,
           state: this.form.state,
           title: this.form.title,
           university_company: this.form.universityCompany,
-          check_payment: false
+          check_payment: false,
+          tax: this.form.tax
         };
         this.firebaseService.addItemToCollection('users', user).then(() => {
           this.translationService.get('_REGISTER_SUCCESFUL').subscribe(resp => {
             this.snackBar.open(resp, null, {
               duration: 2000,
             });
+            this.form.year = this.year;
+            this.form.bcc = this.emailBCC;
+            this.form.emailSender = this.emailSender;
+            this.form.emailPass = this.emailPass;
+            this.form.emails = [this.form.email, this.form.emailSender];
+            if (this.emailOpen) {
+              const obser2 = this.mailSenderService.sendRegistrationMessage(this.form).subscribe(() => {
+                console.log('Mensaje enviado correctamente');
+                obser2.unsubscribe();
+              });
+            }
           });
           this.router.navigate(['login']);
         });
@@ -136,8 +160,9 @@ export class RegistrationComponent implements OnInit {
       data: {}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    const obser = dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
+      obser.unsubscribe();
     });
   }
 
