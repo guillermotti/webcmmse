@@ -7,11 +7,9 @@ import * as $ from 'jquery';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 
-import { AppConfig } from '../../config/app.config';
 import { FirebaseCallerService } from '../../services/firebase-caller.service';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 import { TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
 import { CryptoService } from '../../services/crypto.service';
 import { MailSenderService } from '../../services/mail-sender.service';
 
@@ -22,7 +20,7 @@ import { MailSenderService } from '../../services/mail-sender.service';
 })
 export class PaperComponent implements OnInit, AfterViewInit {
 
-  year; urlCMMSE; email; emailBCC; emailSender; emailPass; emailOpen;
+  year; urlCMMSE; email; emailBCC; emailSender; emailPass; emailOpen; paperUploaded;
   minisymposiums = [];
   paper = {
     'minisymposium': '',
@@ -56,7 +54,7 @@ export class PaperComponent implements OnInit, AfterViewInit {
 
   constructor(private storage: AngularFireStorage, private firebaseService: FirebaseCallerService, public dialog: MatDialog,
     private translationService: TranslateService, public snackBar: MatSnackBar, private mailSenderService: MailSenderService,
-    private router: Router, private cryptoService: CryptoService) {
+    private cryptoService: CryptoService) {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
     // Assign the data to the data source for the table to render
     this.currentPapers = new MatTableDataSource(user.papers);
@@ -228,8 +226,8 @@ export class PaperComponent implements OnInit, AfterViewInit {
         this.currentPapers.paginator = this.paginator;
         this.currentPapers.sort = this.sort;
         this.paper = {
-          'minisymposium': '',
-          'title': '',
+          'minisymposium': ' ',
+          'title': ' ',
           'poster': false,
           'state': '_UPLOADED',
           'authors': {}
@@ -244,6 +242,7 @@ export class PaperComponent implements OnInit, AfterViewInit {
         this.myInputVariable.nativeElement.value = '';
         this.uploadState = null;
         this.fileURL = null;
+        this.progressBarValue = '';
         const body = $('html, body');
         body.stop().animate({ scrollTop: 0 }, 500, 'swing');
       });
@@ -348,6 +347,15 @@ export class PaperComponent implements OnInit, AfterViewInit {
       return true;
     } else {
       return false;
+    }
+  }
+
+  resetField(field) {
+    if (field === 'minisymposium' && this.paper.minisymposium === ' ') {
+      this.paper.minisymposium = '';
+    }
+    if (field === 'title' && this.paper.title === ' ') {
+      this.paper.title = '';
     }
   }
 
