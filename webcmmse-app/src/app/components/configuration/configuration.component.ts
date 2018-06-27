@@ -34,13 +34,14 @@ export class ConfigurationComponent implements OnInit {
     certificate_signature: '',
     bill_spain: '',
     bill_other: '',
+    email_opened: '',
     email_sender: '',
     email_password: '',
     emails: []
   };
-  fieldsDisabled = true; opened; termOpened;
+  fieldsDisabled = true; opened; termOpened; openedEmail;
   formControl = new FormControl('', [Validators.required]);
-  minDate = new Date(); hide = true; rootPassword; emailPassword;
+  minDate = new Date(); hide = true; rootPassword; emailPassword; restartDatabase;
   change = '_CHANGE_DATA'; colorChange = 'primary';
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA, SPACE];
@@ -64,14 +65,19 @@ export class ConfigurationComponent implements OnInit {
         this.urlCMMSE = response[0].conference_url;
         const open = response[0].cmmse_opened ? '_OPENED' : '_CLOSED';
         const termOpen = response[0].send_term_opened ? '_OPENED' : '_CLOSED';
+        const emailOpen = response[0].email_opened ? '_OPENED' : '_CLOSED';
         this.translationService.get(open).subscribe(resp => {
           this.opened = resp;
         });
         this.translationService.get(termOpen).subscribe(resp => {
           this.termOpened = resp;
         });
+        this.translationService.get(emailOpen).subscribe(resp => {
+          this.openedEmail = resp;
+        });
       });
       this.user = user.user;
+      this.restartDatabase = false;
     }
   }
 
@@ -104,10 +110,12 @@ export class ConfigurationComponent implements OnInit {
       this.config.root_password = this.cryptoService.encrypt(this.rootPassword);
       this.config.email_password = this.cryptoService.encrypt(this.emailPassword);
       this.firebaseService.updateItemFromCollection('config', config.id, this.config).then(() => {
-        this.firebaseService.getItemFromCollection(config.id, 'config').subscribe(response => {
+        const obser = this.firebaseService.getItemFromCollection(config.id, 'config').subscribe(response => {
           window.sessionStorage.setItem('config', JSON.stringify(response[0]));
           this.rootPassword = this.cryptoService.decrypt(response[0].root_password);
           this.emailPassword = this.cryptoService.decrypt(response[0].email_password);
+          this.ngOnInit();
+          obser.unsubscribe();
         });
         this.translationService.get('_CONFIG_UPDATED_SUCCESFULLY').subscribe(resp => {
           this.snackBar.open(resp, null, {
@@ -140,6 +148,34 @@ export class ConfigurationComponent implements OnInit {
     if (index >= 0) {
       this.config.emails.splice(index, 1);
     }
+  }
+
+  restartUsers() {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
+      users.forEach(user => {
+        this.firebaseService.deleteItemFromCollection('users', user.id);
+      });
+      this.translationService.get('_USERS_REMOVED_SUCCESFULLY').subscribe(resp => {
+        this.snackBar.open(resp, null, {
+          duration: 2000,
+        });
+      });
+      obser.unsubscribe();
+    });
+  }
+
+  restartConferences() {
+    const obser = this.firebaseService.getCollection('conferences').subscribe(conferences => {
+      conferences.forEach(conf => {
+        this.firebaseService.deleteItemFromCollection('conferences', conf.id);
+      });
+      this.translationService.get('_CONFERENCES_REMOVED_SUCCESFULLY').subscribe(resp => {
+        this.snackBar.open(resp, null, {
+          duration: 2000,
+        });
+      });
+      obser.unsubscribe();
+    });
   }
 
 }

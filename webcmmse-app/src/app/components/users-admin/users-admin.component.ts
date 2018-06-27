@@ -75,12 +75,13 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
       data: { user: user }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    const obser = dialogRef.afterClosed().subscribe(result => {
       const users = JSON.parse(window.sessionStorage.getItem('users'));
       this.users = new MatTableDataSource(users);
       this.users.paginator = this.paginator;
       this.users.sort = this.sort;
       console.log('The dialog was closed', result);
+      obser.unsubscribe();
     });
 
     dialogRef.updateSize('50%', 'auto');
@@ -92,12 +93,13 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
       data: { user: user }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    const obser = dialogRef.afterClosed().subscribe(result => {
       const users = JSON.parse(window.sessionStorage.getItem('users'));
       this.users = new MatTableDataSource(users);
       this.users.paginator = this.paginator;
       this.users.sort = this.sort;
       console.log('The dialog was closed', result);
+      obser.unsubscribe();
     });
   }
 
@@ -122,7 +124,7 @@ export class EditUserDialogComponent implements OnInit {
     private firebaseService: FirebaseCallerService, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
-    this.firebaseService.getCollection('conferences').subscribe(response => {
+    const obser = this.firebaseService.getCollection('conferences').subscribe(response => {
       const values = [];
       const sortedValues = [];
       response.forEach(item => { // Taking values from response to sort them
@@ -132,6 +134,7 @@ export class EditUserDialogComponent implements OnInit {
         sortedValues.push({ value: item });
       });
       this.minisymposiums = sortedValues;
+      obser.unsubscribe();
     });
   }
 
@@ -146,11 +149,12 @@ export class EditUserDialogComponent implements OnInit {
       this.fieldsDisabled = false;
     } else {
       this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-        this.firebaseService.getCollection('users').subscribe(response => {
+        const obser = this.firebaseService.getCollection('users').subscribe(response => {
           window.sessionStorage.setItem('users', JSON.stringify(response));
           this.edit = '_EDIT';
           this.colorChange = 'primary';
           this.fieldsDisabled = true;
+          obser.unsubscribe();
         });
         this.translationService.get('_USER_UPDATED_SUCCESFULLY').subscribe(resp => {
           this.snackBar.open(resp, null, {
@@ -186,8 +190,9 @@ export class EditUserDialogComponent implements OnInit {
       user.presentation_downloaded = false;
     }
     this.firebaseService.updateItemFromCollection('users', user.id, user).then(() => {
-      this.firebaseService.getCollection('users').subscribe(response => {
+      const obser = this.firebaseService.getCollection('users').subscribe(response => {
         window.sessionStorage.setItem('users', JSON.stringify(response));
+        obser.unsubscribe();
       });
       this.translationService.get('_DOCUMENTS_RESETED_SUCCESFULLY').subscribe(resp => {
         this.snackBar.open(resp, null, {

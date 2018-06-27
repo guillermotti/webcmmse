@@ -8,6 +8,11 @@ export const AppConfig = {
     { value: '_MR' },
     { value: '_PROF' }
   ],
+  badgeSizes: [
+    { value: '15x7.5' },
+    { value: '10.8x7.5' },
+    { value: '9.2x6.25' }
+  ],
   countries: [
     { value: 'Afghanistan' },
     { value: 'Albania' },

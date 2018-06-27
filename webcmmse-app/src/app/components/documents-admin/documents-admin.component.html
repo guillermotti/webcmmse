@@ -79,7 +79,7 @@
       <div class="button-row">
         <button mat-raised-button color="warn" (click)="downloadAttendanceFiles()">{{'_ATTENDANCE_FILE' | translate}}</button>&nbsp;
         <button mat-raised-button color="warn" (click)="downloadPresentationFiles()">{{'_PRESENTATION_FILE' | translate}}</button>&nbsp;
-        <button mat-raised-button color="warn" (click)="downloadInvoiceFiles()">{{'_INVOICE_FILE' | translate}}</button>
+        <button mat-raised-button color="warn" (click)="downloadInvoiceFiles()">{{'_INVOICES' | translate}}</button>
       </div>
     </div>
     <br>
@@ -116,14 +116,30 @@
         </p>
       </div>
       <br>
-      <div class="button-row">
-        <button mat-raised-button color="primary" (click)="downloadIdBadge()">{{'_ID_BADGE' | translate}}</button>&nbsp; &nbsp;
-        <mat-form-field class="column2">
-          <input matInput #input type="number" [min]=50 [max]=200 placeholder="{{ '_WIDTH' | translate}}" [(ngModel)]="width" required>
-        </mat-form-field> &nbsp; &nbsp;
-        <mat-form-field class="column2">
-          <input matInput #input type="number" [min]=50 [max]=200 placeholder="{{ '_HEIGHT' | translate}}" [(ngModel)]="height" required>
+      <div class="row">
+        <mat-form-field class="col-sm-2 col-xs-12">
+          <mat-select placeholder="{{ '_SIZE' | translate}}" [(ngModel)]="size" required>
+            <mat-option *ngFor="let size of sizes" (click)="sizeSelect()" [(value)]="size.value">
+              {{ size.value | translate }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
         </mat-form-field>
+        <mat-form-field class="col-sm-2 col-xs-12">
+          <input matInput #input type="number" [min]="0" [max]="255" placeholder="{{ '_R' | translate}}" [(ngModel)]="R">
+        </mat-form-field>
+        <mat-form-field class="col-sm-2 col-xs-12">
+          <input matInput #input type="number" [min]="0" [max]="255" placeholder="{{ '_G' | translate}}" [(ngModel)]="G">
+        </mat-form-field>
+        <mat-form-field class="col-sm-2 col-xs-12">
+          <input matInput #input type="number" [min]="0" [max]="255" placeholder="{{ '_B' | translate}}" [(ngModel)]="B">
+        </mat-form-field>
+        <mat-form-field class="col-sm-2 col-xs-12">
+          <input matInput #input placeholder="{{ '_TEXT' | translate}}" [(ngModel)]="text">
+        </mat-form-field>
+      </div>
+      <div class="button-row">
+        <button mat-raised-button color="primary" (click)="downloadIdBadge()" [disabled]="!sizeSelected">{{'_ID_BADGE' | translate}}</button>&nbsp; &nbsp;
       </div>
     </div>
     <br>

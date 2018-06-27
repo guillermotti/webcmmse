@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 import * as jsPDF from 'jspdf';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { AppConfig } from '../../config/app.config';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-documents-admin',
@@ -16,7 +18,9 @@ import * as XLSX from 'xlsx';
 })
 export class DocumentsAdminComponent implements OnInit {
 
-  year; urlCMMSE; user; width; height;
+  year; urlCMMSE; user; sizeSelected; size; text; R; G; B;
+  sizes = AppConfig.badgeSizes;
+  formControl = new FormControl('', [Validators.required]);
 
   constructor(private firebaseService: FirebaseCallerService, private translationService: TranslateService,
     public snackBar: MatSnackBar, private router: Router, private cryptoService: CryptoService) {
@@ -34,9 +38,12 @@ export class DocumentsAdminComponent implements OnInit {
         this.urlCMMSE = response[0].conference_url;
       });
       this.user = user.user;
+      this.sizeSelected = false;
+      this.R = 255;
+      this.G = 255;
+      this.B = 255;
+      this.text = '';
     }
-    this.width = 108;
-    this.height = 75;
   }
 
   logOut() {
@@ -52,7 +59,7 @@ export class DocumentsAdminComponent implements OnInit {
 
     const data = [];
     data.push(header);
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach(user => {
         if (!_.isEmpty(user.papers)) {
           user.numberPapers = 0;
@@ -78,6 +85,8 @@ export class DocumentsAdminComponent implements OnInit {
       /* save to file */
       const wbout: ArrayBuffer = XLSX.write(wb, wopts);
       FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+
+      obser.unsubscribe();
     });
   }
 
@@ -91,7 +100,7 @@ export class DocumentsAdminComponent implements OnInit {
 
     const data = [];
     data.push(header);
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach(user => {
         if (!_.isEmpty(user.papers)) {
           user.papers.forEach(paper => {
@@ -116,6 +125,8 @@ export class DocumentsAdminComponent implements OnInit {
       /* save to file */
       const wbout: ArrayBuffer = XLSX.write(wb, wopts);
       FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+
+      obser.unsubscribe();
     });
   }
 
@@ -128,7 +139,7 @@ export class DocumentsAdminComponent implements OnInit {
 
     const data = [];
     data.push(header);
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach(user => {
         const userToExport = [user.first_name, user.last_name, user.email, user.university_company, user.country, user.state,
         user.city, user.postal_code, user.address, user.phone, user.check_payment ? 'Yes' : 'No',
@@ -145,6 +156,8 @@ export class DocumentsAdminComponent implements OnInit {
       /* save to file */
       const wbout: ArrayBuffer = XLSX.write(wb, wopts);
       FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+
+      obser.unsubscribe();
     });
   }
 
@@ -168,7 +181,7 @@ export class DocumentsAdminComponent implements OnInit {
         margin-left:180px; margin-top:20px; width:120; height:170;"></div>
       <div><img src="../../../assets/img/FirmaJesus.jpg" style="position:absolute;
         margin-left:325px; margin-top:-20px; width:50; height:30"></div>`;
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach((user, index) => {
         let userTitle = user.bill ? user.bill.title : user.title;
         this.translationService.get(userTitle).subscribe(response => {
@@ -210,7 +223,9 @@ export class DocumentsAdminComponent implements OnInit {
           } else {
             doc.text(25, 100, userTitle + ' ' + user.first_name + ' ' + user.last_name);
             doc.text(25, 105, 'University/College/Company: ');
-            doc.text(25, 110, 'Address: ');
+            if (user.address) {
+              doc.text(25, 110, 'Address: ');
+            }
             doc.text(25, 135, 'Description');
             doc.text(180, 135, 'Value', null, null, 'right');
             doc.setFontType('normal');
@@ -232,6 +247,7 @@ export class DocumentsAdminComponent implements OnInit {
           }
         });
       });
+      obser.unsubscribe();
     });
   }
 
@@ -259,7 +275,7 @@ export class DocumentsAdminComponent implements OnInit {
         margin-left:180px; margin-top:40px; width:50; height:30"></div>
       <div><img src="../../../assets/img/FirmaJesus.jpg" style="position:absolute;
         margin-left:430px; margin-top:-110px; width:50; height:30"></div>`;
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach(user => {
         if (user && user.papers) {
           this.translationService.get(user.title).subscribe(response => {
@@ -318,6 +334,7 @@ export class DocumentsAdminComponent implements OnInit {
           }
         });
       });
+      obser.unsubscribe();
     });
   }
 
@@ -344,7 +361,7 @@ export class DocumentsAdminComponent implements OnInit {
         margin-left:180px; margin-top:40px; width:50; height:30"></div>
       <div><img src="../../../assets/img/FirmaJesus.jpg" style="position:absolute;
         margin-left:430px; margin-top:-110px; width:50; height:30"></div>`;
-    this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach((user, index) => {
         let userTitle = user.bill ? user.bill.title : user.title;
         this.translationService.get(userTitle).subscribe(response => {
@@ -394,10 +411,32 @@ export class DocumentsAdminComponent implements OnInit {
           }
         });
       });
+      obser.unsubscribe();
     });
   }
 
   downloadIdBadge() {
+    let width; let height; let infoWidth;
+    const _this = this;
+    let text = true;
+    switch (this.size) {
+      case '15x7.5':
+        width = 150;
+        height = 75;
+        infoWidth = 95;
+        break;
+      case '10.8x7.5':
+        width = 108;
+        height = 75;
+        infoWidth = 75;
+        break;
+      case '9.2x6.25':
+        width = 92;
+        height = 62.5;
+        infoWidth = 65;
+        break;
+    }
+
     const config = JSON.parse(window.sessionStorage.getItem('config'));
     const initialDate = new Date(config.conference_initial_day);
     const endDate = new Date(config.conference_end_day);
@@ -409,44 +448,138 @@ export class DocumentsAdminComponent implements OnInit {
       unit: 'mm',
       format: 'a4'
     });
-    let coef;
-    if (this.width < this.height) {
-      coef = this.height / this.width;
-    } else {
-      coef = this.width / this.height;
-    }
-    doc.rect(20, 20, this.width, this.height);
-    doc.rect(20.2, 20.2, this.width, this.height);
-    doc.rect(20.4, 20.4, this.width, this.height);
-    doc.rect(20.6, 20.6, this.width, this.height);
-    doc.rect(20.8, 20.8, this.width, this.height);
-    doc.rect(20, 50, this.width, this.height / 2);
-    doc.rect(20.2, 50.2, this.width, this.height / 2);
-    doc.rect(20.4, 50.4, this.width, this.height / 2);
-    doc.rect(20.6, 50.6, this.width, this.height / 2);
-    doc.rect(20.8, 50.8, this.width, this.height / 2);
-
-    const htmlImages =
-      `<p>CMMSE ` + config.conference_year + `
-    </p>`;
-    doc.fromHTML(htmlImages, 20 + this.width * coef, 20 + this.height * coef, {}, function () {
-      doc.save('IdBadgesAll.pdf');
-    });
-    /**this.firebaseService.getCollection('users').subscribe(users => {
+    const obser = this.firebaseService.getCollection('users').subscribe(users => {
+      let users3 = [];
+      const usersTotal = [];
       users.forEach((user, index) => {
+        users3.push(user);
+        if ((index + 1) % 3 === 0 || users.length - 2 < index) {
+          usersTotal.push(users3);
+          users3 = [];
+        }
+      });
+      usersTotal.forEach((user, index) => {
         const htmlImages =
-          `<div style="border:5px solid #000; padding:50px;">
-          <div style="border:5px solid #000; padding:50px; margin-left:-19%; margin-right:-19%; margin-top:15%"></div>
-        </div>`;
-        doc.fromHTML(htmlImages, 0, 0, {}, function () {
-          if (index < users.length - 1) {
-            doc.addPage();
+          `<div><img src="../../../assets/img/CMMSE_VertIzq.jpg" style="position:absolute;
+          margin-left:15px; margin-top:-330px; width:25; height:25;"></div>
+          <div><img src="../../../assets/img/CMMSE_VertIzq.jpg" style="position:absolute;
+          margin-left:15px; margin-top:245px; width:25; height:25;"></div>
+          <div><img src="../../../assets/img/CMMSE_VertIzq.jpg" style="position:absolute;
+          margin-left:15px; margin-top:245px; width:25; height:25;"></div>`;
+        doc.fromHTML(htmlImages, 20, 110, {}, function () {
+          // First badge
+          doc.rect(20.2, 20.2, width, height);
+          doc.rect(20.4, 20.4, width, height);
+          doc.rect(20.6, 20.6, width, height);
+          doc.rect(20.8, 20.8, width, height);
+          // Color for the badge
+          doc.setFillColor(_this.R, _this.G, _this.B);
+          doc.rect(20.2, 50.2, width, height / 2, 'F');
+          doc.rect(20.4, 50.4, width, height / 2);
+          doc.rect(20.6, 50.6, width, height / 2);
+          doc.rect(20.8, 50.8, width, height / 2);
+          doc.setFontSize(14);
+          doc.text(infoWidth, 30, 'CMMSE ' + config.conference_year, null, null, 'center');
+          doc.setFontSize(9);
+          doc.text(infoWidth, 34, 'International Conference on Computational and', null, null, 'center');
+          doc.text(infoWidth, 38, 'Mathematical Methods in Science and Engineering', null, null, 'center');
+          doc.text(infoWidth, 42, monthNames[initialDate.getMonth()] + ' ' + initialDate.getDate()
+            + ' - ' + endDate.getDate() + ', ' + config.conference_year + '. ' + config.conference_place, null, null, 'center');
+          if (_this.text) {
+            doc.setFontSize(18);
+            doc.text(infoWidth, 65, _this.text, null, null, 'center');
           } else {
-            doc.save('IdBadgesAll.pdf');
+            doc.setFontSize(16);
+            doc.text(infoWidth, 60, user[0].last_name + ', ' + user[0].first_name, null, null, 'center');
+            doc.setFontSize(9);
+            doc.text(infoWidth, 65, user[0].university_company, null, null, 'center');
+            doc.setFontSize(12);
+            doc.text(infoWidth, 69, user[0].country, null, null, 'center');
+          }
+
+          // Second badge
+          if (user[1]) {
+            doc.rect(20.2, 110.2, width, height);
+            doc.rect(20.4, 110.4, width, height);
+            doc.rect(20.6, 110.6, width, height);
+            doc.rect(20.8, 110.8, width, height);
+            // Color for the badge
+            doc.setFillColor(_this.R, _this.G, _this.B);
+            doc.rect(20.2, 140.2, width, height / 2, 'F');
+            doc.rect(20.4, 140.4, width, height / 2);
+            doc.rect(20.6, 140.6, width, height / 2);
+            doc.rect(20.8, 140.8, width, height / 2);
+            doc.setFontSize(14);
+            doc.text(infoWidth, 120, 'CMMSE ' + config.conference_year, null, null, 'center');
+            doc.setFontSize(9);
+            doc.text(infoWidth, 124, 'International Conference on Computational and', null, null, 'center');
+            doc.text(infoWidth, 128, 'Mathematical Methods in Science and Engineering', null, null, 'center');
+            doc.text(infoWidth, 132, monthNames[initialDate.getMonth()] + ' ' + initialDate.getDate()
+              + ' - ' + endDate.getDate() + ', ' + config.conference_year + '. ' + config.conference_place, null, null, 'center');
+            if (_this.text) {
+              doc.setFontSize(18);
+              doc.text(infoWidth, 155, _this.text, null, null, 'center');
+            } else {
+              doc.setFontSize(16);
+              doc.text(infoWidth, 150, user[1].last_name + ', ' + user[1].first_name, null, null, 'center');
+              doc.setFontSize(9);
+              doc.text(infoWidth, 155, user[1].university_company, null, null, 'center');
+              doc.setFontSize(12);
+              doc.text(infoWidth, 159, user[1].country, null, null, 'center');
+            }
+          }
+
+          // Third badge
+          if (user[2]) {
+            doc.rect(20.2, 200.2, width, height);
+            doc.rect(20.4, 200.4, width, height);
+            doc.rect(20.6, 200.6, width, height);
+            doc.rect(20.8, 200.8, width, height);
+            // Color for the badge
+            doc.setFillColor(_this.R, _this.G, _this.B);
+            doc.rect(20.2, 230.2, width, height / 2, 'F');
+            doc.rect(20.4, 230.4, width, height / 2);
+            doc.rect(20.6, 230.6, width, height / 2);
+            doc.rect(20.8, 230.8, width, height / 2);
+            doc.setFontSize(14);
+            doc.text(infoWidth, 210, 'CMMSE ' + config.conference_year, null, null, 'center');
+            doc.setFontSize(9);
+            doc.text(infoWidth, 214, 'International Conference on Computational and', null, null, 'center');
+            doc.text(infoWidth, 218, 'Mathematical Methods in Science and Engineering', null, null, 'center');
+            doc.text(infoWidth, 222, monthNames[initialDate.getMonth()] + ' ' + initialDate.getDate()
+              + ' - ' + endDate.getDate() + ', ' + config.conference_year + '. ' + config.conference_place, null, null, 'center');
+            if (_this.text) {
+              doc.setFontSize(18);
+              doc.text(infoWidth, 245, _this.text, null, null, 'center');
+            } else {
+              doc.setFontSize(16);
+              doc.text(infoWidth, 240, user[2].last_name + ', ' + user[2].first_name, null, null, 'center');
+              doc.setFontSize(9);
+              doc.text(infoWidth, 245, user[2].university_company, null, null, 'center');
+              doc.setFontSize(12);
+              doc.text(infoWidth, 249, user[2].country, null, null, 'center');
+            }
+          }
+          if (_this.text && text) {
+            doc.save('IdBadges' + _this.text + '.pdf');
+            text = false;
+          } else {
+            if (index < usersTotal.length - 1) {
+              doc.addPage();
+            } else {
+              if (text) {
+                doc.save('IdBadgesAll.pdf');
+              }
+            }
           }
         });
       });
-    });**/
+      obser.unsubscribe();
+    });
+  }
+
+  sizeSelect() {
+    this.sizeSelected = true;
   }
 
 }

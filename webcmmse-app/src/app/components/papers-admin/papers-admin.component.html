@@ -110,7 +110,7 @@
 
           <!-- STATE Column -->
           <ng-container matColumnDef="status">
-            <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_STATE' | translate }} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_PAPER_STATE' | translate }} </mat-header-cell>
             <mat-cell *matCellDef="let row">
               <mat-form-field>
                 <mat-select [(ngModel)]="row.state" (change)="changeStatus(row)">

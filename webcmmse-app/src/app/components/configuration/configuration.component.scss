@@ -13,4 +13,13 @@
 
 .marginBottomConfig {
     margin-bottom: 10%;
+
+    div:first-child {
+        border: 1px solid red;
+        border-radius: 10px;
+    }
+
+    .resetButtons {
+        margin-left: 7%;
+    }
 }

@@ -104,8 +104,9 @@ export class UserHomeComponent implements OnInit {
       data: {}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    const obser = dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
+      obser.unsubscribe();
     });
   }
 

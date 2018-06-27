@@ -93,9 +93,10 @@ export class ConferencesAdminComponent implements OnInit, AfterViewInit {
       data: { conference: conference }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.firebaseService.getCollection('conferences').subscribe(() => {
+    dialogRef.afterClosed().subscribe(() => {
+      const obser = this.firebaseService.getCollection('conferences').subscribe(() => {
         this.ngOnInit();
+        obser.unsubscribe();
       });
     });
 
@@ -108,9 +109,10 @@ export class ConferencesAdminComponent implements OnInit, AfterViewInit {
       data: { conference: conference }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.firebaseService.getCollection('conferences').subscribe(() => {
+    dialogRef.afterClosed().subscribe(() => {
+      const obser = this.firebaseService.getCollection('conferences').subscribe(() => {
         this.ngOnInit();
+        obser.unsubscribe();
       });
     });
   }
