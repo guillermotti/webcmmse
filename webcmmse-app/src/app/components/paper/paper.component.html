@@ -135,7 +135,8 @@
     <div class="container">
       <div class="example-container">
         <mat-form-field class="column12">
-          <mat-select placeholder="{{ '_MINISYMPOSIUMS' | translate}}" [(ngModel)]="paper.minisymposium" required>
+          <mat-select placeholder="{{ '_MINISYMPOSIUMS' | translate}}" [(ngModel)]="paper.minisymposium" (click)="resetField('minisymposium')"
+            required>
             <mat-option *ngFor="let minisymposium of minisymposiums" [(value)]="minisymposium.value">
               {{ minisymposium.value | translate }}
             </mat-option>
@@ -147,7 +148,7 @@
     <div class="container">
       <div class="example-container">
         <mat-form-field class="column12">
-          <input matInput #input placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="paper.title" required>
+          <input matInput #input placeholder="{{ '_TITLE' | translate}}" [(ngModel)]="paper.title" (click)="resetField('title')" required>
           <mat-error *ngIf="formControl.hasError('required')">{{ '_REQUIRED_FIELD' | translate }}</mat-error>
         </mat-form-field>
       </div>

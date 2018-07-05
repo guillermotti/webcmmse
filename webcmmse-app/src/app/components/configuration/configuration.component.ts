@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatChipInputEvent } from '@angular/material';
-import {ENTER, COMMA, SPACE} from '@angular/cdk/keycodes';
+import { ENTER, COMMA, SPACE } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
@@ -60,7 +60,7 @@ export class ConfigurationComponent implements OnInit {
         this.config = response[0];
         window.sessionStorage.setItem('config', JSON.stringify(this.config));
         this.rootPassword = this.cryptoService.decrypt(response[0].root_password);
-        this.emailPassword = this.cryptoService.decrypt(response[0].email_password);
+        this.emailPassword = response[0].email_password ? this.cryptoService.decrypt(response[0].email_password) : '';
         this.year = response[0].conference_year;
         this.urlCMMSE = response[0].conference_url;
         const open = response[0].cmmse_opened ? '_OPENED' : '_CLOSED';
@@ -86,11 +86,8 @@ export class ConfigurationComponent implements OnInit {
   }
 
   areFieldsEmpty() {
-    if (this.config.bill_other === '' || this.config.bill_spain === '' || this.config.certificate_signature === '' ||
-      this.config.CIF === '' || this.config.conference_end_day === '' || this.config.conference_initial_day === '' ||
-      this.config.conference_place === '' || this.config.conference_url === '' || this.config.conference_year === '' ||
-      this.config.fee_to_pay === '' || this.config.ISBN === '' || this.config.root_user === '' || this.rootPassword === '' ||
-      this.config.email_sender === '' || this.emailPassword === '') {
+    if (this.config.conference_url === '' || this.config.conference_year === '' ||
+      this.config.root_user === '' || this.rootPassword === '') {
       return true;
     } else {
       return false;
