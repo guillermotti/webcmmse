@@ -5,10 +5,9 @@ import { ENTER, COMMA, SPACE } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
-
-import { AppConfig } from '../../config/app.config';
 import { FirebaseCallerService } from '../../services/firebase-caller.service';
 import { CryptoService } from '../../services/crypto.service';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 @Component({
   selector: 'app-configuration',
@@ -32,14 +31,15 @@ export class ConfigurationComponent implements OnInit {
     root_user: '',
     root_password: '',
     certificate_signature: '',
-    bill_spain: '',
-    bill_other: '',
+    bill_number: '',
     email_opened: '',
     email_sender: '',
     email_password: '',
-    emails: []
+    emails: [],
+    invoice_opened: '',
+    certificates_opened: ''
   };
-  fieldsDisabled = true; opened; termOpened; openedEmail;
+  fieldsDisabled = true; opened; termOpened; openedEmail; invoiceOpened; certificatesOpened;
   formControl = new FormControl('', [Validators.required]);
   minDate = new Date(); hide = true; rootPassword; emailPassword; restartDatabase;
   change = '_CHANGE_DATA'; colorChange = 'primary';
@@ -47,7 +47,7 @@ export class ConfigurationComponent implements OnInit {
   separatorKeysCodes = [ENTER, COMMA, SPACE];
 
   constructor(private firebaseService: FirebaseCallerService, private translationService: TranslateService,
-    public snackBar: MatSnackBar, private router: Router, private cryptoService: CryptoService) {
+    public snackBar: MatSnackBar, private router: Router, private cryptoService: CryptoService, private storage: AngularFireStorage) {
 
   }
 
@@ -66,6 +66,8 @@ export class ConfigurationComponent implements OnInit {
         const open = response[0].cmmse_opened ? '_OPENED' : '_CLOSED';
         const termOpen = response[0].send_term_opened ? '_OPENED' : '_CLOSED';
         const emailOpen = response[0].email_opened ? '_OPENED' : '_CLOSED';
+        const invoiceOpen = response[0].invoice_opened ? '_OPENED' : '_CLOSED';
+        const certificatesOpen = response[0].certificates_opened ? '_OPENED' : '_CLOSED';
         this.translationService.get(open).subscribe(resp => {
           this.opened = resp;
         });
@@ -74,6 +76,12 @@ export class ConfigurationComponent implements OnInit {
         });
         this.translationService.get(emailOpen).subscribe(resp => {
           this.openedEmail = resp;
+        });
+        this.translationService.get(invoiceOpen).subscribe(resp => {
+          this.invoiceOpened = resp;
+        });
+        this.translationService.get(certificatesOpen).subscribe(resp => {
+          this.certificatesOpened = resp;
         });
       });
       this.user = user.user;
@@ -150,6 +158,10 @@ export class ConfigurationComponent implements OnInit {
   restartUsers() {
     const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach(user => {
+        this.storage.ref('/payments/' + user.payment_file.id_file).delete();
+        user.papers.forEach(paper => {
+          this.storage.ref('/papers/' + paper.id_file).delete();
+        });
         this.firebaseService.deleteItemFromCollection('users', user.id);
       });
       this.translationService.get('_USERS_REMOVED_SUCCESFULLY').subscribe(resp => {

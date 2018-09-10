@@ -126,8 +126,7 @@
     "_ISBN": "ISBN",
     "_FEE_TO_PAY": "Fee to pay",
     "_CERTIFICATE_SIGNATURE": "Certificate signature date",
-    "_BILL_SPAIN": "Spain invoice number",
-    "_BILL_OTHER": "Invoice number for other places",
+    "_BILL_NUMBER": "Invoice number",
     "_CONFIG_UPDATED_SUCCESFULLY": "Configuration updated succesfully",
     "_DELETE_USER_INFO": "Are you sure to delete this user?",
     "_USER_DELETED_SUCCESFULLY": "User deleted succesfully",
@@ -191,5 +190,9 @@
     "_B": "Blue color",
     "_TEXT": "Text for the badge",
     "_EMAIL_OPENED": "The email service is",
-    "_USER_NOT_FOUND": "User not found"
+    "_USER_NOT_FOUND": "User not found",
+    "_DATE": "Date",
+    "_INVOICE_OPENED": "The invoice for the users is",
+    "_CERTIFICATES_OPENED": "The certificates for the users are",
+    "_DOCUMENTS_DISABLED": "Documents are not available."
 }

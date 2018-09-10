@@ -23,7 +23,7 @@ export class PapersAdminComponent implements OnInit {
   status = ['_UPLOADED', '_REVISION', '_ACCEPTED', '_REJECTED', '_MAJOR/_MINOR'];
 
   // Table purposes
-  displayedColumns = ['title', 'conference', 'corresponding_author', 'file', 'status', 'actions'];
+  displayedColumns = ['title', 'conference', 'corresponding_author', 'date', 'file', 'status', 'actions'];
   papers: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

@@ -12,7 +12,8 @@ import * as jsPDF from 'jspdf';
 })
 export class DocumentsComponent implements OnInit {
 
-  year; urlCMMSE; email; check_payment; invoice_downloaded; attendance_downloaded; presentation_downloaded; paper;
+  year; urlCMMSE; email; check_payment; invoice_downloaded; attendance_downloaded;
+  presentation_downloaded; paper; check_invoice; check_certificates;
 
   constructor(public dialog: MatDialog, private translateService: TranslateService,
     private firebaseService: FirebaseCallerService, public snackBar: MatSnackBar) { }
@@ -32,6 +33,8 @@ export class DocumentsComponent implements OnInit {
       this.firebaseService.getCollection('config').subscribe(response => {
         this.year = response[0].conference_year;
         this.urlCMMSE = response[0].conference_url;
+        this.check_invoice = response[0].invoice_opened;
+        this.check_certificates = response[0].certificates_opened;
         window.sessionStorage.setItem('config', JSON.stringify(response[0]));
       });
       this.email = user.email;
@@ -94,38 +97,44 @@ export class DocumentsComponent implements OnInit {
         doc.text(105, 80, 'INVOICE Num. ' + user.bill.invoice_number, null, null, 'center');
       }
       doc.setFontSize(12);
+      doc.setFontType('normal');
+      doc.text(25, 100, 'Bill To');
       doc.setFontType('bold');
-      if (user.bill) {
-        doc.text(25, 100, userTitle + ' ' + user.bill.first_name + ' ' + user.bill.last_name);
-        doc.text(25, 105, 'University/College/Company: ');
-        doc.text(25, 110, 'Address: ');
-        doc.text(25, 115, 'CIF/VAT Number/Tax ID: ');
-        doc.text(25, 135, 'Description');
-        doc.text(180, 135, 'Value', null, null, 'right');
-        doc.setFontType('normal');
-        doc.text(80, 105, user.bill.university_company);
-        doc.text(43, 110, user.bill.address);
-        doc.text(75, 115, user.bill.CIF);
-      } else {
-        doc.text(25, 100, userTitle + ' ' + user.first_name + ' ' + user.last_name);
-        doc.text(25, 105, 'University/College/Company: ');
-        if (user.address) {
-          doc.text(25, 110, 'Address: ');
-        }
-        doc.text(25, 135, 'Description');
-        doc.text(180, 135, 'Value', null, null, 'right');
-        doc.setFontType('normal');
-        doc.text(80, 105, user.university_company);
-        doc.text(43, 110, user.address);
-      }
+      doc.text(25, 105, user.bill ? user.bill.university_company : user.university_company);
+      doc.setFontType('normal');
+      doc.text(25, 110, 'VAT Number: ' + (user.bill ? user.bill.CIF : ''));
+      doc.text(25, 115, user.bill ? user.bill.address : user.address);
+      // doc.text(25, 100, userTitle + ' ' + user.bill ? user.bill.first_name : user.first_name + ' ' +
+      // user.bill ? user.bill.last_name : user.last_name);
+      doc.setFontType('bold');
+      doc.setFontSize(10);
+      doc.text(25, 135, 'Description');
+      doc.text(180, 135, 'Amount', null, null, 'right');
+      doc.setFontType('normal');
       doc.rect(25, 136, 155, 0);
-      doc.text(25, 140, 'CMMSE ' + config.conference_year + ' Registration Fee');
-      doc.text(180, 140, user.tax + ' euros', null, null, 'right');
+      doc.text(25, 140, 'Registration Fee of ' + userTitle + ' ' + (user.bill ? user.bill.first_name : user.first_name) + ' ' +
+        (user.bill ? user.bill.last_name : user.last_name));
+      doc.text(180, 140, user.tax + ' €', null, null, 'right');
+      doc.setFontSize(9);
+      doc.text(180, 160, 'Exempt of TAX by Resolution of the Spanish Tax Agency dated 16 March 2001', null, null, 'right');
+      doc.setFontSize(12);
       doc.text(180, 180, monthNames[today.getMonth()] + ' ' + today.getDate() + ', ' + today.getFullYear(), null, null, 'right');
+      doc.setFontSize(9);
+      doc.text(25, 185, 'Payable by Bank Transfer to:');
+      doc.text(25, 188, 'Account owner: CMMSE');
+      doc.text(25, 191, 'Concept: Name of Participant');
+      doc.text(25, 194, 'Bank Name: OPEN BANK');
+      doc.text(25, 197, 'SWIFT CODE: OPENESMM');
+      doc.text(25, 200, 'IBAN: ES 84 0073 0100 51 0452638051');
+      doc.text(25, 203, 'Address of the bank: Ciudad Grupo Santander. Av. Cantabria s/n, 28660. Boadilla del Monte – Madrid');
       doc.setFontType('bold');
+      doc.setFontSize(12);
       doc.text(105, 250, 'Jesús Vigo Aguiar', null, null, 'center');
       doc.text(105, 255, 'President of the Organizing Committee', null, null, 'center');
       doc.text(105, 260, 'CMMSE ' + config.conference_year, null, null, 'center');
+      doc.setFontSize(9);
+      doc.setFontType('normal');
+      doc.text(105, 280, 'CMMSE C/ Cordel Merinas 163 Bajo 37008 Salamanca Spain', null, null, 'center');
       doc.save(user.first_name.replace(/\s/g, '') + user.last_name.replace(/\s/g, '') + 'Invoice.pdf');
     });
 

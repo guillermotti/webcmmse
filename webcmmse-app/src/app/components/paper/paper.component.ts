@@ -27,7 +27,8 @@ export class PaperComponent implements OnInit, AfterViewInit {
     'title': '',
     'poster': false,
     'state': '_UPLOADED',
-    'authors': {}
+    'authors': {},
+    'date': new Date()
   };
   authors = [{
     'author': 1,
@@ -230,7 +231,8 @@ export class PaperComponent implements OnInit, AfterViewInit {
           'title': ' ',
           'poster': false,
           'state': '_UPLOADED',
-          'authors': {}
+          'authors': {},
+          'date': new Date()
         };
         this.authors = [{
           'author': 1,

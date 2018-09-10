@@ -126,8 +126,7 @@
     "_ISBN": "ISBN",
     "_FEE_TO_PAY": "Cuota a pagar",
     "_CERTIFICATE_SIGNATURE": "Fecha de firma de los certificados",
-    "_BILL_SPAIN": "Número facturas España",
-    "_BILL_OTHER": "Número facturas resto de países",
+    "_BILL_NUMBER": "Número de factura",
     "_CONFIG_UPDATED_SUCCESFULLY": "Configuración actualizada correctamente",
     "_DELETE_USER_INFO": "¿Está seguro de eliminar este usuario?",
     "_USER_DELETED_SUCCESFULLY": "Usuario eliminado correctamente",
@@ -191,5 +190,9 @@
     "_B": "Color azul",
     "_TEXT": "Texto en la etiqueta",
     "_EMAIL_OPENED": "El servicio de mail está",
-    "_USER_NOT_FOUND": "Usuario no encontrado"
+    "_USER_NOT_FOUND": "Usuario no encontrado",
+    "_DATE": "Fecha",
+    "_INVOICE_OPENED": "La factura para los usuarios está",
+    "_CERTIFICATES_OPENED": "Los certificados para los usuarios están",
+    "_DOCUMENTS_DISABLED": "Los documentos no están disponibles."
 }

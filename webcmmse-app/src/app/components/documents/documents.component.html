@@ -61,11 +61,16 @@
           <p>{{ '_NO_PAYMENT_FILE' | translate }}</p>
         </div>
       </div>
-      <div *ngIf="check_payment">
+      <div *ngIf="!check_invoice && ! check_certificates">
+        <div class="example-container">
+          <p>{{ '_DOCUMENTS_DISABLED' | translate }}</p>
+        </div>
+      </div>
+      <div *ngIf="check_payment && (check_invoice || check_certificates)">
         <div class="example-container">
           <p><strong>{{ '_IMPORTANT' | translate }}</strong> {{ '_DOWNLOAD_INFO' | translate }}</p>
         </div>
-        <div class="content-section-heading">
+        <div class="content-section-heading" *ngIf="check_invoice">
           <h6 class="mt-5">{{ '_INVOICE_FILE' | translate}}</h6>
           <div *ngIf="invoice_downloaded" class="example-container">
             <p>{{ '_DOWNLOAD_DISABLED' | translate }}</p>
@@ -75,7 +80,7 @@
           </div>
           <br>
         </div>
-        <div class="content-section-heading">
+        <div class="content-section-heading" *ngIf="check_certificates">
           <h6 class="mt-5">{{ '_ATTENDANCE_FILE' | translate}}</h6>
           <div *ngIf="attendance_downloaded" class="example-container">
             <p>{{ '_DOWNLOAD_DISABLED' | translate }}</p>
@@ -85,7 +90,7 @@
           </div>
           <br>
         </div>
-        <div *ngIf="paper" class="content-section-heading">
+        <div *ngIf="paper && check_certificates" class="content-section-heading">
           <h6 class="mt-5">{{ '_PRESENTATION_FILE' | translate}}</h6>
           <div *ngIf="presentation_downloaded" class="example-container">
             <p>{{ '_DOWNLOAD_DISABLED' | translate }}</p>

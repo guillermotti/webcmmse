@@ -95,6 +95,12 @@
             <mat-cell *matCellDef="let row"> {{row.corresponding_author}} </mat-cell>
           </ng-container>
 
+          <!-- DATE Column -->
+          <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{ '_DATE' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.date | date}} </mat-cell>
+          </ng-container>
+
           <!-- FILE Column -->
           <ng-container matColumnDef="file">
             <mat-header-cell *matHeaderCellDef matSortDisabled> {{ '_PAPER' | translate }} </mat-header-cell>
