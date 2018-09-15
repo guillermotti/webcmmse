@@ -126,7 +126,7 @@ export class PaymentsAdminComponent implements OnInit {
       doc.setFontSize(14);
       doc.setTextColor(0, 0, 0);
       doc.setFontType('bolditalic');
-      if (user.bill) {
+      if (user.bill && user.bill.invoice_number) {
         doc.text(105, 80, 'INVOICE Num. ' + user.bill.invoice_number, null, null, 'center');
       }
       doc.setFontSize(12);

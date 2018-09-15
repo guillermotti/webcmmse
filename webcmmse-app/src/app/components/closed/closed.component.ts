@@ -16,7 +16,6 @@ export class ClosedComponent implements OnInit {
     this.firebaseService.getCollection('config').subscribe(response => {
       this.year = response[0].conference_year;
       this.urlCMMSE = response[0].conference_url;
-      this.nextYear = Number(this.year) + 1;
     });
   }
 

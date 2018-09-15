@@ -158,10 +158,14 @@ export class ConfigurationComponent implements OnInit {
   restartUsers() {
     const obser = this.firebaseService.getCollection('users').subscribe(users => {
       users.forEach(user => {
-        this.storage.ref('/payments/' + user.payment_file.id_file).delete();
-        user.papers.forEach(paper => {
-          this.storage.ref('/papers/' + paper.id_file).delete();
-        });
+        if (user.payment_file) {
+          this.storage.ref('/payments/' + user.payment_file.id_file).delete();
+        }
+        if (user.papers) {
+          user.papers.forEach(paper => {
+            this.storage.ref('/papers/' + paper.id_file).delete();
+          });
+        }
         this.firebaseService.deleteItemFromCollection('users', user.id);
       });
       this.translationService.get('_USERS_REMOVED_SUCCESFULLY').subscribe(resp => {
