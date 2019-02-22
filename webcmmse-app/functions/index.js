@@ -22,33 +22,33 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.post('/register', (req, res) => {
-    register(req.body);
-    res.status(200).send();
+  register(req.body);
+  res.status(200).send();
 });
 
 app.post('/password', (req, res) => {
-    password(req.body);
-    res.status(200).send();
+  password(req.body);
+  res.status(200).send();
 });
 
 app.post('/changePaperState', (req, res) => {
-    changePaperState(req.body);
-    res.status(200).send();
+  changePaperState(req.body);
+  res.status(200).send();
 });
 
 app.post('/newPaper', (req, res) => {
-    newPaper(req.body);
-    res.status(200).send();
+  newPaper(req.body);
+  res.status(200).send();
 });
 
 app.post('/proofPayment', (req, res) => {
-    proofPayment(req.body);
-    res.status(200).send();
+  proofPayment(req.body);
+  res.status(200).send();
 });
 
 app.post('/changeDataPaper', (req, res) => {
-    changeDataPaper(req.body);
-    res.status(200).send();
+  changeDataPaper(req.body);
+  res.status(200).send();
 });
 
 exports.mail = functions.https.onRequest(app);
