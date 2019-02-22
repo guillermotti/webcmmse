@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkTableModule } from '@angular/cdk/table';
 import { RouterModule, Routes } from '@angular/router';
@@ -40,7 +39,7 @@ import {
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule,
+  MatTooltipModule
 } from '@angular/material';
 
 import { AngularFireModule } from 'angularfire2';
@@ -54,13 +53,23 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 import { LanguageSelectComponent } from './components/language-select/language-select.component';
 import { AppComponent } from './components/app.component';
-import { RegistrationComponent, AccordanceTermsDialogComponent } from './components/registration/registration.component';
+import {
+  RegistrationComponent,
+  AccordanceTermsDialogComponent
+} from './components/registration/registration.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { LostPasswordComponent } from './components/lost-password/lost-password.component';
-import { UserHomeComponent, ChangePasswordDialogComponent } from './components/user-home/user-home.component';
+import {
+  UserHomeComponent,
+  ChangePasswordDialogComponent
+} from './components/user-home/user-home.component';
 import { PaymentsInvoicesComponent } from './components/payments-invoices/payments-invoices.component';
-import { PaperComponent, EditPaperDialogComponent, ConfirmDeleteDialogComponent } from './components/paper/paper.component';
+import {
+  PaperComponent,
+  EditPaperDialogComponent,
+  ConfirmDeleteDialogComponent
+} from './components/paper/paper.component';
 import {
   UsersAdminComponent,
   EditUserDialogComponent,
@@ -82,8 +91,14 @@ import {
   EditPaperAdminDialogComponent,
   ConfirmDeletePaperAdminDialogComponent
 } from './components/papers-admin/papers-admin.component';
-import { PaymentsAdminComponent, ConfirmPaymentDialogComponent } from './components/payments-admin/payments-admin.component';
-import { DocumentsComponent, ConfirmDownloadDocumentDialogComponent } from './components/documents/documents.component';
+import {
+  PaymentsAdminComponent,
+  ConfirmPaymentDialogComponent
+} from './components/payments-admin/payments-admin.component';
+import {
+  DocumentsComponent,
+  ConfirmDownloadDocumentDialogComponent
+} from './components/documents/documents.component';
 import { ClosedComponent } from './components/closed/closed.component';
 import { MailSenderService } from './services/mail-sender.service';
 import { AuthorsAdminComponent } from './components/authors-admin/authors-admin.component';
@@ -95,7 +110,6 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 const appRoutes: Routes = [
-
   // { path: 'hero/:id',      component: HeroDetailComponent },
   /** {
     path: 'heroes',
@@ -160,7 +174,7 @@ const appRoutes: Routes = [
     MatTooltipModule
   ]
 })
-export class MaterialModule { }
+export class MaterialModule {}
 
 @NgModule({
   declarations: [
@@ -253,13 +267,7 @@ export class MaterialModule { }
     AuthorsAdminComponent,
     DocumentsAdminComponent
   ],
-  providers: [
-    FirebaseCallerService,
-    CryptoService,
-    MailSenderService
-  ],
+  providers: [FirebaseCallerService, CryptoService, MailSenderService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
-
-platformBrowserDynamic().bootstrapModule(AppModule);
+export class AppModule {}

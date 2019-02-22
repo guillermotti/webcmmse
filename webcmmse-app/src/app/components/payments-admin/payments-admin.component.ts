@@ -210,7 +210,7 @@ export class PaymentsAdminComponent implements OnInit {
         user.bill ? user.bill.university_company : user.university_company
       );
       doc.setFontType('normal');
-      if (user.bill && user.bill.CIF) {
+      if (user.bill && user.bill.CIF && user.bill.CIF !== '') {
         doc.text(25, 110, 'VAT Number: ' + user.bill.CIF);
       }
       doc.text(25, 115, user.bill ? user.bill.address : user.address);
